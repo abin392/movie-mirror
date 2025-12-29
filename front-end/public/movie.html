@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abin-Movie-Mirror.com</title>
+
+    <!-- Meta bar color -->
+    <meta name="theme-color" content="#2a0e3c">
+    <link rel="stylesheet" href="fontawesome-free-7.0.0-web/css/all.min.css">
+    <link rel="stylesheet" href="fontawesome-free-7.0.0-web/css/fontawesome.min.css">
+    <link rel="stylesheet" href="movie.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="select">
+            <a href=""><i class="fas fas fa-home"></i></a>
+        </div>
+        <div class="select">
+            <a href=""><i class="fas fas fas fa-download"></i></a>
+        </div>
+        <div class="select">
+            <a href=""><i class="fas fas fas fa-search"></i></a>
+        </div>
+    </div>
+    <nav>
+        <div class="profile-img">
+            <a href="profile.html"><img id="userImage" src="img/user.jpg" alt=""></a>
+            <h3 id="userName">User Name</h3>
+        </div>
+
+        <div class="menu" id="menu">
+            <a href="">Home</a>
+            <a href="">Feedback</a>
+            <a href="download.html">Downloads</a>
+            <a href="profile.html">Setting</a>
+            <button onclick="logout()">Logout</button>
+        </div>
+        <i class="fa-solid fa-bars menu-icon" id="menuIcon"></i>
+        <div class="search-icon">
+            <a href=""><i class="fas fa-search"></i></a>
+        </div>
+    </nav>
+
+
+    <div class="scroller">
+        <div class="cart">
+            <img src="img/amaran.jpeg" alt="">
+            <div class="movie-description">
+                <h2>AMARAN</h2>
+                <h4>Hero: <strong>Siva Karthic</strong><br>
+                    Year: 2025<br>
+                    Language: Tamil</h4>
+                <button><i class="fas far fa-play-circle"></i>Watch Now</button>
+            </div>
+        </div>
+        <div class="cart">
+            <img src="img/dude.jpeg" alt="">
+            <div class="movie-description">
+                <h2>DUDE</h2>
+                <h4>Hero: <strong>Pratheep</strong><br>
+                    Year: 2025<br>
+                    Language: Tamil</h4>
+                <button><i class="fas far fa-play-circle"></i>Watch Now</button>
+            </div>
+        </div>
+        <div class="cart">
+            <img src="img/avathar.jpeg" alt="">
+            <div class="movie-description">
+                <h2>AVATAR</h2>
+                <h4>Hero: <strong>Sam Warthinton</strong><br>
+                    Year: 2023<br>
+                    Language: English</h4>
+                <button><i class="fas far fa-play-circle"></i>Watch Now</button>
+            </div>
+        </div>
+        <div class="cart">
+            <img src="img/darpar.jpeg" alt="">
+            <div class="movie-description">
+                <h2>DARBAR</h2>
+                <h4>Hero: <strong>Rajini(SS)</strong><br>
+                    Year: 2024<br>
+                    Language: Tamil</h4>
+                <button><i class="fas far fa-play-circle"></i>Watch Now</button>
+            </div>
+        </div>
+        <div class="cart">
+            <img src="img/aquaman.jpeg" alt="">
+            <div class="movie-description">
+                <h2>AQUAMAN</h2>
+                <h4>Hero: <strong>Hari wacker</strong><br>
+                    Year: 2024<br>
+                    Language: English</h4>
+                <button><i class="fas far fa-play-circle"></i>Watch Now</button>
+            </div>
+        </div>
+        <div class="cart">
+            <img src="img/katasi vivasayi.jpeg" alt="">
+            <div class="movie-description">
+                <h2>KATASI VIVASAYE</h2>
+                <h4>Hero: <strong>Vijay Sethupathy</strong><br>
+                    Year: 2023<br>
+                    Language: Tamil</h4>
+                <button><i class="fas far fa-play-circle"></i>Watch Now</button>
+            </div>
+        </div>
+        <div class="cart">
+            <img src="img/captan america.jpeg" alt="">
+            <div class="movie-description">
+                <h2>CAPTAN AMERICA</h2>
+                <h4>Hero: <strong>Edwin</strong><br>
+                    Year: 2022<br>
+                    Language: English</h4>
+                <button><i class="fas far fa-play-circle"></i>Watch Now</button>
+            </div>
+        </div>
+        <div class="cart">
+            <img src="img/vip.jpeg" alt="">
+            <div class="movie-description">
+                <h2>VIP-1</h2>
+                <h4>Hero: <strong>Dhanush</strong><br>
+                    Year: 2020<br>
+                    Language: Tamil</h4>
+                <button><i class="fas far fa-play-circle"></i>Watch Now</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="movie-collection">
+        <div class="various-title">
+            <h1>Top Tamil Movies</h1>
+        </div>
+        <div class="movie-container">
+            <div class="movies" data-title="DUDE" data-img="img/dude.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+
+                <img src="img/dude.jpeg" alt="">
+                <h4>DUDE</h4>
+                <button>Watch</button>
+            </div>
+
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/darpar.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="TIRUCITRAPALAM" data-img="img/tirucitrapalam.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/tirucitrapalam.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/teyva makan.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/piremalu.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/vip.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/raayan.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/love.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/katasi vivasayi.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/kasethan katavulta.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/darpar.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/amaran.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/vip.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/teyva makan.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/katasi vivasayi.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/raayan.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/dude.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/love.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/piremalu.jpeg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="movie-collection">
+        <div class="various-title">
+            <h1>Top Hindi Movies</h1>
+        </div>
+        <div class="movie-container">
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="movie-collection">
+        <div class="various-title">
+            <h1>Top Malaiyalam Movies</h1>
+        </div>
+        <div class="movie-container">
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="movie-collection">
+        <div class="various-title">
+            <h1>Top Tamil Horror Movies</h1>
+        </div>
+        <div class="movie-container">
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="movie-collection">
+        <div class="various-title">
+            <h1>Top English Horror Movies</h1>
+        </div>
+        <div class="movie-container">
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="movie-collection">
+        <div class="various-title">
+            <h1>Top English Movies</h1>
+        </div>
+        <div class="movie-container">
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 1.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 2.jpg" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus 3.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+            <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
+                data-link="https://aabin-movies.netlify.app/squad.html">
+
+                <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                <img src="img/bus.png" alt="">
+                <h4>Movie-Title</h4>
+                <button>Watch</button>
+            </div>
+        </div>
+    </div><br>
+
+    <div class="web-title-container">
+        <h1>Abin-Movie-Mirror.com</h1>
+        <h4>Your Ultimate Movie Destination</h4>
+    </div>
+    <div class="container">
+        <div class="about-container">
+            <h3>About Us</h3>
+            <a href=""><i class="fab fab fa-github"></i></a>
+            <a href=""><i class="fab fab fa-facebook"></i></a>
+            <a href="https://tn-bustiming.netlify.app"><i class="fab fas fa-bus"></i></a>
+            <p>Discover a world of cinematic wonders at Abin-Movie-Mirror.com. Dive into our extensive collection of
+                movies
+                across various genres and languages. Whether you're a fan of thrilling action, heartwarming romance, or
+                spine-chilling horror, we have something for everyone. Enjoy seamless streaming and downloads, all in
+                one place. Your ultimate movie experience starts here!</p>
+        </div>
+
+        <div class="contect-container">
+            <h3>Contact Us</h3>
+            <p style="margin-top: 50px;">Email: abinr392@gmail.com</p>
+            <p>Address: 14/A Maadha Kovil St, Kudaloor, Papanasam, Thanjavur Dis.</p>
+            <p>PinCode: 614-202</p><br>
+            <a href=""><i class="fa-bars fa-solid fas fa-mail-bulk"></i></a>
+            <a href=""><i class="fab fab fa-instagram"></i></a>
+            <a href=""><i class="fab fab fa-youtube"></i></a>
+        </div>
+    </div>
+
+    <div class="bottom-footer">
+        <footer>
+            <h4>Abin-Movie-Mirror.com</h4>
+            <p>© 2025 Abin-Movie-Mirror. All rights reserved.</p>
+        </footer>
+    </div><br><br><br>
+
+</body>
+<script>
+    const menu = document.getElementById('menu');
+    const menuIcon = document.getElementById('menuIcon');
+
+    menuIcon.addEventListener('click', () => {
+        menu.classList.toggle('active');
+        menuIcon.classList.toggle('fa-bars');
+        menuIcon.classList.toggle('fa-xmark'); // toggle between bars and X icon
+    });
+
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.replace("login.html");
+    }
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const savedName = localStorage.getItem("username");
+        const savedImage = localStorage.getItem("profileImage");
+
+        if (savedName) {
+            document.getElementById("userName").textContent = savedName;
+        }
+
+        if (savedImage) {
+            document.getElementById("userImage").src = savedImage;
+        }
+    });
+
+    function logout() {
+        // 1️⃣ Clear all storage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // 2️⃣ Delete ALL cookies for this site
+        document.cookie.split(";").forEach(cookie => {
+            document.cookie = cookie
+                .replace(/^ +/, "")
+                .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/");
+        });
+
+        // 3️⃣ Clear Cache Storage (PWA / Chrome supported)
+        if ("caches" in window) {
+            caches.keys().then(keys => {
+                keys.forEach(key => caches.delete(key));
+            });
+        }
+
+        // 4️⃣ Disable back navigation
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+        };
+
+        // 5️⃣ Redirect to login page (hard replace)
+        window.location.replace("index.html");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (!localStorage.getItem("username")) {
+            window.location.replace("index.html");
+        }
+    });
+
+
+    function changeImage() {
+        document.getElementById("imageInput").click();
+    }
+
+    document.getElementById("imageInput").addEventListener("change", function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function () {
+            localStorage.setItem("profileImage", reader.result);
+
+            // Update image instantly if exists on page
+            const img1 = document.getElementById("userImage");
+            const img2 = document.getElementById("profilePic");
+
+            if (img1) img1.src = reader.result;
+            if (img2) img2.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const name = localStorage.getItem("username");
+        const img = localStorage.getItem("profileImage");
+
+        if (name) document.getElementById("userName").innerText = name;
+        if (img) document.getElementById("userImage").src = img;
+    });
+
+
+
+
+    function addToDownloads(icon) {
+        const movie = icon.closest(".movies");
+
+        const movieData = {
+            title: movie.dataset.title,
+            image: movie.dataset.img,
+            link: movie.dataset.link,
+            downloaded: false,   // future use
+            addedAt: Date.now()
+        };
+
+        let downloads = JSON.parse(localStorage.getItem("downloads")) || [];
+
+        // prevent duplicate movie
+        const exists = downloads.some(d => d.link === movieData.link);
+
+        if (exists) {
+            alert("Already added to Downloads");
+            return;
+        }
+
+        downloads.push(movieData);
+        localStorage.setItem("downloads", JSON.stringify(downloads));
+
+        alert("Movie saved to Downloads");
+    }
+</script>
+
+</html>
