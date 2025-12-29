@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <meta name="theme-color" content="#1b3b6f">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+    <div class="login-container">
+        <img src="img/user.jpg" alt="" id="yourImage">
+        <input type="text" id="username" placeholder="Enter Username"><br><br>
+        <input type="file" id="profileImage" accept="image/*"><br><br>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <script>
+        if (localStorage.getItem("isLoggedIn") === "true") {
+            window.location.replace("movie.html");
+        }
+        function login() {
+            const username = document.getElementById("username").value;
+            const imageInput = document.getElementById("profileImage");
+
+            if (!username || imageInput.files.length === 0) {
+                alert("Please enter username and select image");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                localStorage.setItem("username", username);
+                localStorage.setItem("profileImage", reader.result);
+                window.location.href = "movie.html"; // redirect
+            };
+
+            reader.readAsDataURL(imageInput.files[0]);
+
+            if (!username || !localStorage.getItem("profileImage")) {
+                alert("Enter username and select image");
+                return;
+            }
+
+            localStorage.setItem("username", username);
+            localStorage.setItem("isLoggedIn", "true");
+
+            // Prevent back navigation
+            window.location.replace("movie.html");
+        }
+
+
+        const imageInput = document.getElementById("profileImage");
+        const previewImage = document.getElementById("yourImage");
+
+        // 🔹 Auto preview & store image on selection
+        imageInput.addEventListener("change", () => {
+            const file = imageInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                previewImage.src = reader.result;
+
+                // Store instantly
+                localStorage.setItem("profileImage", reader.result);
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+
+</body>
+
+</html>

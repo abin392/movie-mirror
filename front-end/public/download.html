@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Downloads</title>
+    <link rel="stylesheet" href="fontawesome-free-7.0.0-web/css/all.min.css">
+    <style>
+        body {
+            background: #0f0f0f;
+            color: white;
+            font-family: Arial;
+        }
+
+        .downloads {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .download-card {
+            background: #1c1c1c;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .download-card img {
+            width: 100%;
+            border-radius: 6px;
+        }
+
+        .download-card h4 {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .download-card a {
+            background: #00ff88;
+            color: black;
+            padding: 6px;
+            border-radius: 6px;
+            display: block;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .download-card a:hover {
+            background: #00cc6f;
+        }
+
+        .remove {
+            margin-top: 6px;
+            color: red;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .remove:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 style="padding:15px;">⬇ My Downloads</h2>
+
+    <div class="downloads" id="downloads"></div>
+
+    <script>
+        const container = document.getElementById("downloads");
+        let downloads = JSON.parse(localStorage.getItem("downloads")) || [];
+
+        if (downloads.length === 0) {
+            container.innerHTML = "<p style='padding:15px;'>No downloads yet.</p>";
+        }
+
+        downloads.forEach((movie, index) => {
+            const div = document.createElement("div");
+            div.className = "download-card";
+
+            div.innerHTML = `
+        <img src="${movie.image}">
+        <h4>${movie.title}</h4>
+        
+        <a href="${movie.link}" target="" download
+           onclick="markDownloaded(${index})">
+           <i class="fa-solid fa-play"></i> Play
+
+        </a>
+
+        <div class="remove" onclick="removeDownload(${index})">
+            Remove
+        </div>
+    `;
+
+            container.appendChild(div);
+        });
+
+        function markDownloaded(index) {
+            downloads[index].downloaded = true;
+            localStorage.setItem("downloads", JSON.stringify(downloads));
+        }
+
+        function removeDownload(index) {
+            downloads.splice(index, 1);
+            localStorage.setItem("downloads", JSON.stringify(downloads));
+            location.reload();
+        }
+    </script>
+
+</body>
+
+</html>
