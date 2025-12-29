@@ -1,0 +1,114 @@
+body {
+    background-color: #d4f1f4;
+}
+
+.header {
+    display: flex;
+    justify-content: start;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #003d40;
+    color: white;
+    position: relative;
+    top: 0;
+    height: 80px;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.header button {
+    position: absolute;
+    right: 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.header button:hover {
+    background-color: #e60000;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 500px;
+    margin-top: 20px;
+    background-color: #0097a7;
+    padding: 20px;
+    border: 2px solid #004d40;
+    border-radius: 15px;
+}
+
+.user-details span {
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: black;
+}
+
+.user-details img {
+    cursor: pointer;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    border: 3px solid #004d40;
+}
+
+/* Popup background */
+.image-preview {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Enlarged image */
+.image-preview img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+}
+
+/* Close button */
+.image-preview .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.user-details button {
+    background-color: #005f6a;
+    width: 150px;
+    height: 30px;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    position: relative;
+    top: -170px;
+    left: 100px;
+}
+
+.user-details h3 {
+    text-decoration: underline;
+}
+
+.user-details button:hover {
+    background-color: #004d40;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 15px #003d40;
+}
