@@ -1,5 +1,5 @@
 body {
-    background: #e6e6fa;
+    background: black;
 }
 
 nav {
@@ -113,7 +113,7 @@ nav .search-icon {
 /* HOVER ZOOM EFFECT */
 .cart:hover {
     transform: scale(1.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 10px 30px rgba(138, 137, 137, 0.377);
     z-index: 0;
 }
 
@@ -168,7 +168,7 @@ nav .search-icon {
 
 .movie-collection {
     margin-top: 10px;
-    background: #a87ca0;
+    background: #a87ca01f;
     height: auto;
     border: 3px solid #2a0e3c;
     border-radius: 10px;
@@ -179,7 +179,7 @@ nav .search-icon {
     padding: 10px 0 10px 15px;
     text-decoration: underline;
     text-align: center;
-    color: rgb(0, 0, 0);
+    color: white;
 }
 
 .movie-collection .movie-container {
@@ -187,6 +187,10 @@ nav .search-icon {
     flex-direction: row;
     overflow-x: scroll;
     margin-top: -10px;
+}
+
+.movie-collection .movie-container::-webkit-scrollbar {
+    display: none;
 }
 
 /* 3-dot icon */
@@ -202,7 +206,7 @@ nav .search-icon {
 
 .movie-collection .movie-container .movies {
     height: 200px;
-    width: 450px;
+    max-width: 350px;
     position: relative;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -217,24 +221,22 @@ nav .search-icon {
 }
 
 .movie-collection .movie-container .movies h4 {
-    width: 100px;
-    position: relative;
-    left: -20px;
-    top: -5px;
+    margin-left: -200px;
     color: white;
 }
 
 .movie-collection .movie-container .movies button {
     background: #5e2b6d;
     color: white;
-    width: 150px;
+    min-width: 300px;
     height: 40px;
     border: none;
     border-radius: 10px;
-    margin-top: -1px;
+    margin-top: 1px;
     margin-left: 20px;
     position: relative;
-    left: 50px;
+    top: 0;
+    left: 0;
 }
 
 .movie-collection .movie-container .movies button:hover {
@@ -485,7 +487,7 @@ nav .search-icon {
     /* HOVER ZOOM EFFECT */
     .cart:hover {
         transform: scale(1.1);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 10px 30px rgba(138, 137, 137, 0.377);
         z-index: 0;
     }
 
@@ -540,7 +542,7 @@ nav .search-icon {
 
     .movie-collection {
         margin-top: 10px;
-        background: #a87ca0;
+        background: #a87ca01f;
         height: auto;
         border: 2px solid #2a0e3c;
         border-radius: 4px;
@@ -551,7 +553,7 @@ nav .search-icon {
         padding: 10px 0 10px 15px;
         text-decoration: underline;
         text-align: center;
-        color: rgb(0, 0, 0);
+        color: white;
     }
 
     .movie-collection .movie-container {
@@ -576,6 +578,7 @@ nav .search-icon {
 
     .movie-collection .movie-container .movies {
         height: 250px;
+        max-width: 100px;
         position: relative;
         width: 200px;
         display: flex;
@@ -591,19 +594,18 @@ nav .search-icon {
 
     .movie-collection .movie-container .movies h4 {
         margin-top: 10px;
-        position: relative;
-        top: 0;
-        left: 0;
+        margin-left: 0px;
+        margin-bottom: 10px;
     }
 
     .movie-collection .movie-container .movies button {
         background: #5e2b6d;
         color: white;
-        width: 100%;
+        min-width: 100px;
         height: 30px;
         border: none;
         border-radius: 10px;
-        margin-top: -10px;
+        margin-top: 10px;
         position: relative;
         top: 0;
         left: 0;
