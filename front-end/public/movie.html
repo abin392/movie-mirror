@@ -47,7 +47,10 @@
 
     <div class="scroller">
         <div class="cart">
-            <img src="img/amaran.jpeg" alt="">
+            <div class="media-box">
+                <img src="img/amaran.jpeg" alt="">
+                <video src="trailers/amaran.mp4" muted loop preload="metadata"></video>
+            </div>
             <div class="movie-description">
                 <h2>AMARAN</h2>
                 <h4>Hero: <strong>Siva Karthic</strong><br>
@@ -1168,6 +1171,23 @@
 
 </body>
 <script>
+    // HOVER TRAILER PREVIEW
+    document.querySelectorAll(".cart").forEach(card => {
+        const video = card.querySelector("video");
+
+        if (!video) return;
+
+        card.addEventListener("mouseenter", () => {
+            video.currentTime = 0;
+            video.play().catch(() => { });
+        });
+
+        card.addEventListener("mouseleave", () => {
+            video.pause();
+            video.currentTime = 0;
+        });
+    });
+
     const menu = document.getElementById('menu');
     const menuIcon = document.getElementById('menuIcon');
 

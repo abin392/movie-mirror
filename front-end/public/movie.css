@@ -125,6 +125,43 @@ nav .search-icon {
     display: block;
 }
 
+/* MEDIA CONTAINER */
+.media-box {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    overflow: hidden;
+}
+
+/* POSTER IMAGE */
+.media-box img,
+.media-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+    display: block;
+}
+
+/* VIDEO HIDDEN INITIALLY */
+.media-box video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+/* ON HOVER: SHOW VIDEO */
+.cart:hover .media-box video {
+    opacity: 1;
+}
+
+/* ON HOVER: HIDE IMAGE */
+.cart:hover .media-box img {
+    opacity: 0;
+}
+
+
 /* DESCRIPTION */
 .movie-description {
     padding: 10px;
@@ -497,6 +534,14 @@ nav .search-icon {
         height: 260px;
         object-fit: cover;
         display: block;
+    }
+
+    /* MEDIA CONTAINER */
+    .media-box {
+        position: relative;
+        width: 100%;
+        height: 260px;
+        overflow: hidden;
     }
 
     /* DESCRIPTION */
