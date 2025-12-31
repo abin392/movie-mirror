@@ -72,6 +72,68 @@ body {
     cursor: pointer;
 }
 
+    .alert-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s ease;
+    }
+
+    .alert-overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .alert-box {
+        background: #0f172a;
+        color: #fff;
+        padding: 22px;
+        width: 280px;
+        border-radius: 14px;
+        text-align: center;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+        animation: pop 0.3s ease;
+    }
+
+    .alert-box h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+    }
+
+    .alert-box p {
+        font-size: 14px;
+        opacity: 0.85;
+    }
+
+    .alert-box button {
+        margin-top: 15px;
+        padding: 8px 22px;
+        background: #38bdf8;
+        border: none;
+        color: #000;
+        font-weight: bold;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    @keyframes pop {
+        0% {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
 @media (max-width: 768px) {
     .login-container {
         width: 80%;
