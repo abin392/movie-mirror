@@ -1286,6 +1286,10 @@
     </div>
 </body>
 <script>
+
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.replace("index.html");
+    }
     // SKELETON LOADER
     window.addEventListener("load", () => {
         setTimeout(() => {

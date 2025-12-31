@@ -1,7 +1,9 @@
 body {
     background: black;
 }
-
+body::-webkit-scrollbar {
+    display: none;
+}
 /* =============================
    SKELETON BASE
 ============================= */
