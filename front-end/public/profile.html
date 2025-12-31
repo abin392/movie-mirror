@@ -21,19 +21,27 @@
         <h1>Your Profile</h1>
         <button onclick="logout()">Logout</button>
     </div>
-    <div class="user-details">
-        <img id="profilePic" src="" alt="Profile Picture" width="150" height="150"><br><br>
-        <h3>User Name</h3>
-        <span id="displayName"></span><br><br>
-
-        <input type="file" id="imageInput" accept="image/*" hidden>
-        <button onclick="changeImage()">Change Image</button>
-    </div>
 
     <!-- Image Preview Popup -->
     <div id="imagePreview" class="image-preview">
         <span class="close">&times;</span>
         <img id="previewImg">
+    </div>
+    <div class="center-content">
+    <div class="user-details">
+        <img id="profilePic" src="" alt="Profile Picture" width="150" height="150"><br><br>
+        <h3>User Name</h3>
+        <span id="displayName"></span>
+        <input type="text" id="usernameInput" placeholder="Enter new username" hidden>
+
+        <br><br>
+
+        <button id="editBtn" onclick="editUsername()">Edit Name</button>
+        <button id="saveBtn" onclick="saveUsername()" hidden>Save</button>
+        <button id="cancelBtn" onclick="cancelEdit()" hidden>Cancel</button>
+        <input type="file" id="imageInput" accept="image/*" hidden>
+        <button onclick="changeImage()">Change Image</button>
+    </div>
     </div>
 
     <script>
@@ -75,39 +83,39 @@
         if (profileImage) document.getElementById("profilePic").src = profileImage;
 
         function logout() {
-             // 1️⃣ Clear all storage
-        localStorage.clear();
-        sessionStorage.clear();
+            // 1️⃣ Clear all storage
+            localStorage.clear();
+            sessionStorage.clear();
 
-        // 2️⃣ Delete ALL cookies for this site
-        document.cookie.split(";").forEach(cookie => {
-            document.cookie = cookie
-                .replace(/^ +/, "")
-                .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/");
-        });
-
-        // 3️⃣ Clear Cache Storage (PWA / Chrome supported)
-        if ("caches" in window) {
-            caches.keys().then(keys => {
-                keys.forEach(key => caches.delete(key));
+            // 2️⃣ Delete ALL cookies for this site
+            document.cookie.split(";").forEach(cookie => {
+                document.cookie = cookie
+                    .replace(/^ +/, "")
+                    .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/");
             });
-        }
 
-        // 4️⃣ Disable back navigation
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            history.go(1);
-        };
+            // 3️⃣ Clear Cache Storage (PWA / Chrome supported)
+            if ("caches" in window) {
+                caches.keys().then(keys => {
+                    keys.forEach(key => caches.delete(key));
+                });
+            }
 
-        // 5️⃣ Redirect to login page (hard replace)
-        window.location.replace("index.html");
-    }
+            // 4️⃣ Disable back navigation
+            history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                history.go(1);
+            };
 
-    document.addEventListener("DOMContentLoaded", () => {
-        if (!localStorage.getItem("username")) {
+            // 5️⃣ Redirect to login page (hard replace)
             window.location.replace("index.html");
         }
-    });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!localStorage.getItem("username")) {
+                window.location.replace("index.html");
+            }
+        });
 
 
         const profilePic = document.getElementById("profilePic");
@@ -138,6 +146,46 @@
                 imagePreview.style.display = "none";
             }
         });
+
+        const displayName = document.getElementById("displayName");
+        const usernameInput = document.getElementById("usernameInput");
+        const editBtn = document.getElementById("editBtn");
+        const saveBtn = document.getElementById("saveBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
+
+        function editUsername() {
+            usernameInput.value = displayName.innerText;
+            displayName.style.display = "none";
+            usernameInput.hidden = false;
+
+            editBtn.hidden = true;
+            saveBtn.hidden = false;
+            cancelBtn.hidden = false;
+        }
+
+        function saveUsername() {
+            const newName = usernameInput.value.trim();
+
+            if (newName === "") {
+                alert("Username cannot be empty!");
+                return;
+            }
+
+            localStorage.setItem("username", newName);
+
+            displayName.innerText = newName;
+
+            cancelEdit();
+        }
+
+        function cancelEdit() {
+            usernameInput.hidden = true;
+            displayName.style.display = "inline";
+
+            editBtn.hidden = false;
+            saveBtn.hidden = true;
+            cancelBtn.hidden = true;
+        }
 
     </script>
 </body>

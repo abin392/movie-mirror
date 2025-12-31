@@ -32,10 +32,18 @@ body {
     background-color: #e60000;
 }
 
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 .user-details {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 50%;
     height: 500px;
     margin-top: 20px;
     background-color: #0097a7;
@@ -48,7 +56,7 @@ body {
     font-size: 26px;
     font-weight: bold;
     margin-top: 10px;
-    color: black;
+    color: white;
 }
 
 .user-details img {
@@ -71,6 +79,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    object-fit: cover;
 }
 
 /* Enlarged image */
@@ -98,8 +107,8 @@ body {
     border: none;
     border-radius: 10px;
     position: relative;
-    top: -170px;
-    left: 100px;
+    bottom: 10px;
+    right: -140px;
 }
 
 .user-details h3 {
@@ -111,4 +120,42 @@ body {
     color: white;
     cursor: pointer;
     box-shadow: 0 0 15px #003d40;
+}
+
+#usernameInput {
+    padding: 8px;
+    font-size: 16px;
+    width: 220px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 6px 12px;
+    margin: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    box-shadow: 0 0 10px #666;
+}
+
+@media (max-width: 600px) {
+    .user-details {
+        width: 80%;
+        height: 100%;
+    }
+
+    .user-details img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .user-details button {
+        width: 120px;
+        height: 25px;
+        font-size: 14px;
+        right: -100px;
+    }
 }

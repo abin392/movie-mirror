@@ -2,6 +2,75 @@ body {
     background: black;
 }
 
+/* ===== Skeleton Base ===== */
+#skeletonLoader {
+    padding: 15px;
+}
+
+/* Hero scroll skeleton */
+.skeleton-scroll {
+    display: flex;
+    overflow-x: hidden;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.skeleton-cart {
+    min-width: 280px;
+}
+
+.skeleton-thumb {
+    height: 180px;
+    border-radius: 15px;
+}
+
+.skeleton-text {
+    margin-top: 10px;
+}
+
+.skeleton-line {
+    height: 14px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+}
+
+.skeleton-line.short {
+    width: 60%;
+}
+
+/* Grid skeleton */
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.skeleton-movie {
+    height: 180px;
+    border-radius: 12px;
+}
+
+/* Shimmer animation */
+.shimmer {
+    background: linear-gradient(100deg,
+            #2a2a2a 25%,
+            #3a3a3a 37%,
+            #2a2a2a 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -400px 0;
+    }
+
+    100% {
+        background-position: 400px 0;
+    }
+}
+
+
 nav {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -345,6 +414,11 @@ nav .search-icon {
     color: white;
 }
 
+.container .contect-container a {
+    text-decoration: none;
+    color: white;
+}
+
 .container .about-container a:hover {
     color: #2a0e3c;
 }
@@ -354,6 +428,76 @@ nav .search-icon {
 }
 
 @media (max-width:600px) {
+
+    /* ===== Skeleton Base ===== */
+    #skeletonLoader {
+        padding: 15px;
+    }
+
+    /* Hero scroll skeleton */
+    .skeleton-scroll {
+        display: flex;
+        overflow-x: hidden;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .skeleton-cart {
+        min-width: 280px;
+    }
+
+    .skeleton-thumb {
+        height: 180px;
+        border-radius: 15px;
+    }
+
+    .skeleton-text {
+        margin-top: 10px;
+    }
+
+    .skeleton-line {
+        height: 14px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+    }
+
+    .skeleton-line.short {
+        width: 60%;
+    }
+
+    /* Grid skeleton */
+    .skeleton-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+    }
+
+    .skeleton-movie {
+        height: 180px;
+        border-radius: 12px;
+    }
+
+    /* Shimmer animation */
+    .shimmer {
+        background: linear-gradient(100deg,
+                #2a2a2a 25%,
+                #3a3a3a 37%,
+                #2a2a2a 63%);
+        background-size: 400% 100%;
+        animation: shimmer 1.4s infinite;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -400px 0;
+        }
+
+        100% {
+            background-position: 400px 0;
+        }
+    }
+
+
     .navbar {
         display: none;
     }
