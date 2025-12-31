@@ -28,20 +28,20 @@
         <img id="previewImg">
     </div>
     <div class="center-content">
-    <div class="user-details">
-        <img id="profilePic" src="" alt="Profile Picture" width="150" height="150"><br><br>
-        <h3>User Name</h3>
-        <span id="displayName"></span>
-        <input type="text" id="usernameInput" placeholder="Enter new username" hidden>
+        <div class="user-details">
+            <img id="profilePic" src="" alt="Profile Picture" width="150" height="150"><br><br>
+            <h3>User Name</h3>
+            <span id="displayName"></span>
+            <input type="text" id="usernameInput" placeholder="Enter new username" hidden>
 
-        <br><br>
+            <br><br>
 
-        <button id="editBtn" onclick="editUsername()">Edit Name</button>
-        <button id="saveBtn" onclick="saveUsername()" hidden>Save</button>
-        <button id="cancelBtn" onclick="cancelEdit()" hidden>Cancel</button>
-        <input type="file" id="imageInput" accept="image/*" hidden>
-        <button onclick="changeImage()">Change Image</button>
-    </div>
+            <button id="editBtn" onclick="editUsername()">Edit Name</button>
+            <button id="saveBtn" onclick="saveUsername()" hidden>Save</button>
+            <button id="cancelBtn" onclick="cancelEdit()" hidden>Cancel</button>
+            <input type="file" id="imageInput" accept="image/*" hidden>
+            <button onclick="changeImage()">Change Image</button>
+        </div>
     </div>
 
     <script>
@@ -171,11 +171,16 @@
                 return;
             }
 
+            // Store updated name
             localStorage.setItem("username", newName);
 
+            // Update UI
             displayName.innerText = newName;
 
             cancelEdit();
+
+            // 🔄 Force reload target page so new data is picked up
+            window.location.href = "movie.html?reload=" + new Date().getTime();
         }
 
         function cancelEdit() {
