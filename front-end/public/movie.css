@@ -1,9 +1,11 @@
 body {
     background: black;
 }
+
 body::-webkit-scrollbar {
     display: none;
 }
+
 /* =============================
    SKELETON BASE
 ============================= */
@@ -33,100 +35,101 @@ body::-webkit-scrollbar {
     padding: 15px;
 }
 
-    .skeleton-profile {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 40px;
+.skeleton-profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+}
+
+.skeleton-profile .skeleton-line.img {
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
+}
+
+.skeleton-profile .skeleton-line.name {
+    width: 15%;
+    height: 15px;
+}
+
+/* Hero scroll skeleton */
+.skeleton-scroll {
+    display: flex;
+    overflow-x: scroll;
+    gap: 130px;
+    height: 100%;
+    margin-bottom: 25px;
+}
+
+.skeleton-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+
+.skeleton-cart {
+    min-width: 200px;
+}
+
+.skeleton-thumb {
+    height: 450px;
+    width: 300px;
+    border-radius: 15px;
+}
+
+.skeleton-text {
+    margin-top: 10px;
+}
+
+.skeleton-line {
+    height: 14px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+}
+
+.skeleton-line.short {
+    width: 60%;
+}
+
+.skeleton-line button {
+    width: 40%;
+}
+
+/* Grid skeleton */
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    column-gap: 180px;
+    overflow: hidden;
+}
+
+.skeleton-movie {
+    height: 200px;
+    width: 300px;
+    border-radius: 12px;
+    margin: 20px;
+}
+
+/* Shimmer animation */
+.shimmer {
+    background: linear-gradient(100deg,
+            #2a0e3c 25%,
+            #3f1559 37%,
+            #2a0e3c 63%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
     }
 
-    .skeleton-profile .skeleton-line.img {
-        width: 50px;
-        height: 50px;
-        border-radius: 30px;
+    100% {
+        background-position: 200px 0;
     }
+}
 
-    .skeleton-profile .skeleton-line.name {
-        width: 15%;
-        height: 15px;
-    }
-
-    /* Hero scroll skeleton */
-    .skeleton-scroll {
-        display: flex;
-        overflow-x: scroll;
-        gap: 130px;
-        height: 100%;
-        margin-bottom: 25px;
-    }
-
-    .skeleton-scroll::-webkit-scrollbar {
-        display: none;
-    }
-
-
-    .skeleton-cart {
-        min-width: 200px;
-    }
-
-    .skeleton-thumb {
-        height: 450px;
-        width: 300px;
-        border-radius: 15px;
-    }
-
-    .skeleton-text {
-        margin-top: 10px;
-    }
-
-    .skeleton-line {
-        height: 14px;
-        margin-bottom: 8px;
-        border-radius: 8px;
-    }
-
-    .skeleton-line.short {
-        width: 60%;
-    }
-
-    .skeleton-line button {
-        width: 40%;
-    }
-
-    /* Grid skeleton */
-    .skeleton-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        column-gap: 180px;
-        overflow: hidden;
-    }
-
-    .skeleton-movie {
-        height: 200px;
-        width: 300px;
-        border-radius: 12px;
-        margin: 20px;
-    }
-
-    /* Shimmer animation */
-    .shimmer {
-        background: linear-gradient(100deg,
-                #2a0e3c 25%,
-                #3f1559 37%,
-                #2a0e3c 63%);
-        background-size: 200% 100%;
-        animation: shimmer 1.4s infinite;
-    }
-
-    @keyframes shimmer {
-        0% {
-            background-position: -200px 0;
-        }
-
-        100% {
-            background-position: 200px 0;
-        }
-    }
 #realContent {
     animation: fadeIn .4s ease-in;
 }
@@ -254,8 +257,8 @@ nav .search-icon {
 
 /* HOVER ZOOM EFFECT */
 .cart:hover {
-    transform: scale(1.1);
-    box-shadow: 0 10px 30px rgba(138, 137, 137, 0.377);
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgb(73, 24, 103);
     z-index: 0;
 }
 
@@ -327,13 +330,19 @@ nav .search-icon {
     width: 100%;
     padding: 8px;
     background: #5e2b6d;
-    /* Netflix red */
     border: none;
     color: #fff;
     border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s, opacity 0.3s;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.cart:hover .movie-description button {
+    opacity: 1;
+    visibility: visible;
 }
 
 .movie-description button:hover {
@@ -772,8 +781,8 @@ nav .search-icon {
 
     /* HOVER ZOOM EFFECT */
     .cart:hover {
-        transform: scale(1.1);
-        box-shadow: 0 10px 30px rgba(138, 137, 137, 0.377);
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgb(73, 24, 103);
         z-index: 0;
     }
 
@@ -822,7 +831,14 @@ nav .search-icon {
         border-radius: 5px;
         font-size: 14px;
         cursor: pointer;
-        transition: background 0.3s;
+        transition: background 0.3s, opacity 0.3s;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .cart:hover .movie-description button {
+        opacity: 1;
+        visibility: visible;
     }
 
     .movie-description button:hover {
