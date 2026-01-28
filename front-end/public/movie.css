@@ -106,7 +106,7 @@ body::-webkit-scrollbar {
 }
 
 .title .skeleton-movie {
-    width: 30%;
+    width: 20%;
     height: 15px;
 }
 
@@ -361,7 +361,10 @@ nav .search-icon {
 }
 
 .movie-description button:hover {
-    background: #2a0e3c;
+    background: #a87ca0;
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
 }
 
 .movie-description i {
@@ -508,20 +511,24 @@ nav .search-icon {
 
 .container .about-container a {
     text-decoration: none;
-    color: white;
+    color: black;
+    cursor: pointer;
 }
 
 .container .contect-container a {
     text-decoration: none;
-    color: white;
+    color: black;
+    cursor: pointer;
 }
 
 .container .about-container a:hover {
-    color: #2a0e3c;
+    color: white;
+    cursor: pointer;
 }
 
 .container .contect-container a:hover {
-    color: #2a0e3c;
+    color: white;
+    cursor: pointer;
 }
 
 @media (max-width:600px) {
@@ -602,14 +609,14 @@ nav .search-icon {
     .skeleton-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 15px;
+        gap: 10px;
         column-gap: none;
         margin-top: 20px;
     }
 
     .skeleton-movie {
         height: 200px;
-        width: 130px;
+        width: 110px;
         border-radius: 12px;
         margin: 0;
     }
@@ -779,6 +786,7 @@ nav .search-icon {
         overflow-y: hidden;
         padding: 20px;
         scroll-behavior: smooth;
+        height: auto;
     }
 
     /* HIDE SCROLLBAR (Chrome, Edge, Safari) */
@@ -793,7 +801,7 @@ nav .search-icon {
 
     /* MOVIE CARD */
     .cart {
-        min-width: 180px;
+        min-width: 250px;
         background: #111;
         color: #fff;
         border-radius: 12px;
@@ -865,7 +873,10 @@ nav .search-icon {
     }
 
     .movie-description button:hover {
-        background: #2a0e3c;
+        background: #a87ca0;
+        color: black;
+        font-size: 15px;
+        font-weight: bold;
     }
 
     .movie-description i {
@@ -1010,19 +1021,23 @@ nav .search-icon {
 
     .container .about-container a {
         text-decoration: none;
-        color: white;
+        color: black;
+        cursor: pointer;
     }
 
     .container .contect-container a {
         text-decoration: none;
-        color: white;
+        color: black;
+        cursor: pointer;
     }
 
     .container .about-container a:hover {
-        color: #2a0e3c;
+        color: white;
+        cursor: pointer;
     }
 
     .container .contect-container a:hover {
-        color: #2a0e3c;
+        color: white;
+        cursor: pointer;
     }
 }
