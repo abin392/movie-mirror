@@ -247,6 +247,8 @@ nav .search-icon {
     overflow-y: hidden;
     padding: 20px;
     scroll-behavior: smooth;
+    border-top: 1px solid #5e2b6d;
+    border-bottom: 1px solid #5e2b6d;
 }
 
 /* HIDE SCROLLBAR (Chrome, Edge, Safari) */
@@ -268,13 +270,14 @@ nav .search-icon {
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    margin: 3% 0 3% 0;
 }
 
 /* HOVER ZOOM EFFECT */
 .cart:hover {
-    transform: scale(1.05);
+    transform: scale(1.15);
     box-shadow: 0 20px 40px rgb(73, 24, 103);
-    z-index: 0;
+    z-index: 1;
 }
 
 /* MOVIE IMAGE */
@@ -728,7 +731,7 @@ nav .search-icon {
         top: 3px;
         right: 30px;
         width: 100px;
-        height: 100px;
+        height: 140px;
         border-radius: 8px;
         overflow-y: scroll;
         margin-top: 50px;
@@ -787,6 +790,7 @@ nav .search-icon {
         padding: 20px;
         scroll-behavior: smooth;
         height: auto;
+        margin: 5% 0 5% 0;
     }
 
     /* HIDE SCROLLBAR (Chrome, Edge, Safari) */
@@ -808,13 +812,14 @@ nav .search-icon {
         overflow: hidden;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
+        margin: 5% 0 5% 0;
     }
 
     /* HOVER ZOOM EFFECT */
     .cart:hover {
         transform: scale(1.10);
         box-shadow: 0 10px 30px rgb(73, 24, 103);
-        z-index: 0;
+        z-index: 1;
     }
 
     /* MOVIE IMAGE */

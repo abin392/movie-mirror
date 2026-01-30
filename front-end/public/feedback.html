@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <link rel="icon" href="image/user.jpg">
+    <link rel="stylesheet" href="assets/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="fontawesome-free-7.0.0-web/css/all.min.css">
+    <link rel="stylesheet" href="fontawesome-free-7.0.0-web/css/all.min.css">
+</head>
+
+<style>
+    button.btn.btn-primary:hover {
+        color: black;
+    }
+</style>
+
+<body style="background: black;">
+
+    <div class="container mt-5" style="background: 
+        linear-gradient(45deg,#feda75 0%,#fa7e1e 25%,#d62976 50%,#962fbf 75%,#4f5bd5 100%);
+        width: 50%; border: 2px solid white; border-radius: 15px;">
+        <h2 class="mb-4 mt-4">Feedback Form</h2>
+        <form action="https://formspree.io/f/mzzjadyb" method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" style="background: rgba(0, 0, 0, 0.659);
+                color: white;" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" style="background: rgba(0, 0, 0, 0.659);
+                color: white;" required>
+            </div>
+            <div class="mb-3">
+                <label for="feedback" class="form-label">Feedback</label>
+                <textarea class="form-control" id="feedback" name="feedback" rows="4" style="background: rgba(0, 0, 0, 0.659);
+                color: white;" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mb-3"
+            style="background-color: green; border: none; width: 50%;">Submit</button>
+        </form>
+    </div>
+
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

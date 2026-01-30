@@ -1,5 +1,5 @@
 body {
-    background-color: #d4f1f4;
+    background-color: #0097a7;
 }
 
 .header {
@@ -46,17 +46,21 @@ body {
     width: 50%;
     height: 500px;
     margin-top: 20px;
-    background-color: #0097a7;
+    background-color: #d4f1f4;
     padding: 20px;
     border: 2px solid #004d40;
     border-radius: 15px;
 }
 
 .user-details span {
-    font-size: 26px;
+    font-size: 36px;
     font-weight: bold;
     margin-top: 10px;
-    color: white;
+    color: #004d40;
+    width: 200px;
+    text-align: center;
+    margin: 10px;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .user-details img {
