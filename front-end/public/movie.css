@@ -302,6 +302,8 @@ nav .search-icon {
         transform: translateY(-50%);
         background: rgba(0, 0, 0, 0.6);
         color: #fff;
+        height: 100px;
+        width: 100px;
         border: none;
         font-size: 24px;
         padding: 10px 15px;
@@ -652,17 +654,15 @@ nav .search-icon {
     /* Grid skeleton */
     .skeleton-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 10px;
-        column-gap: none;
+        grid-template-columns: repeat(3,1fr);
+        column-gap: 1px;
         margin-top: 20px;
     }
 
     .skeleton-movie {
-        height: 200px;
-        width: 110px;
+        height: 150px;
+        width: 100px;
         border-radius: 12px;
-        margin: 0;
     }
 
     /* Shimmer animation */
@@ -814,7 +814,7 @@ nav .search-icon {
 
     .menu-icon {
         display: block;
-        margin-left: -50px;
+        margin-left: -80px;
     }
 
     .menu a:hover {
@@ -848,7 +848,8 @@ nav .search-icon {
     .cart {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        min-width: 445px;
+        min-width: 270px;
+        height: 260px;
         background: #111;
         color: #fff;
         border-radius: 12px;
@@ -861,7 +862,7 @@ nav .search-icon {
 
     /* HOVER ZOOM EFFECT */
     .cart:hover {
-        transform: scale(1.05);
+        transform: scale(1.0);
         box-shadow: 0 0px 30px rgb(73, 24, 103);
         z-index: 1;
     }
@@ -870,15 +871,13 @@ nav .search-icon {
 
     .slider-wrapper {
         position: relative;
-        width: 100%;
-        margin: auto;
+        width: 550px;
         overflow: hidden;
     }
 
 
     .slider {
         display: flex;
-        gap: 15px;
         transition: transform 0.4s ease;
     }
 
@@ -888,6 +887,8 @@ nav .search-icon {
         transform: translateY(-50%);
         background: rgba(0, 0, 0, 0.6);
         color: #fff;
+        height: auto;
+        width: auto;
         border: none;
         font-size: 24px;
         padding: 10px 15px;
@@ -906,39 +907,53 @@ nav .search-icon {
 
     /* MOVIE IMAGE */
     .cart img {
-        width: 100%;
-        height: 260px;
+        width: 50%;
+        height: 200px;
         object-fit: cover;
         display: block;
     }
 
-    /* MEDIA CONTAINER */
+    /* MEDIA CONTAINER */ /*cart hover to zoom in video*/
     .media-box {
         position: relative;
-        width: 100%;
-        height: 260px;
+        width: 300px;
+        height: 200px;
         overflow: hidden;
+        z-index: 0;
+    }
+
+    .media-box:hover {
+        min-width: 300px;
+    }
+
+    .media-box video {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
     }
 
     /* DESCRIPTION */
     .movie-description {
         padding: 10px;
+        margin-top: 30px;
     }
 
     /* TITLE */
     .movie-description h2 {
-        font-size: 26px;
+        font-size: 20px;
         margin-bottom: 6px;
-        text-align: center;
+        text-align: start;
+        margin-left: -150px;
     }
 
     /* DETAILS */
     .movie-description h4 {
-        font-size: 15px;
+        font-size: 10px;
         color: #ccc;
-        text-align: center;
+        text-align: start;
         margin-top: 30px;
         margin-bottom: 10px;
+        margin-left: -150px;
     }
 
     /* WATCH BUTTON */
@@ -946,7 +961,6 @@ nav .search-icon {
         width: 100%;
         padding: 8px;
         background: #5e2b6d;
-        /* Netflix red */
         border: none;
         color: #fff;
         border-radius: 5px;
@@ -955,12 +969,17 @@ nav .search-icon {
         transition: background 0.3s, opacity 0.3s;
         opacity: 0;
         visibility: hidden;
-        margin-top: 30px;
+        margin-top: 50px;
+        margin-bottom: -40px;
+        z-index: 10;
     }
 
     .cart:hover .movie-description button {
         opacity: 1;
+        margin-left: -275px; 
+        width: 200px;
         visibility: visible;
+        z-index: 10;
     }
 
     .movie-description button:hover {
@@ -1130,5 +1149,17 @@ nav .search-icon {
     .container .contect-container a:hover {
         color: white;
         cursor: pointer;
+    }
+}
+
+@media (max-width:900px) {
+    .menu {
+        width: 400px;
+    }
+}
+
+@media (max-width:1200px) {
+    .menu {
+        width: 500px;
     }
 }
