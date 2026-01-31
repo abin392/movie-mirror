@@ -280,6 +280,44 @@ nav .search-icon {
     z-index: 1;
 }
 
+ /*left and right section adjustment*/
+
+    .slider-wrapper {
+        position: relative;
+        width: 100%;
+        margin: auto;
+        overflow: hidden;
+    }
+
+
+    .slider {
+        display: flex;
+        gap: 15px;
+        transition: transform 0.4s ease;
+    }
+
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        border: none;
+        font-size: 24px;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 50%;
+        z-index: 10;
+    }
+
+    .left {
+        left: 5px;
+    }
+
+    .right {
+        right: 5px;
+    }
+
 /* MOVIE IMAGE */
 .cart img {
     width: 100%;
@@ -574,17 +612,20 @@ nav .search-icon {
 
 
     .skeleton-cart {
-        min-width: 200px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        min-width: 350px;
     }
 
     .skeleton-thumb {
-        height: 380px;
-        width: 200px;
+        height: 250px;
+        width: 220px;
         border-radius: 15px;
     }
 
     .skeleton-text {
-        margin-top: 10px;
+        margin-top: 80px;
+        margin-left: 15px;
     }
 
     .skeleton-line {
@@ -805,7 +846,9 @@ nav .search-icon {
 
     /* MOVIE CARD */
     .cart {
-        min-width: 250px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        min-width: 445px;
         background: #111;
         color: #fff;
         border-radius: 12px;
@@ -813,13 +856,52 @@ nav .search-icon {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
         margin: 5% 0 5% 0;
+        flex: 0.5;
     }
 
     /* HOVER ZOOM EFFECT */
     .cart:hover {
-        transform: scale(1.10);
-        box-shadow: 0 10px 30px rgb(73, 24, 103);
+        transform: scale(1.05);
+        box-shadow: 0 0px 30px rgb(73, 24, 103);
         z-index: 1;
+    }
+
+    /*left and right section adjustment*/
+
+    .slider-wrapper {
+        position: relative;
+        width: 100%;
+        margin: auto;
+        overflow: hidden;
+    }
+
+
+    .slider {
+        display: flex;
+        gap: 15px;
+        transition: transform 0.4s ease;
+    }
+
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        border: none;
+        font-size: 24px;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 50%;
+        z-index: 10;
+    }
+
+    .left {
+        left: 5px;
+    }
+
+    .right {
+        right: 5px;
     }
 
     /* MOVIE IMAGE */
@@ -845,14 +927,17 @@ nav .search-icon {
 
     /* TITLE */
     .movie-description h2 {
-        font-size: 16px;
+        font-size: 26px;
         margin-bottom: 6px;
+        text-align: center;
     }
 
     /* DETAILS */
     .movie-description h4 {
-        font-size: 12px;
+        font-size: 15px;
         color: #ccc;
+        text-align: center;
+        margin-top: 30px;
         margin-bottom: 10px;
     }
 
@@ -870,6 +955,7 @@ nav .search-icon {
         transition: background 0.3s, opacity 0.3s;
         opacity: 0;
         visibility: hidden;
+        margin-top: 30px;
     }
 
     .cart:hover .movie-description button {
