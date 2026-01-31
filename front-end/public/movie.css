@@ -605,6 +605,7 @@ nav .search-icon {
         overflow-x: scroll;
         gap: 15px;
         height: 100%;
+        margin-top: 30px;
         margin-bottom: 25px;
     }
 
@@ -620,28 +621,29 @@ nav .search-icon {
     }
 
     .skeleton-thumb {
-        height: 250px;
-        width: 220px;
+        height: 200px;
+        width: 150px;
         border-radius: 15px;
     }
 
     .skeleton-text {
         margin-top: 80px;
-        margin-left: 15px;
+        margin-left: -15px;
     }
 
     .skeleton-line {
         height: 14px;
+        width: 100px;
         margin-bottom: 8px;
         border-radius: 8px;
     }
 
     .skeleton-line.short {
-        width: 60%;
+        width: 80px;
     }
 
     .skeleton-line button {
-        width: 40%;
+        width: 60px;
     }
 
     /*title skeleton*/
