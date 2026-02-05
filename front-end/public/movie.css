@@ -280,45 +280,45 @@ nav .search-icon {
     z-index: 1;
 }
 
- /*left and right section adjustment*/
+/*left and right section adjustment*/
 
-    .slider-wrapper {
-        position: relative;
-        width: 100%;
-        margin: auto;
-        overflow: hidden;
-    }
+.slider-wrapper {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
 
 
-    .slider {
-        display: flex;
-        gap: 15px;
-        transition: transform 0.4s ease;
-    }
+.slider {
+    display: flex;
+    gap: 15px;
+    transition: transform 0.4s ease;
+}
 
-    .nav-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.6);
-        color: #fff;
-        height: 100px;
-        width: 100px;
-        border: none;
-        font-size: 24px;
-        padding: 10px 15px;
-        cursor: pointer;
-        border-radius: 50%;
-        z-index: 10;
-    }
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    height: 100px;
+    width: 100px;
+    border: none;
+    font-size: 24px;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10;
+}
 
-    .left {
-        left: 5px;
-    }
+.left {
+    left: 5px;
+}
 
-    .right {
-        right: 5px;
-    }
+.right {
+    right: 5px;
+}
 
 /* MOVIE IMAGE */
 .cart img {
@@ -554,23 +554,25 @@ nav .search-icon {
 
 .container .about-container a {
     text-decoration: none;
-    color: black;
+    color: white;
     cursor: pointer;
 }
 
 .container .contect-container a {
     text-decoration: none;
-    color: black;
+    color: white;
     cursor: pointer;
 }
 
 .container .about-container a:hover {
-    color: white;
+    font-size: 15px;
+    color: #a87ca0;
     cursor: pointer;
 }
 
 .container .contect-container a:hover {
-    color: white;
+    color: #a87ca0;
+    font-size: 15px;
     cursor: pointer;
 }
 
@@ -656,7 +658,7 @@ nav .search-icon {
     /* Grid skeleton */
     .skeleton-grid {
         display: grid;
-        grid-template-columns: repeat(3,1fr);
+        grid-template-columns: repeat(3, 1fr);
         column-gap: 1px;
         margin-top: 20px;
     }
@@ -915,7 +917,8 @@ nav .search-icon {
         display: block;
     }
 
-    /* MEDIA CONTAINER */ /*cart hover to zoom in video*/
+    /* MEDIA CONTAINER */
+    /*cart hover to zoom in video*/
     .media-box {
         position: relative;
         width: 270px;
@@ -1134,23 +1137,25 @@ nav .search-icon {
 
     .container .about-container a {
         text-decoration: none;
-        color: black;
+        color: white;
         cursor: pointer;
     }
 
     .container .contect-container a {
         text-decoration: none;
-        color: black;
+        color: white;
         cursor: pointer;
     }
 
     .container .about-container a:hover {
-        color: white;
+        font-size: 15px;
+        color: #a87ca0;
         cursor: pointer;
     }
 
     .container .contect-container a:hover {
-        color: white;
+        font-size: 15px;
+        color: #a87ca0;
         cursor: pointer;
     }
 }
