@@ -1321,60 +1321,42 @@
     });
 
     // auto scroll in cart//
-    const scroller = document.querySelector('.scroller');
-    const carts = Array.from(scroller.querySelectorAll('.cart'));
+     const scroller = document.querySelector('.scroller');
+  const carts = Array.from(scroller.querySelectorAll('.cart'));
 
-    let index = 0;
-    let autoScrollInterval;
+  let index = 0;
+  let autoScrollInterval;
 
-    function getScrollerCenter() {
-        return scroller.getBoundingClientRect().width / 2;
-    }
+  function scrollCartToCenter(cart) {
+    const scrollerCenter = scroller.clientWidth / 2;
+    const cartCenter = cart.offsetLeft + cart.offsetWidth / 2;
 
-    function scrollCartToCenter(cart) {
-        const cartRect = cart.getBoundingClientRect();
-        const scrollerRect = scroller.getBoundingClientRect();
-
-        const targetScrollLeft =
-            scroller.scrollLeft +
-            (cartRect.left + cartRect.width / 2) -
-            (scrollerRect.left + scrollerRect.width / 2);
-
-        scroller.scrollTo({
-            left: targetScrollLeft,
-            behavior: 'smooth'
-        });
-    }
-
-    function startAutoScroll() {
-        autoScrollInterval = setInterval(() => {
-            index++;
-            if (index >= carts.length) index = 0;
-            scrollCartToCenter(carts[index]);
-        }, 3000); // 3s
-    }
-
-    function stopAutoScroll() {
-        clearInterval(autoScrollInterval);
-    }
-
-    // Pause auto when user interacts (mouse, touch, TV remote pointer)
-    ['mouseenter', 'touchstart', 'pointerdown'].forEach(evt =>
-        scroller.addEventListener(evt, stopAutoScroll)
-    );
-
-    // Resume auto when interaction ends
-    ['mouseleave', 'touchend', 'pointerup'].forEach(evt =>
-        scroller.addEventListener(evt, startAutoScroll)
-    );
-
-    // Re-center current card on resize (orientation / TV / fullscreen)
-    window.addEventListener('resize', () => {
-        scrollCartToCenter(carts[index]);
+    scroller.scrollTo({
+      left: cartCenter - scrollerCenter,
+      behavior: 'smooth'
     });
+  }
 
-    // Start auto-scroll
-    startAutoScroll();
+  function startAutoScroll() {
+    autoScrollInterval = setInterval(() => {
+      index++;
+      if (index >= carts.length) index = 0;
+      scrollCartToCenter(carts[index]);
+    }, 5000); // 5 seconds
+  }
+
+  function stopAutoScroll() {
+    clearInterval(autoScrollInterval);
+  }
+
+  // Pause auto-scroll ONLY while interacting
+  scroller.addEventListener('mouseenter', stopAutoScroll);
+  scroller.addEventListener('mouseleave', startAutoScroll);
+  scroller.addEventListener('touchstart', stopAutoScroll);
+  scroller.addEventListener('touchend', startAutoScroll);
+
+  // Start auto-scroll
+  startAutoScroll();
 
 
 
