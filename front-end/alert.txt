@@ -1,0 +1,5 @@
+
+        if (exists) {
+            alert("Already added to Downloads");
+            return;
+        }
