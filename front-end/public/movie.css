@@ -190,12 +190,12 @@ nav .profile-img {
     text-align: center;
     align-items: center;
     width: 200px;
-    padding-left: 30px;
+    margin: 10px;
 }
 
 nav .profile-img h3 {
     color: white;
-    padding-left: 30px;
+    margin: 10px;
 }
 
 nav i {
@@ -232,7 +232,7 @@ nav .search-icon {
 .menu a {
     color: white;
     text-decoration: none;
-    padding-left: 20px;
+    margin: 5px;
 }
 
 .navbar {
@@ -261,131 +261,99 @@ nav .search-icon {
     scrollbar-width: none;
 }
 
+/* ============================= */
 /* MOVIE CARD */
+/* ============================= */
+
 .cart {
-    min-width: 300px;
-    background: #111;
-    color: #fff;
-    border-radius: 12px;
+    position: relative;
+    min-width: 400px;
+    height: 460px;
+    border-radius: 15px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: black;
     cursor: pointer;
-    margin: 3% 0 3% 0;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* HOVER ZOOM EFFECT */
+/* Hover animation */
 .cart:hover {
-    transform: scale(1.15);
-    box-shadow: 0 20px 40px rgb(73, 24, 103);
-    z-index: 1;
+    transform: scale(1.08);
+    box-shadow: 0 25px 50px rgba(94, 43, 109, 0.6);
+    z-index: 5;
 }
 
-/*left and right section adjustment*/
+/* ============================= */
+/* MEDIA (Image + Video Layer) */
+/* ============================= */
 
-.slider-wrapper {
-    position: relative;
-    width: 100%;
-    margin: auto;
-    overflow: hidden;
-}
-
-
-.slider {
-    display: flex;
-    gap: 15px;
-    transition: transform 0.4s ease;
-}
-
-.nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    height: 100px;
-    width: 100px;
-    border: none;
-    font-size: 24px;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 50%;
-    z-index: 10;
-}
-
-.left {
-    left: 5px;
-}
-
-.right {
-    right: 5px;
-}
-
-/* MOVIE IMAGE */
-.cart img {
-    width: 100%;
-    height: 340px;
-    object-fit: cover;
-    display: block;
-}
-
-/* MEDIA CONTAINER */
 .media-box {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 360px;
-    overflow: hidden;
+    height: 100%;
 }
 
-/* POSTER IMAGE */
-.media-box img,
-.media-box video {
+/* Image */
+.media-box img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: opacity 0.3s ease;
-    display: block;
+    transition: opacity 0.4s ease;
 }
 
-/* VIDEO HIDDEN INITIALLY */
+/* Video */
 .media-box video {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* ON HOVER: SHOW VIDEO */
+/* Show trailer on hover */
 .cart:hover .media-box video {
     opacity: 1;
+    transform: scale(1.1);
 }
 
-/* ON HOVER: HIDE IMAGE */
+/* Hide image when hover */
 .cart:hover .media-box img {
     opacity: 0;
 }
 
+/* ============================= */
+/* DESCRIPTION (Above Video) */
+/* ============================= */
 
-/* DESCRIPTION */
 .movie-description {
-    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    z-index: 2;
+    color: white;
+    transform: translateY(40px);
+    opacity: 0;
+    transition: all 0.4s ease;
 }
 
-/* TITLE */
-.movie-description h2 {
-    font-size: 16px;
-    margin-bottom: 6px;
+/* Show description on hover */
+.cart:hover .movie-description {
+    transform: translateY(0);
+    opacity: 1;
 }
 
-/* DETAILS */
-.movie-description h4 {
-    font-size: 12px;
-    color: #ccc;
-    margin-bottom: 10px;
-}
-
-/* WATCH BUTTON */
+/* Watch button visible always on hover */
 .movie-description button {
     width: 100%;
+    margin-left: -15px;
     padding: 8px;
     background: #5e2b6d;
     border: none;
@@ -393,25 +361,12 @@ nav .search-icon {
     border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
-    transition: background 0.3s, opacity 0.3s;
-    opacity: 0;
-    visibility: hidden;
 }
 
-.cart:hover .movie-description button {
-    opacity: 1;
-    visibility: visible;
-}
-
+/* Button hover */
 .movie-description button:hover {
     background: #a87ca0;
     color: black;
-    font-size: 15px;
-    font-weight: bold;
-}
-
-.movie-description i {
-    margin-right: 5px;
 }
 
 
@@ -574,6 +529,18 @@ nav .search-icon {
     color: #a87ca0;
     font-size: 15px;
     cursor: pointer;
+}
+
+@media (max-width:1200px)  {
+ .menu {
+        width: 600px;
+    }
+}
+
+@media (max-width:900px) {
+    .menu {
+        width: 400px;
+    }
 }
 
 @media (max-width:600px) {
@@ -810,6 +777,7 @@ nav .search-icon {
         text-align: center;
         padding: 10px;
         text-decoration: none;
+        margin: 0;
     }
 
     .menu.active {
@@ -848,155 +816,111 @@ nav .search-icon {
         scrollbar-width: none;
     }
 
+    /* ============================= */
     /* MOVIE CARD */
+    /* ============================= */
+
     .cart {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        min-width: 270px;
-        height: 260px;
-        background: #111;
-        color: #fff;
-        border-radius: 12px;
+        position: relative;
+        min-width: 300px;
+        height: 360px;
+        border-radius: 15px;
         overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: black;
         cursor: pointer;
-        margin: 5% 0px 5% 3px;
-        flex: 0.5;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
-    /* HOVER ZOOM EFFECT */
+    /* Hover animation */
     .cart:hover {
-        transform: scale(1);
-        box-shadow: 0 0px 30px rgb(73, 24, 103);
-        z-index: 1;
+        transform: scale(1.08);
+        box-shadow: 0 25px 50px rgba(94, 43, 109, 0.6);
+        z-index: 5;
     }
 
-    /*left and right section adjustment*/
+    /* ============================= */
+    /* MEDIA (Image + Video Layer) */
+    /* ============================= */
 
-    .slider-wrapper {
-        position: relative;
-        width: 550px;
-        overflow: hidden;
-    }
-
-
-    .slider {
-        display: flex;
-        transition: transform 0.4s ease;
-    }
-
-    .nav-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.6);
-        color: #fff;
-        height: auto;
-        width: auto;
-        border: none;
-        font-size: 24px;
-        padding: 10px 15px;
-        cursor: pointer;
-        border-radius: 50%;
-        z-index: 10;
-    }
-
-    .left {
-        left: 5px;
-    }
-
-    .right {
-        right: 5px;
-    }
-
-    /* MOVIE IMAGE */
-    .cart img {
-        width: 50%;
-        height: 200px;
-        object-fit: cover;
-        display: block;
-    }
-
-    /* MEDIA CONTAINER */
-    /*cart hover to zoom in video*/
     .media-box {
-        position: relative;
-        width: 270px;
-        height: 200px;
-        overflow: hidden;
-        z-index: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
 
-    .media-box video {
-        width: 270px;
-        height: 200px;
+    /* Image */
+    .media-box img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
+        transition: opacity 0.4s ease;
     }
 
-    /* DESCRIPTION */
+    /* Video */
+    .media-box video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    /* Show trailer on hover */
+    .cart:hover .media-box video {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    /* Hide image when hover */
+    .cart:hover .media-box img {
+        opacity: 0;
+    }
+
+    /* ============================= */
+    /* DESCRIPTION (Above Video) */
+    /* ============================= */
+
     .movie-description {
-        padding: 10px;
-        margin-top: 30px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+        z-index: 2;
+        color: white;
+        transform: translateY(40px);
+        opacity: 0;
+        transition: all 0.4s ease;
     }
 
-    /* TITLE */
-    .movie-description h2 {
-        font-size: 20px;
-        margin-bottom: 6px;
-        text-align: start;
-        margin-left: -130px;
-        width: 100px;
-        padding: 5px;
+    /* Show description on hover */
+    .cart:hover .movie-description {
+        transform: translateY(0);
+        opacity: 1;
     }
 
-    /* DETAILS */
-    .movie-description h4 {
-        font-size: 10px;
-        color: #ccc;
-        width: 120px;
-        margin: 2px;
-        padding: 2px;
-        text-align: start;
-        margin-top: 30px;
-        margin-bottom: 10px;
-        margin-left: -135px;
-    }
-
-    /* WATCH BUTTON */
+    /* Watch button visible always on hover */
     .movie-description button {
-        width: 200px;
-        padding: 10px;
+        width: 100%;
+        padding: 8px;
         background: #5e2b6d;
         border: none;
         color: #fff;
         border-radius: 5px;
         font-size: 14px;
         cursor: pointer;
-        transition: background 0.3s, opacity 0.3s;
-        opacity: 0;
-        visibility: hidden;
-        margin-top: 35px;
-        margin-bottom: -40px;
-        z-index: 10;
-        margin-left: -245px;
     }
 
-    .cart:hover .movie-description button {
-        opacity: 1;
-        width: 200px;
-        visibility: visible;
-        z-index: 10;
-    }
-
+    /* Button hover */
     .movie-description button:hover {
         background: #a87ca0;
         color: black;
-        font-size: 15px;
-        font-weight: bold;
-    }
-
-    .movie-description i {
-        margin-right: 5px;
     }
 
 
@@ -1157,25 +1081,5 @@ nav .search-icon {
         font-size: 15px;
         color: #a87ca0;
         cursor: pointer;
-    }
-}
-
-@media (max-width:900px) {
-    .menu {
-        width: 400px;
-    }
-
-    .cart {
-        min-width: 273px;
-    }
-
-    #carts {
-        margin-left: -90px;
-    }
-}
-
-@media (max-width:1200px) {
-    .menu {
-        width: 500px;
     }
 }
