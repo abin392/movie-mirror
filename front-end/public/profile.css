@@ -52,12 +52,20 @@ body {
     border-radius: 15px;
 }
 
+.user-details .un {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    padding: 5px;
+}
+
 .user-details span {
     font-size: 36px;
     font-weight: bold;
     margin-top: 10px;
     color: #004d40;
-    width: 200px;
     text-align: center;
     margin: 10px;
     font-family: 'Times New Roman', Times, serif;

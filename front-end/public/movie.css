@@ -35,30 +35,83 @@ body::-webkit-scrollbar {
     padding: 15px;
 }
 
+.skeleton-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+}
+
 .skeleton-profile {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: start;
     gap: 40px;
+    width: 100%;
 }
 
 .skeleton-profile .skeleton-line.img {
     width: 50px;
     height: 50px;
     border-radius: 30px;
+    margin: 5px;
+    margin: 5px;
 }
 
 .skeleton-profile .skeleton-line.name {
-    width: 15%;
+    width: 30%;
     height: 15px;
+}
+
+.skeleton-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+}
+
+.skeleton-menu .skeleton-line.a {
+    width: 400px;
+}
+
+.skeleton-menu .skeleton-line.i {
+    width: 3%;
+    height: 40%;
+    margin: 5px;
+}
+
+.skeleton-searchbox {
+    margin-top: 20px;
+}
+
+.skeleton-searchorder {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.skeleton-line.input {
+    height: 30px;
+    width: 400px;
+}
+
+.skeleton-line.button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
 }
 
 /* Hero scroll skeleton */
 .skeleton-scroll {
     display: flex;
     overflow-x: scroll;
-    gap: 130px;
+    gap: 170px;
     height: 100%;
+    margin-top: 30px;
     margin-bottom: 25px;
 }
 
@@ -73,7 +126,7 @@ body::-webkit-scrollbar {
 
 .skeleton-thumb {
     height: 450px;
-    width: 300px;
+    width: 350px;
     border-radius: 15px;
 }
 
@@ -169,10 +222,11 @@ nav {
     text-align: center;
     align-items: center;
     background-color: #2a0e3cf2;
-    padding: 15px;
+    padding: 10px;
     position: sticky;
     top: 0;
     z-index: 1;
+    height: 50px;
     border-radius: 10px;
 }
 
@@ -190,7 +244,6 @@ nav .profile-img {
     text-align: center;
     align-items: center;
     width: 200px;
-    margin: 10px;
 }
 
 nav .profile-img h3 {
@@ -202,12 +255,8 @@ nav i {
     color: white;
 }
 
-nav .search-icon {
-    display: none;
-}
-
 .menu {
-    padding-top: 5px;
+    padding: 5px;
 }
 
 .menu button {
@@ -232,12 +281,58 @@ nav .search-icon {
 .menu a {
     color: white;
     text-decoration: none;
-    margin: 5px;
+    padding: 5px;
 }
 
 .navbar {
     display: none;
 }
+
+/*search-content*/
+.search-box {
+    display: block;
+    text-align: right;
+    width: 100%;
+}
+
+.search-order {
+    margin: 20px 10px 20px 10px;
+}
+
+.search-order input {
+    height: 30px;
+    width: 400px;
+    background: rgb(63, 14, 77);
+    color: #fff;
+    border: none;
+    align-items: center;
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+.search-order input::placeholder {
+    font-size: 15px;
+    text-align: center;
+}
+
+.search-order button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50px;
+    text-align: center;
+    background: transparent;
+    color: white;
+}
+
+.search-order button:hover {
+    background: #2a0e3c;
+}
+
+.search-order button i {
+    font-size: 15px;
+}
+
 
 /* SCROLLER CONTAINER */
 .scroller {
@@ -267,7 +362,7 @@ nav .search-icon {
 
 .cart {
     position: relative;
-    min-width: 400px;
+    min-width: 350px;
     height: 460px;
     border-radius: 15px;
     overflow: hidden;
@@ -531,8 +626,8 @@ nav .search-icon {
     cursor: pointer;
 }
 
-@media (max-width:1200px)  {
- .menu {
+@media (max-width:1200px) {
+    .menu {
         width: 600px;
     }
 }
@@ -550,22 +645,49 @@ nav .search-icon {
         padding: 15px;
     }
 
+    .skeleton-nav {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+    }
+
     .skeleton-profile {
         display: flex;
         flex-direction: row;
+        justify-content: center;
         align-items: center;
         gap: 20px;
+        width: 100%;
     }
 
     .skeleton-profile .skeleton-line.img {
         width: 50px;
         height: 50px;
         border-radius: 30px;
+        margin: 5px;
     }
 
     .skeleton-profile .skeleton-line.name {
-        width: 30%;
+        width: 50%;
         height: 12px;
+        margin: 5px;
+    }
+
+    .skeleton-menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .skeleton-menu .skeleton-line.a {
+        display: none;
+    }
+
+    .skeleton-menu .skeleton-line.i {
+        width: 10%;
+        height: 40%;
+        margin: 5px;
     }
 
     /* Hero scroll skeleton */
@@ -590,8 +712,8 @@ nav .search-icon {
     }
 
     .skeleton-thumb {
-        height: 200px;
-        width: 150px;
+        height: 360px;
+        width: 300px;
         border-radius: 15px;
     }
 
@@ -607,12 +729,32 @@ nav .search-icon {
         border-radius: 8px;
     }
 
-    .skeleton-line.short {
-        width: 80px;
+    .skeleton-searchbox {
+        margin-top: 10px;
     }
 
-    .skeleton-line button {
-        width: 60px;
+    .skeleton-searchorder {
+        display: flex;
+        flex-direction: row;
+        justify-content: right;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .skeleton-line.input {
+        height: 30px;
+        width: 250px;
+    }
+
+    .skeleton-line.button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50px;
+    }
+
+    .skeleton-line.short {
+        width: 80px;
     }
 
     /*title skeleton*/
@@ -787,12 +929,60 @@ nav .search-icon {
     .menu-icon {
         display: block;
         margin-left: -80px;
+        cursor: pointer;
     }
 
     .menu a:hover {
         border-bottom: 1px solid #fcfbfbee;
         border-top: 1px solid #fcfbfbee;
     }
+
+    /*search-content*/
+    .search-box {
+        display: block;
+        text-align: right;
+        width: 100%;
+    }
+
+    .search-order {
+        margin: 20px 10px 20px 10px;
+    }
+
+    .search-order input {
+        height: 30px;
+        width: 250px;
+        background: rgb(63, 14, 77);
+        color: #fff;
+        border: none;
+        text-align: center;
+        align-items: center;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+
+    .search-order input::placeholder {
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .search-order button {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50px;
+        text-align: center;
+        background: transparent;
+        color: white;
+    }
+
+    .search-order button:hover {
+        background: #2a0e3c;
+    }
+
+    .search-order button i {
+        font-size: 15px;
+    }
+
 
     /* SCROLLER CONTAINER */
     .scroller {

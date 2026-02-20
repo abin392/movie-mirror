@@ -31,7 +31,9 @@
         <div class="user-details">
             <img id="profilePic" src="" alt="Profile Picture" width="150" height="150"><br><br>
             <h3>User Name</h3>
-            <span id="displayName"></span>
+            <div class="un">
+                <span id="displayName"></span>
+            </div>
             <input type="text" id="usernameInput" placeholder="Enter new username" hidden>
 
             <br><br>
@@ -83,31 +85,31 @@
         if (profileImage) document.getElementById("profilePic").src = profileImage;
 
         function logout() {
-            // 1️⃣ Clear all storage
+            //  Clear all storage
             localStorage.clear();
             sessionStorage.clear();
 
-            // 2️⃣ Delete ALL cookies for this site
+            //  Delete ALL cookies for this site
             document.cookie.split(";").forEach(cookie => {
                 document.cookie = cookie
                     .replace(/^ +/, "")
                     .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/");
             });
 
-            // 3️⃣ Clear Cache Storage (PWA / Chrome supported)
+            //  Clear Cache Storage (PWA / Chrome supported)
             if ("caches" in window) {
                 caches.keys().then(keys => {
                     keys.forEach(key => caches.delete(key));
                 });
             }
 
-            // 4️⃣ Disable back navigation
+            // Disable back navigation
             history.pushState(null, null, location.href);
             window.onpopstate = function () {
                 history.go(1);
             };
 
-            // 5️⃣ Redirect to login page (hard replace)
+            // Redirect to login page (hard replace)
             window.location.replace("index.html");
         }
 
@@ -179,7 +181,7 @@
 
             cancelEdit();
 
-            // 🔄 Force reload target page so new data is picked up
+            // Force reload target page so new data is picked up
             window.location.href = "movie.html?reload=" + new Date().getTime();
         }
 
