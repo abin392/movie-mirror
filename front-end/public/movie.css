@@ -323,6 +323,7 @@ nav i {
     text-align: center;
     background: transparent;
     color: white;
+    cursor: pointer;
 }
 
 .search-order button:hover {
@@ -504,7 +505,7 @@ nav i {
 }
 
 .movie-collection .movie-container .movies {
-    height: 200px;
+    height: 250px;
     max-width: 350px;
     position: relative;
     display: grid;
@@ -630,11 +631,19 @@ nav i {
     .menu {
         width: 600px;
     }
+
+    .movies {
+        min-width: 350px;
+    }
 }
 
 @media (max-width:900px) {
     .menu {
         width: 400px;
+    }
+
+    .movies {
+        min-width: 320px;
     }
 }
 
@@ -774,7 +783,7 @@ nav i {
 
     .skeleton-movie {
         height: 150px;
-        width: 100px;
+        width: 150px;
         border-radius: 12px;
     }
 
@@ -850,10 +859,11 @@ nav i {
     nav .profile-img {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        padding: 20px;
-        margin-top: -13px;
-        margin-left: -20px;
+    }
+
+    nav .profile-img a {
+        margin: 5px;
+        position: relative;
     }
 
     nav .profile-img img {
@@ -866,13 +876,12 @@ nav i {
     nav .profile-img h3 {
         margin-top: 10px;
         width: 130px;
-        margin-left: -30px;
     }
 
     nav i {
-        padding-left: 160px;
-        margin-top: -18px;
-        margin-left: -50px;
+        position: relative;
+        left: 100px;
+        top: -5px;
     }
 
     .menu {
@@ -928,8 +937,8 @@ nav i {
 
     .menu-icon {
         display: block;
-        margin-left: -80px;
         cursor: pointer;
+        margin: 0;
     }
 
     .menu a:hover {
@@ -1151,16 +1160,16 @@ nav i {
 
 
     .movie-collection .movie-container .movies {
-        height: 250px;
-        max-width: 100px;
+        height: auto;
+        min-width: 150px;
         position: relative;
         width: 200px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
         justify-content: center;
         text-align: center;
         align-items: center;
+        cursor: pointer;
         margin: 10px;
         border-radius: 3%;
         background: #2a0e3c;
@@ -1168,11 +1177,15 @@ nav i {
 
     .movie-collection .movie-container .movies h4 {
         margin-top: 10px;
+        width: 100%;
+        text-align: center;
+        align-items: center;
         margin-left: 0px;
         margin-bottom: 10px;
     }
 
     .movie-collection .movie-container .movies button {
+        display: none;
         background: #5e2b6d;
         color: white;
         min-width: 100px;
@@ -1192,11 +1205,11 @@ nav i {
     }
 
     .movie-collection .movie-container .movies img {
-        height: 100px;
-        width: 100px;
-        border: none;
+        height: 125px;
+        width: 125px;
+        border: 1px solid #eee;
         border-radius: 10px;
-        margin: 1px;
+        margin: 5px;
     }
 
     .bottom-footer {
@@ -1222,7 +1235,7 @@ nav i {
     }
 
     .container {
-        display: grid;
+        display: none;
         grid-template-columns: repeat(2, 1fr);
         text-align: center;
         background: #2a0e3c;
