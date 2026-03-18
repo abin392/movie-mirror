@@ -1,3 +1,4 @@
+//Get details from localStorage in movie.html and populate the movie view page
 document.addEventListener("DOMContentLoaded", () => {
             const savedMovie = localStorage.getItem('selectedMovie');
 
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
+        //change episode function to update video source and title
         function changeEpisode(url, title) {
             const video = document.getElementById('movieVideo');
             const source = document.getElementById('videoSource');
