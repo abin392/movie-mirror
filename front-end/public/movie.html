@@ -16,6 +16,13 @@
 
 <body>
 
+    <div id="download-toast" class="toast-hidden">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-message">Movie saved to Downloads</span>
+        </div>
+    </div>
+
     <!-- ===== Skeleton Loader ===== -->
     <div id="skeletonLoader">
         <div class="skeleton-nav">
@@ -103,7 +110,7 @@
         <section id="Home">
             <nav>
                 <div class="profile-img">
-                    <a href="profile.html"><img id="userImage" src="img/user.png" onclick="movieView()" alt=""></a>
+                    <a href="profile.html"><img id="userImage" src="img/user.png" onclick="movieView(this)" alt=""></a>
                     <h3 id="userName">User Name</h3>
                 </div>
 
@@ -133,7 +140,7 @@
                     <option value=""></option>
                     <option value=""></option>
                 </datalist>
-                <button onclick="movieView()"><i class="fas fas fa-search"></i></button>
+                <button onclick="movieView(this)"><i class="fas fas fa-search"></i></button>
             </div>
         </div>
 
@@ -141,7 +148,7 @@
         <div class="scroller">
             <div class="cart" id="first-cart">
                 <div class="media-box">
-                    <img src="img/amaran.jpeg" onclick="movieView()" alt="">
+                    <img src="img/amaran.jpeg" onclick="movieView(this)" alt="">
                     <video src="" loop preload="metadata"></video>
                 </div>
                 <div class="movie-description">
@@ -149,12 +156,12 @@
                     <h4>Hero: <strong>Siva Karthic</strong><br>
                         Year: 2025<br>
                         Language: Tamil</h4>
-                    <button onclick="movieView()"><i class="fas far fa-play-circle"></i>Watch Now</button>
+                    <button onclick="movieView(this)"><i class="fas far fa-play-circle"></i>Watch Now</button>
                 </div>
             </div>
             <div class="cart">
                 <div class="media-box">
-                    <img src="img/dude.jpeg" onclick="movieView()" alt="">
+                    <img src="img/dude.jpeg" onclick="movieView(this)" alt="">
                     <video src="https://res.cloudinary.com/draqsnyyu/video/upload/v1769606951/Dude_uf8am9.mp4" loop
                         preload="metadata"></video>
                 </div>
@@ -164,12 +171,12 @@
                         Year: 2025<br>
                         Language: Tamil</h4>
                     <a href="https://res.cloudinary.com/draqsnyyu/video/upload/v1769606951/Dude_uf8am9.mp4"><button
-                            onclick="movieView()"><i class="fas far fa-play-circle"></i>Watch Now</button></a>
+                            onclick="movieView(this)"><i class="fas far fa-play-circle"></i>Watch Now</button></a>
                 </div>
             </div>
             <div class="cart">
                 <div class="media-box">
-                    <img src="img/avathar.jpeg" onclick="movieView()" alt="">
+                    <img src="img/avathar.jpeg" onclick="movieView(this)" alt="">
                     <video src="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607506/avator_s6qj2h.mp4" loop
                         preload="metadata"></video>
                 </div>
@@ -178,12 +185,12 @@
                     <h4>Hero: <strong>Sam Warthinton</strong><br>
                         Year: 2023<br>
                         Language: English</h4>
-                    <button onclick="movieView()"><i class="fas far fa-play-circle"></i>Watch Now</button>
+                    <button onclick="movieView(this)"><i class="fas far fa-play-circle"></i>Watch Now</button>
                 </div>
             </div>
             <div class="cart">
                 <div class="media-box">
-                    <img src="img/darpar.jpeg" onclick="movieView()" alt="">
+                    <img src="img/darpar.jpeg" onclick="movieView(this)" alt="">
                     <video src="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4" loop
                         preload="metadata"></video>
                 </div>
@@ -192,12 +199,12 @@
                     <h4>Hero: <strong>Rajini(SS)</strong><br>
                         Year: 2024<br>
                         Language: Tamil</h4>
-                    <button onclick="movieView()"><i class="fas far fa-play-circle"></i>Watch Now</button>
+                    <button onclick="movieView(this)"><i class="fas far fa-play-circle"></i>Watch Now</button>
                 </div>
             </div>
             <div class="cart">
                 <div class="media-box">
-                    <img src="img/aquaman.jpeg" onclick="movieView()" alt="">
+                    <img src="img/aquaman.jpeg" onclick="movieView(this)" alt="">
                     <video src="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607810/aquaman_nb0zlz.mp4" loop
                         preload="metadata"></video>
                 </div>
@@ -206,12 +213,12 @@
                     <h4>Hero: <strong>Hari wacker</strong><br>
                         Year: 2024<br>
                         Language: English</h4>
-                    <button onclick="movieView()"><i class="fas far fa-play-circle"></i>Watch Now</button>
+                    <button onclick="movieView(this)"><i class="fas far fa-play-circle"></i>Watch Now</button>
                 </div>
             </div>
             <div class="cart">
                 <div class="media-box">
-                    <img src="img/katasi vivasayi.jpeg" onclick="movieView()" alt="">
+                    <img src="img/katasi vivasayi.jpeg" onclick="movieView(this)" alt="">
                     <video
                         src="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/kataisi_civasayi_chndwc.mp4"
                         loop preload="metadata"></video>
@@ -226,7 +233,7 @@
             </div>
             <div class="cart">
                 <div class="media-box">
-                    <img src="img/captan america.jpeg" onclick="movieView()" alt="">
+                    <img src="img/captan america.jpeg" onclick="movieView(this)" alt="">
                     <video src="trailers/amaran.mp4" loop preload="metadata"></video>
                 </div>
                 <div class="movie-description">
@@ -239,7 +246,7 @@
             </div>
             <div class="cart">
                 <div class="media-box">
-                    <img src="img/vip.jpeg" onclick="movieView()" alt="">
+                    <img src="img/vip.jpeg" onclick="movieView(this)" alt="">
                     <video src="trailers/vip.mp4" loop preload="metadata"></video>
                 </div>
                 <div class="movie-description">
@@ -247,7 +254,7 @@
                     <h4>Hero: <strong>Dhanush</strong><br>
                         Year: 2020<br>
                         Language: Tamil</h4>
-                    <button onclick="movieView()"><i class="fas far fa-play-circle"></i>Watch Now</button>
+                    <button onclick="movieView(this)"><i class="fas far fa-play-circle"></i>Watch Now</button>
                 </div>
             </div>
         </div>
@@ -259,158 +266,178 @@
             </div>
             <div class="movie-container">
                 <div class="movies" data-title="DUDE" data-img="img/dude.jpeg"
-                    data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAAD1R0AAvlnsFAD0TVTUEADZhYE">
+                    data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAAD1R0AAvlnsFAD0TVTUEADZhYE"
+                    data-link1="https://res.cloudinary.com/draqsnyyu/video/upload/v1769606951/Dude_uf8am9.mp4"
+                    data-name="Pratheep" data-year="2025" data-language="Tamil"
+                    data-link2="https://res.cloudinary.com/draqsnyyu/video/upload/v1769606951/Dude_uf8am9.mp4"
+                    data-episode1="Episode 1: The Beginning" data-time="30m"
+                    data-link3="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4"
+                    data-episode2="Episode 2: The Setup" data-time2="42m"
+                    data-link4="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4"
+                    data-episode3="Episode 2: The Setup" data-time3="2m"
+                    data-link5="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4"
+                    data-episode4="Episode 2: The Setup" data-time4="4m">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
 
-                    <img src="img/dude.jpeg" onclick="movieView()" alt="">
+                    <img src="img/dude.jpeg" onclick="movieView(this)" alt="">
                     <h4>DUDE</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
 
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
-                    data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADAgADawUAAteEkEpZxT5wkjgIdRYE">
+                    data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADAgADawUAAteEkEpZxT5wkjgIdRYE"
+                    data-link1="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4"
+                    data-name="Rajini" data-year="2020" data-language="Tamil"
+                    data-link2="https://res.cloudinary.com/draqsnyyu/video/upload/v1769606951/Dude_uf8am9.mp4"
+                    data-episode1="Episode 1: The Beginning" data-time="30m"
+                    data-link3="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607810/aquaman_nb0zlz.mp4"
+                    data-episode2="Episode 2: The Setup" data-time2="42m"
+                    data-link4="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4"
+                    data-episode3="Episode 2: The Setup" data-time3="2m"
+                    data-link5="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4"
+                    data-episode4="Episode 2: The Setup" data-time4="4m">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/darpar.jpeg" onclick="movieView()" alt="">
+                    <img src="img/darpar.jpeg" onclick="movieView(this)" alt="">
                     <h4>DARBAR</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="AMBULI" data-img="img/ambuli.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQAD5BcAAlOf0FU9LBF0laOSZBYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/ambuli.jpeg" onclick="movieView()" alt="">
+                    <img src="img/ambuli.jpeg" onclick="movieView(this)" alt="">
                     <h4>AMBULI(2012)</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="KAANTHA" data-img="img/kaantha.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADbBsAAo7-2VXg9kCWsnYkxBYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/kaantha.jpeg" onclick="movieView()" alt="">
+                    <img src="img/kaantha.jpeg" onclick="movieView(this)" alt="">
                     <h4>KAANTHA</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="AARYAN" data-img="img/aaryan.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADsR4AAsmkSVVUpSlVrR3WzRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/aaryan.jpeg" onclick="movieView()" alt="">
+                    <img src="img/aaryan.jpeg" onclick="movieView(this)" alt="">
                     <h4>AARYAN</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DIESEL" data-img="img/diesel.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADJB4AAu6U4VT9ZnLQ1D-8fRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/diesel.jpeg" onclick="movieView()" alt="">
+                    <img src="img/diesel.jpeg" onclick="movieView(this)" alt="">
                     <h4>DIESEL</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="RAAYAN" data-img="img/raayan.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADDRMAArQxOVYhkc5jKDxh2BYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/raayan.jpeg" onclick="movieView()" alt="">
+                    <img src="img/raayan.jpeg" onclick="movieView(this)" alt="">
                     <h4>RAAYAN</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="BISON" data-img="img/bison.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADKB8AAquu-FS1-RDPASQXuhYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bison.jpeg" onclick="movieView()" alt="">
+                    <img src="img/bison.jpeg" onclick="movieView(this)" alt="">
                     <h4>BISON</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="KATAISY VIWASAYI" data-img="img/katasi vivasayi.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAAD_gwAAtfiUVEzhNpPmRnIrRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/katasi vivasayi.jpeg" onclick="movieView()" alt="">
+                    <img src="img/katasi vivasayi.jpeg" onclick="movieView(this)" alt="">
                     <h4>KATAISY VIWASAYI</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="KASETHAN KADAVULATA" data-img="img/kasethan katavulta.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADTgoAAnI3uVQlr1VwytQZNxYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/kasethan katavulta.jpeg" onclick="movieView()" alt="">
+                    <img src="img/kasethan katavulta.jpeg" onclick="movieView(this)" alt="">
                     <h4>KASETHAN KADAVULATA</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="CAPTAIN MILLER" data-img="img/captain miller.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAADDxYAAkzEKFLjTVIhuMi07RYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/captain miller.jpeg" onclick="movieView()" alt="">
+                    <img src="img/captain miller.jpeg" onclick="movieView(this)" alt="">
                     <h4>CAPTAIN MILLER</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="ASURAN" data-img="img/asuran.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAADsBEAArNF2VEW2S9trxoR7BYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/asuran.jpeg" onclick="movieView()" alt="">
+                    <img src="img/asuran.jpeg" onclick="movieView(this)" alt="">
                     <h4>ASURAN</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="SARPATTA PARAMBARAI" data-img="img/sarbatta.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQAD9xQAAgSFCVSunplpNe5yKRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/sarbatta.jpeg" onclick="movieView()" alt="">
+                    <img src="img/sarbatta.jpeg" onclick="movieView(this)" alt="">
                     <h4>SARPATTA<br>PARAMBARAI</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="BAASHSHA" data-img="img/bashsha.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADkx0AAuSgyFTXOHBj1TmrCRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bashsha.jpeg" onclick="movieView()" alt="">
+                    <img src="img/bashsha.jpeg" onclick="movieView(this)" alt="">
                     <h4>BAASHSHA</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="JAI BHIM" data-img="img/jai bhim.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADng0AAhyk8Fe-UTCUl5HuZBYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/jai bhim.jpeg" onclick="movieView()" alt="">
+                    <img src="img/jai bhim.jpeg" onclick="movieView(this)" alt="">
                     <h4>JAI BHIM</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="RETRO(2025)" data-img="img/retro.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAADcR0AAt8-yVGy2e9SLbcuDBYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/retro.jpeg" onclick="movieView()" alt="">
+                    <img src="img/retro.jpeg" onclick="movieView(this)" alt="">
                     <h4>RETRO(2025)</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="VIKRAM" data-img="img/vikram.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADRBwAAvTNsFc9JR-uRt7nkRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/vikram.jpeg" onclick="movieView()" alt="">
+                    <img src="img/vikram.jpeg" onclick="movieView(this)" alt="">
                     <h4>VIKRAM</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="IDLI KADAI" data-img="img/idli kadai.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/idli kadai.jpeg" onclick="movieView()" alt="">
+                    <img src="img/idli kadai.jpeg" onclick="movieView(this)" alt="">
                     <h4>IDLI KADAI</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="KUTUMPASTHAN" data-img="img/kutumpam.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/kutumpam.jpeg" onclick="movieView()" alt="">
+                    <img src="img/kutumpam.jpeg" onclick="movieView(this)" alt="">
                     <h4>KUTUMPASTHAN</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
             </div>
         </div>
@@ -424,25 +451,25 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/Hindi movie imgs/maidaan.jpeg" onclick="movieView()" alt="">
+                    <img src="img/Hindi movie imgs/maidaan.jpeg" onclick="movieView(this)" alt="">
                     <h4>MAIDAAN</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="LIGER" data-img="img/Hindi movie imgs/liger.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/Hindi movie imgs/liger.jpeg" onclick="movieView()" alt="">
+                    <img src="img/Hindi movie imgs/liger.jpeg" onclick="movieView(this)" alt="">
                     <h4>LIGER</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="MY NAME IS KHAN" data-img="img/Hindi movie imgs/my name.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/Hindi movie imgs/my name.jpeg" onclick="movieView()" alt="">
+                    <img src="img/Hindi movie imgs/my name.jpeg" onclick="movieView(this)" alt="">
                     <h4>MY NAME IS KHAN</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="ADIPURUSH"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575391/adipurush_dpbpmw.jpg"
@@ -450,9 +477,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575391/adipurush_dpbpmw.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>ADIPURUSH</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="ARJUN"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575368/arjun_kzpvik.jpg"
@@ -460,9 +487,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575368/arjun_kzpvik.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>ARJUN</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="COCKTAIL"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575367/cocktail_cdw2mb.jpg"
@@ -470,9 +497,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575367/cocktail_cdw2mb.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>COCKTAIL</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DEVA"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575368/deva_g5bdgv.jpg"
@@ -480,9 +507,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575368/deva_g5bdgv.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>DEVA</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="GABBAR"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575369/gabbar_opyldk.jpg"
@@ -490,9 +517,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575369/gabbar_opyldk.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>GABBAR</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="GAME CHANGER"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575369/game_changer_kwewck.jpg"
@@ -500,9 +527,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575369/game_changer_kwewck.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>GAME CHANGER</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="HERO"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575370/hero_onlrrs.jpg"
@@ -510,9 +537,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575370/hero_onlrrs.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>HERO</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="LOVE AJEE HAL"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575371/love_ajee_hal_amz7fp.jpg"
@@ -520,9 +547,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575371/love_ajee_hal_amz7fp.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>LOVE AJEE HAL</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="NAVABZAADE"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575384/navabzaade_dzfvqk.jpg"
@@ -530,9 +557,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575384/navabzaade_dzfvqk.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>NAVABZAADE</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="PINK"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575380/pink_r56omq.jpg"
@@ -540,9 +567,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575380/pink_r56omq.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>PINK</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="RAANJHANA"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575376/raanjhana_rqwufs.jpg"
@@ -550,9 +577,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575376/raanjhana_rqwufs.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>RAANJHANA</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="RAM LEELA"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575374/ram_leela_aytyzf.jpg"
@@ -560,9 +587,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575374/ram_leela_aytyzf.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>RAM LEELA</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="RASCALES"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575385/rascales_uwl0qd.jpg"
@@ -570,9 +597,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575385/rascales_uwl0qd.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>RASCALES</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="SHUBU MANGAL SAAVDAN"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575379/shubu_mangal_saavdan_lalxej.jpg"
@@ -580,9 +607,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575379/shubu_mangal_saavdan_lalxej.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>SHUBU MANGAL SAAVDAN</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="SIMMPA"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575379/simmpa_bebxou.jpg"
@@ -590,9 +617,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575379/simmpa_bebxou.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>SIMMPA</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="SIRAI"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575380/sirai_mu7cto.jpg"
@@ -600,9 +627,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575380/sirai_mu7cto.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>SIRAI</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="SONU TITU SWEETY"
                     data-img="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575380/sonu_titu_sweety_bbauja.jpg"
@@ -610,9 +637,9 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575380/sonu_titu_sweety_bbauja.jpg"
-                        onclick="movieView()" alt="">
+                        onclick="movieView(this)" alt="">
                     <h4>SONU TITU SWEETY</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
             </div>
         </div>
@@ -626,161 +653,161 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/vip.jpeg" onclick="movieView()" alt="">
+                    <img src="img/vip.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/tirucitrapalam.jpeg" onclick="movieView()" alt="">
+                    <img src="img/tirucitrapalam.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/kasethan katavulta.jpeg" onclick="movieView()" alt="">
+                    <img src="img/kasethan katavulta.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/raayan.jpeg" onclick="movieView()" alt="">
+                    <img src="img/raayan.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
             </div>
         </div>
@@ -794,161 +821,161 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/dude.jpeg" onclick="movieView()" alt="">
+                    <img src="img/dude.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/katasi vivasayi.jpeg" onclick="movieView()" alt="">
+                    <img src="img/katasi vivasayi.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/teyva makan.jpeg" onclick="movieView()" alt="">
+                    <img src="img/teyva makan.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/love.jpeg" onclick="movieView()" alt="">
+                    <img src="img/love.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
             </div>
         </div>
@@ -962,161 +989,161 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/avathar.jpeg" onclick="movieView()" alt="">
+                    <img src="img/avathar.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/piremalu.jpeg" onclick="movieView()" alt="">
+                    <img src="img/piremalu.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/darpar.jpeg" onclick="movieView()" alt="">
+                    <img src="img/darpar.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/amaran.jpeg" onclick="movieView()" alt="">
+                    <img src="img/amaran.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
             </div>
         </div>
@@ -1130,161 +1157,161 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/captan america.jpeg" onclick="movieView()" alt="">
+                    <img src="img/captan america.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/amaran.jpeg" onclick="movieView()" alt="">
+                    <img src="img/amaran.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/dude.jpeg" onclick="movieView()" alt="">
+                    <img src="img/dude.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/kasethan katavulta.jpeg" onclick="movieView()" alt="">
+                    <img src="img/kasethan katavulta.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 1.png" onclick="movieView()" alt="">
+                    <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView()" alt="">
+                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus 3.png" onclick="movieView()" alt="">
+                    <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <img src="img/bus.png" onclick="movieView()" alt="">
+                    <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
-                    <button onclick="movieView()">Watch</button>
+                    <button onclick="movieView(this)">Watch</button>
                 </div>
             </div>
 
@@ -1331,234 +1358,6 @@
         <br><br><br>
     </div>
 </body>
-<script>
-
-    if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.replace("index.html");
-    }
-
-
-    // SKELETON LOADER
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            document.getElementById("skeletonLoader").style.display = "none";
-            document.getElementById("realContent").style.display = "block";
-        }, 2000); // loading delay
-    });
-
-    // auto scroll in cart//
-    const scroller = document.querySelector('.scroller');
-    const carts = Array.from(scroller.querySelectorAll('.cart'));
-
-    let index = 0;
-    let autoScrollInterval;
-    let isHoveringCart = false;
-
-    function scrollCartToCenter(cart) {
-        const cartRect = cart.getBoundingClientRect();
-        const scrollerRect = scroller.getBoundingClientRect();
-
-        const target =
-            scroller.scrollLeft +
-            (cartRect.left + cartRect.width / 2) -
-            (scrollerRect.left + scrollerRect.width / 2);
-
-        scroller.scrollTo({
-            left: target,
-            behavior: 'smooth'
-        });
-    }
-
-    function startAutoScroll() {
-        stopAutoScroll(); // avoid duplicates
-        autoScrollInterval = setInterval(() => {
-            if (isHoveringCart) return; // pause on hover
-
-            index++;
-            if (index >= carts.length) index = 0;
-            scrollCartToCenter(carts[index]);
-        }, 5000);
-    }
-
-    function stopAutoScroll() {
-        clearInterval(autoScrollInterval);
-    }
-
-    // Pause auto-scroll when hovering any cart
-    carts.forEach(cart => {
-        cart.addEventListener('mouseenter', () => {
-            isHoveringCart = true;
-            stopAutoScroll();
-        });
-
-        cart.addEventListener('mouseleave', () => {
-            isHoveringCart = false;
-            startAutoScroll();
-        });
-    });
-
-    // Touch devices (mobile / TV)
-    carts.forEach(cart => {
-        cart.addEventListener('touchstart', stopAutoScroll);
-        cart.addEventListener('touchend', startAutoScroll);
-    });
-
-    // Start auto-scroll
-    startAutoScroll();
-
-
-    //movie click to go movie-view page
-
-    function movieView() {
-        window.location.href = 'movie-view.html';
-    }
-
-
-    // HOVER TRAILER PREVIEW
-    document.querySelectorAll(".cart").forEach(card => {
-        const video = card.querySelector("video");
-
-        if (!video) return;
-
-        card.addEventListener("mouseenter", () => {
-            video.currentTime = 0;
-            video.play().catch(() => { });
-        });
-
-        card.addEventListener("mouseleave", () => {
-            video.pause();
-            video.currentTime = 0;
-        });
-    });
-
-
-    //menu function//
-    const menu = document.getElementById('menu');
-    const menuIcon = document.getElementById('menuIcon');
-
-    menuIcon.addEventListener('click', () => {
-        menu.classList.toggle('active');
-        menuIcon.classList.toggle('fa-bars');
-        menuIcon.classList.toggle('fa-xmark'); // toggle between bars and X icon
-    });
-
-    if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.replace("login.html");
-    }
-
-
-    //login to store use & img save function//
-    document.addEventListener("DOMContentLoaded", () => {
-        const savedName = localStorage.getItem("username");
-        const savedImage = localStorage.getItem("profileImage");
-
-        if (savedName) {
-            document.getElementById("userName").textContent = savedName;
-        }
-
-        if (savedImage) {
-            document.getElementById("userImage").src = savedImage;
-        }
-    });
-
-
-    //logout function//
-    function logout() {
-        // 1️ Clear all storage
-        localStorage.clear();
-        sessionStorage.clear();
-
-        // 2️ Delete ALL cookies for this site
-        document.cookie.split(";").forEach(cookie => {
-            document.cookie = cookie
-                .replace(/^ +/, "")
-                .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/");
-        });
-
-        // 3️ Clear Cache Storage (PWA / Chrome supported)
-        if ("caches" in window) {
-            caches.keys().then(keys => {
-                keys.forEach(key => caches.delete(key));
-            });
-        }
-
-        // 4️ Disable back navigation
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            history.go(1);
-        };
-
-        // 5️ Redirect to login page (hard replace)
-        window.location.replace("index.html");
-    }
-
-
-    document.addEventListener("DOMContentLoaded", () => {
-        if (!localStorage.getItem("username")) {
-            window.location.replace("index.html");
-        }
-    });
-
-
-    function changeImage() {
-        document.getElementById("imageInput").click();
-    }
-
-    document.getElementById("imageInput").addEventListener("change", function () {
-        const file = this.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function () {
-            localStorage.setItem("profileImage", reader.result);
-
-            // Update image instantly if exists on page
-            const img1 = document.getElementById("userImage");
-            const img2 = document.getElementById("profilePic");
-
-            if (img1) img1.src = reader.result;
-            if (img2) img2.src = reader.result;
-        };
-        reader.readAsDataURL(file);
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const name = localStorage.getItem("username");
-        const img = localStorage.getItem("profileImage");
-
-        if (name) document.getElementById("userName").innerText = name;
-        if (img) document.getElementById("userImage").src = img;
-    });
-
-
-
-    //download icon click to add download details//
-    function addToDownloads(icon) {
-        const movie = icon.closest(".movies");
-
-        const movieData = {
-            title: movie.dataset.title,
-            image: movie.dataset.img,
-            link: movie.dataset.link,
-            downloaded: false,   // future use
-            addedAt: Date.now()
-        };
-
-        let downloads = JSON.parse(localStorage.getItem("downloads")) || [];
-
-        // prevent duplicate movie
-        const exists = downloads.some(d => d.link === movieData.link);
-
-        if (exists) {
-            alert("Already added to Downloads");
-            return;
-        }
-
-        downloads.push(movieData);
-        localStorage.setItem("downloads", JSON.stringify(downloads));
-
-        alert("Movie saved to Downloads");
-    }
-</script>
+<script src="movie.js"></script>
 
 </html>

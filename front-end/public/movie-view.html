@@ -1,15 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie-View Page</title>
+    <link rel="stylesheet" href="movie-view.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-grid.min.css">
 
     <!-- Meta bar color -->
     <meta name="theme-color" content="#2a0e3c">
     <link rel="icon" href="img/cropped_circle_image (8).png" type="image-icon">
 </head>
-<body style="background: black;"> 
-    
+
+<body style="background: black;">
+
+    <div class="player-container">
+        <div class="video-box">
+            <video id="movieVideo" controls autoplay muted>
+                <source id="videoSource" src="" type="video/mp4">
+                Your browser does not support video.
+            </video>
+        </div>
+
+        <div class="movie-details">
+            <h1 id="movieTitle">Loading...</h1>
+            <p id="movieInfo">
+                Hero: Loading... <br>
+                Year: Loading... <br>
+                Language: Loading... <br>
+            </p>
+        </div>
+    </div>
+
+    <div class="episodes-container">
+        <div class="section-title">
+            <h2>Episodes</h2>
+        </div>
+        <div class="episodes-grid" id="episodesGrid"></div>
+    </div>
+
+
+    <script src="movie-view.js"></script>
 </body>
+
 </html>

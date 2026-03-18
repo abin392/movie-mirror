@@ -2,6 +2,35 @@ body {
     background: black;
 }
 
+#download-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #2a0e3c;
+    /* Your theme color */
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    border: 1px solid #8e44ad;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#download-toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast-content i {
+    color: #00ff88;
+    /* Success green */
+    font-size: 1.2rem;
+}
+
 body::-webkit-scrollbar {
     display: none;
 }
