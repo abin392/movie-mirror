@@ -13,16 +13,34 @@ body {
 /* Video Section */
 .video-box {
     width: 100%;
-    height: 300px;
+    height: 400px;
     max-width: 1000px;
     margin: auto;
 }
 
 .video-box video {
     width: 100%;
-    height: 300px;
+    height: 400px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(196, 1, 255, 0.801);
+}
+
+@media (max-width: 680px) {
+    .video-box video {
+        width: 100%;
+        height: 300px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(196, 1, 255, 0.801);
+    }
+
+    /* Video Section */
+    .video-box {
+        width: 100%;
+        height: 300px;
+        max-width: 1000px;
+        margin: auto;
+    }
+
 }
 
 /* Movie Details */
@@ -50,7 +68,8 @@ body {
 }
 
 .section-title h2 {
-    border-left: 4px solid #8e44ad; /* Matches your purple theme color #2a0e3c */
+    border-left: 4px solid #8e44ad;
+    /* Matches your purple theme color #2a0e3c */
     padding-left: 10px;
     margin-bottom: 20px;
     font-size: 24px;
@@ -59,7 +78,8 @@ body {
 .episodes-grid {
     display: flex;
     gap: 15px;
-    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-x: auto;
+    /* Enables horizontal scrolling */
     padding-bottom: 15px;
     scroll-behavior: smooth;
 }
@@ -68,16 +88,19 @@ body {
 .episodes-grid::-webkit-scrollbar {
     height: 8px;
 }
+
 .episodes-grid::-webkit-scrollbar-track {
-    background: #111; 
+    background: #111;
     border-radius: 4px;
 }
+
 .episodes-grid::-webkit-scrollbar-thumb {
-    background: #444; 
+    background: #444;
     border-radius: 4px;
 }
+
 .episodes-grid::-webkit-scrollbar-thumb:hover {
-    background: #8e44ad; 
+    background: #8e44ad;
 }
 
 /* Individual Episode Card */
