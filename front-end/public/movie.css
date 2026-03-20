@@ -907,7 +907,7 @@ nav i {
     nav .profile-img {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        width: 250px;
+        width: 200px;
     }
 
     nav .profile-img a {
