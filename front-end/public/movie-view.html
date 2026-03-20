@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="movie-view.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="fontawesome-free-7.0.0-web/css/all.min.css">
 
     <!-- Meta bar color -->
     <meta name="theme-color" content="#2a0e3c">
@@ -20,11 +21,24 @@
         <div class="trailer">
             <h1 style="color: white;">Movie Trailer</h1>
         </div><br>
-        <div class="video-box">
-            <video id="movieVideo" controls autoplay>
+        <div class="video-box" id="fullscreenContainer">
+            <video id="movieVideo" onclick="togglePlay()" controls autoplay>
                 <source id="videoSource" src="" type="video/mp4">
-                Your browser does not support video.
             </video>
+
+            <div class="video-overlay-controls" id="overlayControls">
+                <button class="nav-btn" onclick="playPrevious()" data-tooltip="Previous">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+
+                <button class="nav-btn play-btn" onclick="togglePlay()" data-tooltip="Play/Pause">
+                    <i class="fas fa-play" id="playIcon"></i>
+                </button>
+
+                <button class="nav-btn" onclick="playNext()" data-tooltip="Next">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
         </div>
 
         <div class="movie-details">
@@ -44,6 +58,12 @@
         <div class="episodes-grid" id="episodesGrid"></div>
     </div>
 
+    <div id="custom-alert" class="alert-hidden">
+        <div class="alert-content">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="alert-text">This is the last episode.</span>
+        </div>
+    </div>
 
     <script src="movie-view.js"></script>
 </body>
