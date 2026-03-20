@@ -276,7 +276,7 @@ nav .profile-img {
     justify-content: center;
     text-align: center;
     align-items: center;
-    width: 250px;
+    width: 300px;
 }
 
 nav .profile-img h3 {
@@ -907,6 +907,7 @@ nav i {
     nav .profile-img {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+        width: 250px;
     }
 
     nav .profile-img a {
@@ -929,7 +930,7 @@ nav i {
     nav i {
         position: relative;
         left: 100px;
-        top: -5px;
+        top: 1px;
     }
 
     .menu {
