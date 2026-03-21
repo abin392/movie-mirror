@@ -231,4 +231,3 @@ navButtons.forEach(btn => {
         showUI();
     });
 });
-

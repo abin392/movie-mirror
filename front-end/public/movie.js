@@ -104,6 +104,66 @@ function movieView(element) {
                 link: movie.dataset.link5,
                 title: movie.dataset.episode4,
                 time: movie.dataset.time4
+            },
+            {
+                link: movie.dataset.link6,
+                title: movie.dataset.episode5,
+                time: movie.dataset.time5
+            },
+            {
+                link: movie.dataset.link7,
+                title: movie.dataset.episode6,
+                time: movie.dataset.time6
+            },
+            {
+                link: movie.dataset.link8,
+                title: movie.dataset.episode7,
+                time: movie.dataset.time7
+            },
+            {
+                link: movie.dataset.link9,
+                title: movie.dataset.episode8,
+                time: movie.dataset.time8
+            },
+            {
+                link: movie.dataset.link10,
+                title: movie.dataset.episode9,
+                time: movie.dataset.time9
+            },
+            {
+                link: movie.dataset.link11,
+                title: movie.dataset.episode10,
+                time: movie.dataset.time410
+            },
+            {
+                link: movie.dataset.link12,
+                title: movie.dataset.episode11,
+                time: movie.dataset.time11
+            },
+            {
+                link: movie.dataset.link13,
+                title: movie.dataset.episode12,
+                time: movie.dataset.time12
+            },
+            {
+                link: movie.dataset.link14,
+                title: movie.dataset.episode13,
+                time: movie.dataset.time13
+            },
+            {
+                link: movie.dataset.link15,
+                title: movie.dataset.episode14,
+                time: movie.dataset.time14
+            },
+            {
+                link: movie.dataset.link16,
+                title: movie.dataset.episode15,
+                time: movie.dataset.time15
+            },
+            {
+                link: movie.dataset.link17,
+                title: movie.dataset.episode16,
+                time: movie.dataset.time16
             }
 
         ]
