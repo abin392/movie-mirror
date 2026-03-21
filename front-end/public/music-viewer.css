@@ -1,0 +1,184 @@
+:root {
+    --primary-bg: #2a0e3c;
+    --secondary-bg: #5c2b6d91;
+    --accent: #8e44ad;
+    --text: #ffffff;
+}
+
+body {
+    margin: 0;
+    background: black;
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Main Grid Layout */
+.viewer-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Single column for mobile */
+    gap: 20px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+#music-alert {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #2a0e3c;
+    /* Your theme purple */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: 1px solid #8e44ad;
+    /* Your accent color */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+#music-alert.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Style for the currently playing item */
+.cart-item.playing {
+    background: rgba(142, 68, 173, 0.4) !important; /* Semi-transparent accent purple */
+    border-left: 5px solid #00ff88; /* Green indicator bar */
+    transform: scale(1.02);
+}
+
+.cart-item.playing h4 {
+    color: #00ff88; /* Change text color to green */
+    font-weight: bold;
+}
+
+/* Optional: Add a small pulsing icon to the playing item */
+.cart-item.playing::after {
+    content: '\f012'; /* FontAwesome Signal/Bars icon */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #00ff88;
+    margin-left: auto;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+
+.alert-icon {
+    color: #00ff88;
+    /* Green to match your download checkmark */
+}
+
+/* PC & Smart TV Layout (Screens wider than 1024px) */
+@media (min-width: 1024px) {
+    .viewer-container {
+        grid-template-columns: 1fr 400px;
+        /* Player left, List right */
+        height: 90vh;
+        align-items: start;
+        padding-top: 50px;
+    }
+
+    .now-playing {
+        position: sticky;
+        top: 50px;
+    }
+}
+
+/* Player Section Style */
+.now-playing {
+    text-align: center;
+    background: var(--primary-bg);
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.now-playing img {
+    width: 100%;
+    max-width: 350px;
+    /* Limits size on PC/TV */
+    aspect-ratio: 1/1;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 0 20px var(--accent);
+    transition: transform 0.3s ease;
+}
+
+/* Music Cart List Style */
+.music-cart {
+    background: var(--secondary-bg);
+    border-radius: 20px;
+    padding: 15px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Custom Scrollbar for the list */
+.music-cart::-webkit-scrollbar {
+    width: 5px;
+}
+
+.music-cart::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cart-item:hover {
+    background: var(--accent);
+    transform: scale(1.02);
+}
+
+.cart-item img {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+/* Controls for TV/Large Screens */
+audio {
+    width: 100%;
+    margin-top: 20px;
+    filter: invert(100%) hue-rotate(270deg) brightness(1.5);
+    /* Colors the player to match theme */
+}
+
+/* Navigation Button */
+.back-btn {
+    grid-column: 1 / -1;
+    /* Spans across both columns */
+    justify-self: center;
+    background: var(--accent);
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}

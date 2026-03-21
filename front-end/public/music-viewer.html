@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2a0e3c">
+    <title>Music Viewer</title>
+    <link rel="icon" href="img/cropped_circle_image (8).png" type="image-icon">
+    <link rel="stylesheet" href="music-viewer.css">
+    <link rel="stylesheet" href="fontawesome-free-7.0.0-web/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="assets/js/bootstrap.min.js">
+    <link rel="stylesheet" href="assets/js/jquery.min.js">
+</head>
+
+<body>
+
+    <div class="viewer-container">
+        <div class="now-playing">
+            <img id="currentImg" src="" style="width: 200px; border-radius: 20px; box-shadow: 0 0 20px #8e44ad;">
+            <h2 id="currentTitle" style="margin-top: 15px;">Select a Song</h2>
+            <audio id="mainAudio" controls></audio>
+        </div>
+
+        <div class="music-cart" id="musicList">
+        </div>
+
+        <button onclick="window.history.back()"
+            style="margin-top: 20px; background: none; border: 1px solid white; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer;">Back
+            to Movies</button>
+    </div>
+
+    <div id="music-alert">
+        <i class="fas fa-compact-disc fa-spin alert-icon"></i>
+        <span id="alert-text">Playing next song...</span>
+    </div>
+
+    <script src="music-viewer.js"></script>
+</body>
+
+</html>

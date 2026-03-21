@@ -528,17 +528,17 @@ nav i {
 }
 
 .movie-collection .movie-container::-webkit-scrollbar-track {
-    background: #111; 
+    background: #111;
     border-radius: 4px;
 }
 
 .movie-collection .movie-container::-webkit-scrollbar-thumb {
-    background: #444; 
+    background: #444;
     border-radius: 4px;
 }
 
 .movie-collection .movie-container::-webkit-scrollbar-thumb:hover {
-    background: #8e44ad; 
+    background: #8e44ad;
 }
 
 /* 3-dot icon */
@@ -566,6 +566,20 @@ nav i {
     border-radius: 5%;
     background: #2a0e3c;
     box-shadow: 0 0 15px #2a0e3c;
+}
+
+/* music icon fixed position */
+#music {
+    position: absolute;
+    top: 10px;
+    /* Distance from the top */
+    left: 70%;
+    /* Distance from the left */
+    color: white;
+    /* Ensure visibility */
+    z-index: 10;
+    /* Keep it above the movie image */
+    cursor: pointer;
 }
 
 .movie-collection .movie-container .movies h4 {
@@ -1226,6 +1240,20 @@ nav i {
         margin: 10px;
         border-radius: 3%;
         background: #2a0e3c;
+    }
+
+    /* music icon fixed position */
+    #music {
+        position: absolute;
+        top: 5px;
+        /* Distance from the top */
+        left: 70%;
+        /* Distance from the left */
+        color: white;
+        /* Ensure visibility */
+        z-index: 10;
+        /* Keep it above the movie image */
+        cursor: pointer;
     }
 
     .movie-collection .movie-container .movies h4 {
