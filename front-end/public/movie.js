@@ -2,6 +2,35 @@ if (localStorage.getItem("isLoggedIn") !== "true") {
     window.location.replace("index.html");
 }
 
+// SEARCH FUNCTION
+// 1. Function to handle the search logic
+function executeSearch() {
+    const query = document.getElementById("movieSearchInput").value.toUpperCase().trim();
+    const allMovies = document.querySelectorAll('.movies');
+    let foundMovie = null;
+
+    // Use if/else logic to find a match
+    allMovies.forEach(movie => {
+        if (movie.dataset.title === query) {
+            foundMovie = movie;
+        }
+    });
+
+    if (foundMovie) {
+        // Calls your existing movieView function to redirect
+        movieView(foundMovie);
+    } else {
+        alert("Movie not found! Please check the title.");
+    }
+}
+
+// 2. Event listener for the "Enter" key
+document.getElementById("movieSearchInput").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Prevent page refresh
+        executeSearch();
+    }
+});
 
 // SKELETON LOADER
 window.addEventListener("load", () => {

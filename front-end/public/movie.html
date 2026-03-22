@@ -127,20 +127,12 @@
 
         <div class="search-box">
             <div class="search-order">
-                <input type="search" name="" list="search-option" id="" placeholder="Search Any Movie" required>
+                <input type="search" id="movieSearchInput" list="search-option" placeholder="Search Any Movie" required>
                 <datalist id="search-option">
-                    <option value="Dude Movie Tamil"></option>
-                    <option value="Asuran Movie Tamil"></option>
-                    <option value="Ampuli movie tamil"></option>
-                    <option value="Spider-Man in tamil"></option>
-                    <option value="Bison"></option>
-                    <option value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
+                    <option value="DUDE"></option>
+                    <option value="AMPULI"></option>
                 </datalist>
-                <button onclick="movieView(this)"><i class="fas fas fa-search"></i></button>
+                <button onclick="executeSearch()"><i class="fas fa-search"></i></button>
             </div>
         </div>
 
@@ -170,8 +162,8 @@
                     <h4>Hero: <strong>Pratheep</strong><br>
                         Year: 2025<br>
                         Language: Tamil</h4>
-                    <a href="https://res.cloudinary.com/draqsnyyu/video/upload/v1769606951/Dude_uf8am9.mp4"><button
-                            onclick="movieView(this)"><i class="fas far fa-play-circle"></i>Watch Now</button></a>
+                    <a href="https://abin-movie-mirror.netlify.app/movie-view.html"><button onclick="movieView(this)"><i
+                                class="fas far fa-play-circle"></i>Watch Now</button></a>
                 </div>
             </div>
             <div class="cart">
@@ -267,8 +259,10 @@
             <div class="movie-container">
                 <div class="movies" data-title="DUDE" data-img="img/dude.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAAD1R0AAvlnsFAD0TVTUEADZhYE"
+
                     data-link1="https://res.cloudinary.com/draqsnyyu/video/upload/v1769606951/Dude_uf8am9.mp4"
                     data-name="PRADEEP RANGANATHAN" data-year="2025" data-language="Tamil"
+
                     data-link2="https://res.cloudinary.com/draqsnyyu/video/upload/v1774008798/InShot_20260320_173725710_opacu6.mp4"
                     data-episode1="Episode 1: The Movie Intro" data-time="1.39m"
                     data-link3="https://res.cloudinary.com/draqsnyyu/video/upload/v1774009320/InShot_20260320_174834700_a3tjbk.mp4"
@@ -322,6 +316,53 @@
                     <button onclick="movieView(this)">Watch</button>
                 </div>
 
+                
+                <div class="movies" data-title="AMPULI" data-img="img/ambuli.jpeg"
+                    data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQAD5BcAAlOf0FU9LBF0laOSZBYE"
+
+                    data-link1="https://res.cloudinary.com/draqsnyyu/video/upload/v1774190192/ampuli_trailer_fub3rx.mp4" 
+                    data-name="Parthiban" data-year="2012" data-language="Tamil"
+
+                    data-link2="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179796/1.Movie_startup_dgfuzs.mp4"
+                    data-episode1="Episode 1: Movie_startup" data-time="10:31m"
+                    data-link3="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179791/2.Ferawell_party_ekylts.mp4"
+                    data-episode2="Episode 2: Ferawell_party" data-time2="09:59m"
+                    data-link4="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179830/3.Ampuli_s_second_hunt_nyesia.mp4"
+                    data-episode3="Episode 3: Ampuli_s_second_hunt" data-time3="10:00m"
+                    data-link5="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179798/4.Ampuli_attack_on_Hero_g5g3sj.mp4"
+                    data-episode4="Episode 4: Ampuli_attack_on_Hero" data-time4="09:59m"
+                    data-link6="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179819/5.Born_history_of_ampuli_ofzfsj.mp4"
+                    data-episode5="Episode 5: Born_history_of_ampuli" data-time5="10:00m"
+                    data-link7="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179817/6.Searching_for_Ampuli_g5c08i.mp4"
+                    data-episode6="Episode 6: Searching_for_Ampuli" data-time6="10:00m"
+                    data-link8="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179780/7.Finding_Ampuli_living_place_z627qy.mp4"
+                    data-episode7="Episode 7: Finding_Ampuli_living_place" data-time7="10:00m"
+                    data-link9="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179828/8.Ampuli_face_gsoxs8.mp4"
+                    data-episode8="Episode 8: Ampuli_face" data-time8="10:00m"
+                    data-link10="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179828/9.Dad_revenge_qwh4gb.mp4"
+                    data-episode9="Episode 9: Dad_revenge" data-time9="10:00m"
+                    data-link11="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179830/10.Real_history_of_Ampuli_ut2xza.mp4"
+                    data-episode10="Episode 10: Real_history_of_Ampuli" data-time10="10:00m"
+                    data-link12="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179829/11.Continue_the_history_znqbgt.mp4"
+                    data-episode11="Episode 11: Continue_the_history" data-time11="10:00m"
+                    data-link13="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179835/12.Beast_mode_on_village_people_ctm7dn.mp4"
+                    data-episode12="Episode 12: Beast_mode_on_village_people" data-time12="10:00m"
+                    data-link14="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179803/13.Attack_the_Ampuli_s8phvj.mp4"
+                    data-episode13="Episode 13: Attack_the_Ampuli" data-time13="10:00m"
+                    data-link15="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179839/14.Millirory_entry_o7rxzs.mp4"
+                    data-episode14="Episode 14: Millirory_entry" data-time14="10:00m"
+                    data-link16="https://res.cloudinary.com/draqsnyyu/video/upload/v1774179824/15.Ampuli_hunt_beginning_z4p7qh.mp4"
+                    data-episode15="Episode 15: Ampuli_hunt_beginning" data-time15="05:00m">
+
+                    <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/ambuli.jpeg"
+                        data-song1="https://res.cloudinary.com/draqsnyyu/video/upload/v1774180621/Aatha_Nee_Pethaaye_Video_Song___Ambuli___Parthiban___jagan___Sanam_Shetty_256k_zx1tmg.mp3"
+                        data-songTitle1="Aatha_Nee_Pethaaye__Ambuli"></i>
+                    <img src="img/ambuli.jpeg" onclick="movieView(this)" alt="">
+                    <h4>AMPULI(2012)</h4>
+                    <button onclick="movieView(this)">Watch</button>
+                </div>
+
                 <div class="movies" data-title="DARBAR" data-img="img/darpar.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADAgADawUAAteEkEpZxT5wkjgIdRYE"
                     data-link1="https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4"
@@ -345,20 +386,12 @@
                     <h4>DARBAR</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
-                <div class="movies" data-title="AMBULI" data-img="img/ambuli.jpeg"
-                    data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQAD5BcAAlOf0FU9LBF0laOSZBYE">
-
-                    <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
-                    <img src="img/ambuli.jpeg" onclick="movieView(this)" alt="">
-                    <h4>AMBULI(2012)</h4>
-                    <button onclick="movieView(this)">Watch</button>
-                </div>
+                
                 <div class="movies" data-title="KAANTHA" data-img="img/kaantha.jpeg"
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADbBsAAo7-2VXg9kCWsnYkxBYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/kaantha.jpeg" onclick="movieView(this)" alt="">
                     <h4>KAANTHA</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -367,7 +400,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADsR4AAsmkSVVUpSlVrR3WzRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/aaryan.jpeg" onclick="movieView(this)" alt="">
                     <h4>AARYAN</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -376,7 +409,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADJB4AAu6U4VT9ZnLQ1D-8fRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/diesel.jpeg" onclick="movieView(this)" alt="">
                     <h4>DIESEL</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -385,7 +418,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADDRMAArQxOVYhkc5jKDxh2BYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/raayan.jpeg" onclick="movieView(this)" alt="">
                     <h4>RAAYAN</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -394,7 +427,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADKB8AAquu-FS1-RDPASQXuhYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bison.jpeg" onclick="movieView(this)" alt="">
                     <h4>BISON</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -403,7 +436,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAAD_gwAAtfiUVEzhNpPmRnIrRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/katasi vivasayi.jpeg" onclick="movieView(this)" alt="">
                     <h4>KATAISY VIWASAYI</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -412,7 +445,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADTgoAAnI3uVQlr1VwytQZNxYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/kasethan katavulta.jpeg" onclick="movieView(this)" alt="">
                     <h4>KASETHAN KADAVULATA</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -421,7 +454,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAADDxYAAkzEKFLjTVIhuMi07RYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/captain miller.jpeg" onclick="movieView(this)" alt="">
                     <h4>CAPTAIN MILLER</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -430,7 +463,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAADsBEAArNF2VEW2S9trxoR7BYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/asuran.jpeg" onclick="movieView(this)" alt="">
                     <h4>ASURAN</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -439,7 +472,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQAD9xQAAgSFCVSunplpNe5yKRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/sarbatta.jpeg" onclick="movieView(this)" alt="">
                     <h4>SARPATTA<br>PARAMBARAI</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -448,7 +481,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADkx0AAuSgyFTXOHBj1TmrCRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bashsha.jpeg" onclick="movieView(this)" alt="">
                     <h4>BAASHSHA</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -457,7 +490,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADng0AAhyk8Fe-UTCUl5HuZBYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/jai bhim.jpeg" onclick="movieView(this)" alt="">
                     <h4>JAI BHIM</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -466,7 +499,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBAADcR0AAt8-yVGy2e9SLbcuDBYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/retro.jpeg" onclick="movieView(this)" alt="">
                     <h4>RETRO(2025)</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -475,7 +508,7 @@
                     data-link="https://telegram.me/TamilGun_Movie_Request_5_Bot?start=files_BQADBQADRBwAAvTNsFc9JR-uRt7nkRYE">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/vikram.jpeg" onclick="movieView(this)" alt="">
                     <h4>VIKRAM</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -484,7 +517,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/idli kadai.jpeg" onclick="movieView(this)" alt="">
                     <h4>IDLI KADAI</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -493,7 +526,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/kutumpam.jpeg" onclick="movieView(this)" alt="">
                     <h4>KUTUMPASTHAN</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -520,7 +553,7 @@
                     data-episode4="Episode 2: The Setup" data-time4="4m">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/Hindi movie imgs/maidaan.jpeg" onclick="movieView(this)" alt="">
                     <h4>MAIDAAN</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -529,7 +562,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/Hindi movie imgs/liger.jpeg" onclick="movieView(this)" alt="">
                     <h4>LIGER</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -538,7 +571,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/Hindi movie imgs/my name.jpeg" onclick="movieView(this)" alt="">
                     <h4>MY NAME IS KHAN</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -548,7 +581,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575391/adipurush_dpbpmw.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>ADIPURUSH</h4>
@@ -559,7 +592,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575368/arjun_kzpvik.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>ARJUN</h4>
@@ -570,7 +603,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575367/cocktail_cdw2mb.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>COCKTAIL</h4>
@@ -581,7 +614,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575368/deva_g5bdgv.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>DEVA</h4>
@@ -592,7 +625,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575369/gabbar_opyldk.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>GABBAR</h4>
@@ -603,7 +636,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575369/game_changer_kwewck.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>GAME CHANGER</h4>
@@ -614,7 +647,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575370/hero_onlrrs.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>HERO</h4>
@@ -625,7 +658,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575371/love_ajee_hal_amz7fp.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>LOVE AJEE HAL</h4>
@@ -636,7 +669,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575384/navabzaade_dzfvqk.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>NAVABZAADE</h4>
@@ -647,7 +680,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575380/pink_r56omq.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>PINK</h4>
@@ -658,7 +691,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575376/raanjhana_rqwufs.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>RAANJHANA</h4>
@@ -669,7 +702,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575374/ram_leela_aytyzf.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>RAM LEELA</h4>
@@ -680,7 +713,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575385/rascales_uwl0qd.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>RASCALES</h4>
@@ -691,7 +724,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575379/shubu_mangal_saavdan_lalxej.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>SHUBU MANGAL SAAVDAN</h4>
@@ -702,7 +735,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575379/simmpa_bebxou.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>SIMMPA</h4>
@@ -713,7 +746,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575380/sirai_mu7cto.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>SIRAI</h4>
@@ -724,7 +757,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="https://res.cloudinary.com/draqsnyyu/image/upload/v1773575380/sonu_titu_sweety_bbauja.jpg"
                         onclick="movieView(this)" alt="">
                     <h4>SONU TITU SWEETY</h4>
@@ -742,7 +775,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/vip.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -751,7 +784,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/tirucitrapalam.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -760,7 +793,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/kasethan katavulta.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -769,7 +802,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/raayan.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -778,7 +811,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -787,7 +820,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -796,7 +829,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -805,7 +838,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -814,7 +847,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -823,7 +856,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -832,7 +865,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -841,7 +874,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -850,7 +883,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -859,7 +892,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -868,7 +901,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -877,7 +910,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -886,7 +919,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -895,7 +928,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -904,7 +937,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -913,7 +946,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -930,7 +963,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/dude.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -939,7 +972,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/katasi vivasayi.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -948,7 +981,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/teyva makan.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -957,7 +990,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/love.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -966,7 +999,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -975,7 +1008,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -984,7 +1017,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -993,7 +1026,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1002,7 +1035,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1011,7 +1044,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1020,7 +1053,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1029,7 +1062,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1038,7 +1071,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1047,7 +1080,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1056,7 +1089,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1065,7 +1098,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1074,7 +1107,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1083,7 +1116,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1092,7 +1125,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1101,7 +1134,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1118,7 +1151,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/avathar.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1127,7 +1160,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/piremalu.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1136,7 +1169,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/darpar.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1145,7 +1178,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/amaran.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1154,7 +1187,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1163,7 +1196,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1172,7 +1205,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1181,7 +1214,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1190,7 +1223,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1199,7 +1232,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1208,7 +1241,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1217,7 +1250,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1226,7 +1259,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1235,7 +1268,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1244,7 +1277,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1253,7 +1286,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1262,7 +1295,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1271,7 +1304,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1280,7 +1313,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1289,7 +1322,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1306,7 +1339,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/captan america.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1315,7 +1348,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/amaran.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1324,7 +1357,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/dude.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1333,7 +1366,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/kasethan katavulta.jpeg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1342,7 +1375,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1351,7 +1384,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1360,7 +1393,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1369,7 +1402,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1378,7 +1411,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1387,7 +1420,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1396,7 +1429,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1405,7 +1438,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1414,7 +1447,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1423,7 +1456,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1432,7 +1465,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1441,7 +1474,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1450,7 +1483,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 1.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1459,7 +1492,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 2.jpg" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1468,7 +1501,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus 3.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1477,7 +1510,7 @@
                     data-link="https://aabin-movies.netlify.app/squad.html">
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
-                    <i class="fas fas fa-music" id="music"></i>
+                    <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
                     <img src="img/bus.png" onclick="movieView(this)" alt="">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
@@ -1529,4 +1562,5 @@
 </body>
 <script src="movie.js"></script>
 <script src="music-push.js"></script>
+
 </html>

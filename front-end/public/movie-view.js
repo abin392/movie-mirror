@@ -175,6 +175,7 @@ function changeEpisode(url, title) {
     document.getElementById('movieTitle').textContent = title;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
 document.addEventListener("DOMContentLoaded", () => {
     // Retrieve the saved movie data
     const savedMovie = localStorage.getItem('selectedMovie');
@@ -182,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (savedMovie) {
         const movieData = JSON.parse(savedMovie);
 
-        // Inject text details
+        // Inject text details 
         document.getElementById('movieTitle').textContent = movieData.title;
         document.getElementById('movieInfo').innerHTML = `
                     Hero: ${movieData.hero} <br>
