@@ -90,7 +90,7 @@ function showMusicAlert(message) {
     // Hide the message after 3 seconds
     setTimeout(() => {
         alertBox.classList.remove('show');
-    }, 3000);
+    }, 4000);
 }
 
 // Auto-play the next song when the current one ends
@@ -119,3 +119,81 @@ if (playlist && playlist.length > 0) {
     // Start playing the first song immediately
     playSong(0);
 }
+
+// New Selectors
+const progressSlider = document.getElementById('progressSlider');
+const volumeSlider = document.getElementById('volumeSlider');
+const currentTimeText = document.getElementById('currentTime');
+const durationTimeText = document.getElementById('durationTime');
+
+// Format time from seconds to MM:SS
+function formatTime(seconds) {
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${min}:${sec < 10 ? '0' + sec : sec}`;
+}
+
+// Update Progress Slider and Timer
+audioPlayer.ontimeupdate = () => {
+    if (!isNaN(audioPlayer.duration)) {
+        const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progressSlider.value = progress;
+        currentTimeText.innerText = formatTime(audioPlayer.currentTime);
+    }
+};
+
+// Set duration once metadata is loaded
+audioPlayer.onloadedmetadata = () => {
+    durationTimeText.innerText = formatTime(audioPlayer.duration);
+};
+
+// Seek song position
+progressSlider.oninput = () => {
+    const seekTime = (progressSlider.value / 100) * audioPlayer.duration;
+    audioPlayer.currentTime = seekTime;
+};
+
+// Volume Control
+volumeSlider.oninput = () => {
+    audioPlayer.volume = volumeSlider.value;
+    const icon = document.getElementById('volumeIcon');
+    if (audioPlayer.volume === 0) icon.className = "fas fa-volume-mute";
+    else if (audioPlayer.volume < 0.5) icon.className = "fas fa-volume-down";
+    else icon.className = "fas fa-volume-up";
+};
+
+// Keep your existing Play/Pause/Next/Prev listeners from the previous step!
+
+// New Selectors for the buttons
+const playPauseBtn = document.getElementById('playPauseBtn');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+
+// Play/Pause Toggle Logic
+playPauseBtn.addEventListener('click', () => {
+    if (audioPlayer.paused) {
+        audioPlayer.play();
+    } else {
+        audioPlayer.pause();
+    }
+});
+
+// Update Play/Pause icon based on audio state
+audioPlayer.onplay = () => {
+    playPauseBtn.classList.replace('fa-play', 'fa-pause');
+};
+audioPlayer.onpause = () => {
+    playPauseBtn.classList.replace('fa-pause', 'fa-play');
+};
+
+// Next Song Logic (Reuses your existing calculation)
+nextBtn.addEventListener('click', () => {
+    let nextIndex = (currentIndex + 1) % playlist.length;
+    playSong(nextIndex);
+});
+
+// Previous Song Logic
+prevBtn.addEventListener('click', () => {
+    let prevIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+    playSong(prevIndex);
+});
