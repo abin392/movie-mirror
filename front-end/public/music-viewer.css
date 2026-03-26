@@ -128,7 +128,7 @@ body {
 #durationTime,
 #volumeIcon,
 .playback-btns i {
-    color: #2a0e3c;
+    color: antiquewhite;
 }
 
 @keyframes pulse {
