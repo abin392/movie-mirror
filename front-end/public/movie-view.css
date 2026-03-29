@@ -43,6 +43,12 @@ body {
     /* Show buttons when hovering over video */
 }
 
+/* Add this to your CSS file */
+video {
+    filter: brightness(1.1) contrast(1.1);
+    /* This is for visuals, but helps focus */
+}
+
 .nav-btn {
     pointer-events: auto;
     /* Re-enable clicking for buttons */
