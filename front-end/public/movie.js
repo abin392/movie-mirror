@@ -17,10 +17,9 @@ function executeSearch() {
     });
 
     if (foundMovie) {
-        // Calls your existing movieView function to redirect
         movieView(foundMovie);
     } else {
-        alert("Movie not found! Please check the title.");
+        showStyledError("Movie not found! Please check the title."); // New style
     }
 }
 
@@ -365,4 +364,21 @@ function showToastAndRedirect(shouldRedirect) {
             window.location.href = "download.html"; // Ensure this filename is correct
         }
     }, 2000);
+}
+
+function showStyledError(message) {
+    // Prevent multiple toasts from stacking
+    const existingToast = document.querySelector('.movie-error-toast');
+    if (existingToast) existingToast.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'movie-error-toast';
+    toast.innerHTML = `<i class="fas fa-exclamation-circle"></i> <span>${message}</span>`;
+    document.body.appendChild(toast);
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 500);
+    }, 3000);
 }

@@ -169,13 +169,13 @@ function playPrevious() {
 function changeEpisode(url, title) {
     const video = document.getElementById('movieVideo');
     const source = document.getElementById('videoSource');
-    
+
     source.src = url;
     video.load();
-    
+
     // Call the boost here
     // Start with 2 (200%). If it's still too low, try 3 or 4.
-    boostVolume(video, 4); 
+    boostVolume(video, 4);
 
     video.play();
     document.getElementById('movieTitle').textContent = title;
@@ -250,18 +250,18 @@ function boostVolume(videoElement, multiplier) {
 
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
+
         // 2. Create nodes
         const source = audioCtx.createMediaElementSource(videoElement);
         gainNode = audioCtx.createGain();
-        
+
         // 3. Connect: Video -> Gain -> Speakers
         source.connect(gainNode);
         gainNode.connect(audioCtx.destination);
     }
 
     // 4. Set the boost level
-    gainNode.gain.value = multiplier; 
+    gainNode.gain.value = multiplier;
 
     // 5. Resume context on user click (Browser security)
     if (audioCtx.state === 'suspended') {
