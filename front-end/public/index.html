@@ -11,19 +11,60 @@
 <body>
 
     <div id="customAlert" class="alert-overlay">
-    <div class="alert-box">
-        <h3 id="alertTitle">Alert</h3>
-        <p id="alertMessage">Message here</p>
-        <button onclick="closeAlert()">OK</button>
+        <div class="alert-box">
+            <h3 id="alertTitle">Alert</h3>
+            <p id="alertMessage">Message here</p>
+            <button onclick="closeAlert()">OK</button>
+        </div>
     </div>
-</div>
 
 
     <div class="login-container">
-        <img src="img/user.png" alt="" id="yourImage">
-        <input type="text" id="username" placeholder="Username" required><br><br>
-        <input type="file" id="profileImage" accept="image/*"><br><br>
-        <button onclick="login()">Login</button>
+        <div class="avatar-picker">
+            <div class="image-wrapper">
+                <img src="img/user.png" alt="User Profile" id="yourImage">
+
+                <label class="camera-btn" onclick="openAvatarModal()">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                            stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                            d="M3 7C3 5.89543 3.89543 5 5 5H7.17157C7.70201 5 8.21071 5.21071 8.58579 5.58579L9.41421 6.41421C9.78929 6.78929 10.298 7 10.8284 7H20C21.1046 7 22 7.89543 22 9V18C22 19.1046 21.1046 20 20 20H4C2.89543 20 2 19.1046 2 18V9C2 8.44772 2.44772 8 3 8V7Z"
+                            stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </label>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="username" placeholder="Enter Username" required style="width: 100%;">
+            <input type="file" id="profileImage" accept="image/*" hidden>
+        </div>
+
+        <button class="login-btn" onclick="login()" style="margin-top: 30px;">Enter Mirror</button>
+    </div>
+
+    <div id="avatarModal" class="alert-overlay">
+        <div class="alert-box">
+            <h3>Select Profile Picture</h3>
+            <div class="avatar-grid">
+                <img src="img/avatar/a1.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <img src="img/avatar/a2.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <img src="img/avatar/a3.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <img src="img/avatar/a4.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <img src="img/avatar/a5.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <img src="img/avatar/a6.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <img src="img/avatar/a7.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <img src="img/avatar/a8.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <img src="img/avatar/a9.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <img src="img/avatar/a10.jpeg" class="default-img" onclick="selectAvatar(this.src)">
+                <div class="upload-option" onclick="document.getElementById('profileImage').click()">
+                    <span>+ Upload</span>
+                </div>
+            </div>
+            <button class="close-btn" onclick="closeAvatarModal()">Close</button>
+        </div>
     </div>
 
     <script src="index.js"></script>

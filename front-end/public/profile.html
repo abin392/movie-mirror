@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#003d40">
-    <title>Your Profile</title>
+    <title>User Profile</title>
 
 
     <!-- Meta bar color -->
@@ -17,34 +17,97 @@
 </head>
 
 <body>
-    <div class="header">
-        <h1>Your Profile</h1>
-        <button onclick="logout()">Logout</button>
-    </div>
 
     <!-- Image Preview Popup -->
     <div id="imagePreview" class="image-preview">
         <span class="close">&times;</span>
         <img id="previewImg">
     </div>
-    <div class="center-content">
-        <div class="user-details">
-            <img id="profilePic" src="" alt="Profile Picture" width="150" height="150"><br><br>
-            <h3>User Name</h3>
-            <div class="un">
-                <span id="displayName"></span>
+
+    <div class="profile-page-wrapper">
+        <div class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="nav-sidebar" id="navSidebar">
+            <div class="sidebar-header">
+                <h2>Mirror Settings</h2>
             </div>
-            <input type="text" id="usernameInput" placeholder="Enter new username" hidden>
+            <ul class="nav-links">
+                <li><a href="movie.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="download.html"><i class="fas fa-download"></i> Downloads</a></li>
+                <li><a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a></li>
+                <li class="active"><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
 
-            <br><br>
+        <div class="main-content">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h2>Account Settings</h2>
+                </div>
 
-            <button id="editBtn" onclick="editUsername()">Edit Name</button>
-            <button id="saveBtn" onclick="saveUsername()" hidden>Save</button>
-            <button id="cancelBtn" onclick="cancelEdit()" hidden>Cancel</button>
-            <input type="file" id="imageInput" accept="image/*" hidden>
-            <button onclick="changeImage()">Change Image</button>
+                <div class="avatar-section">
+                    <div class="avatar-picker">
+                        <div class="image-wrapper">
+                            <img id="profilePic" src="img/user.png" alt="Profile">
+                            <div class="camera-btn" onclick="openAvatarModal()">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 id="displayName">Username</h1>
+                    <p class="user-role">Mirror Premium Member</p>
+                </div>
+
+                <div class="settings-group">
+                    <div class="input-container">
+                        <label>Profile Name</label>
+                        <input type="text" id="usernameInput" placeholder="Enter new username" hidden>
+                        <div class="button-row">
+                            <button id="editBtn" class="btn-secondary" onclick="editUsername()">Edit Name</button>
+                            <button id="saveBtn" class="btn-primary" onclick="saveUsername()" hidden>Save
+                                Changes</button>
+                            <button id="cancelBtn" class="btn-outline" onclick="cancelEdit()" hidden>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="danger-zone">
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout Session
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div id="avatarModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Choose Avatar</h3>
+            <div class="avatar-grid">
+                <img src="img/avatar/a1.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+                <img src="img/avatar/a2.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+                <img src="img/avatar/a3.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+                <img src="img/avatar/a4.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+                <img src="img/avatar/a5.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+                <img src="img/avatar/a6.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+                <img src="img/avatar/a7.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+                <img src="img/avatar/a8.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+                <img src="img/avatar/a9.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+                <img src="img/avatar/a10.jpeg" class="preset-avatar" onclick="updateAvatar(this.src)">
+
+                <div class="upload-option" onclick="document.getElementById('imageInput').click()">
+                    <i class="fas fa-plus"></i>
+                    <span>Upload</span>
+                </div>
+            </div>
+            <button class="close-modal" onclick="closeAvatarModal()">Cancel</button>
+        </div>
+    </div>
+
+    <input type="file" id="imageInput" accept="image/*" hidden>
 
     <script src="profile.js"></script>
     <script src="security.js"></script>

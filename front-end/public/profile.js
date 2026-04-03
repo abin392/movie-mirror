@@ -1,146 +1,219 @@
-// Retrieve and display user data from localStorage
-const username = localStorage.getItem("username");
-const profileImage = localStorage.getItem("profileImage");
-
-if (username && profileImage) {
-    document.getElementById("displayName").innerText = username;
-    document.getElementById("profilePic").src = profileImage;
-} else {
-    document.getElementById("displayName").innerText = "No user data found.";
-}
-
-function changeImage() {
-    document.getElementById("imageInput").click();
-}
-
-document.getElementById("imageInput").addEventListener("change", function () {
-    const file = this.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function () {
-        localStorage.setItem("profileImage", reader.result);
-
-        // Update image instantly if exists on page
-        const img1 = document.getElementById("userImage");
-        const img2 = document.getElementById("profilePic");
-
-        if (img1) img1.src = reader.result;
-        if (img2) img2.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-});
-// On page load, set the profile details
-
-if (username) document.getElementById("displayName").innerText = username;
-if (profileImage) document.getElementById("profilePic").src = profileImage;
-
-function logout() {
-    //  Clear all storage
-    localStorage.clear();
-    sessionStorage.clear();
-
-    //  Delete ALL cookies for this site
-    document.cookie.split(";").forEach(cookie => {
-        document.cookie = cookie
-            .replace(/^ +/, "")
-            .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/");
-    });
-
-    //  Clear Cache Storage (PWA / Chrome supported)
-    if ("caches" in window) {
-        caches.keys().then(keys => {
-            keys.forEach(key => caches.delete(key));
-        });
-    }
-
-    // Disable back navigation
-    history.pushState(null, null, location.href);
-    window.onpopstate = function () {
-        history.go(1);
-    };
-
-    // Redirect to login page (hard replace)
-    window.location.replace("index.html");
-}
+/**
+ * PROFILE PAGE LOGIC - FULL REWRITE
+ * Handles: Sidebar, Avatar Modal, Profile Editing, and Session Management
+ */
 
 document.addEventListener("DOMContentLoaded", () => {
-    if (!localStorage.getItem("username")) {
-        window.location.replace("index.html");
+    // 1. Initial Data Load
+    loadUserProfile();
+
+    // 2. Setup File Input Listener for Custom Uploads
+    const imageInput = document.getElementById("imageInput");
+    if (imageInput) {
+        imageInput.addEventListener("change", handleCustomImageUpload);
     }
 });
 
+// --- USER DATA MANAGEMENT ---
 
-const profilePic = document.getElementById("profilePic");
-const imagePreview = document.getElementById("imagePreview");
-const previewImg = document.getElementById("previewImg");
-const closeBtn = document.querySelector(".close");
+function loadUserProfile() {
+    const username = localStorage.getItem("username") || "New User";
+    const profileImage = localStorage.getItem("profileImage") || "img/user.png";
 
-// Load saved data
+    const displayElem = document.getElementById("displayName");
+    const picElem = document.getElementById("profilePic");
 
-if (username) document.getElementById("displayName").innerText = username;
-if (profileImage) profilePic.src = profileImage;
-
-// Click image to view
-profilePic.addEventListener("click", () => {
-    if (!profilePic.src) return;
-    previewImg.src = profilePic.src;
-    imagePreview.style.display = "flex";
-});
-
-// Close popup
-closeBtn.addEventListener("click", () => {
-    imagePreview.style.display = "none";
-});
-
-// Close on background click
-imagePreview.addEventListener("click", (e) => {
-    if (e.target === imagePreview) {
-        imagePreview.style.display = "none";
-    }
-});
-
-const displayName = document.getElementById("displayName");
-const usernameInput = document.getElementById("usernameInput");
-const editBtn = document.getElementById("editBtn");
-const saveBtn = document.getElementById("saveBtn");
-const cancelBtn = document.getElementById("cancelBtn");
+    if (displayElem) displayElem.innerText = username;
+    if (picElem) picElem.src = profileImage;
+}
 
 function editUsername() {
-    usernameInput.value = displayName.innerText;
-    displayName.style.display = "none";
-    usernameInput.hidden = false;
+    const display = document.getElementById("displayName");
+    const input = document.getElementById("usernameInput");
+    const editBtn = document.getElementById("editBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+
+    // Toggle Visibility
+    display.style.display = "none";
+    input.hidden = false;
+    input.value = display.innerText;
+    input.focus();
 
     editBtn.hidden = true;
     saveBtn.hidden = false;
     cancelBtn.hidden = false;
 }
 
+function cancelEdit() {
+    const display = document.getElementById("displayName");
+    const input = document.getElementById("usernameInput");
+    const editBtn = document.getElementById("editBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+
+    display.style.display = "block";
+    input.hidden = true;
+
+    editBtn.hidden = false;
+    saveBtn.hidden = true;
+    cancelBtn.hidden = true;
+}
+
 function saveUsername() {
-    const newName = usernameInput.value.trim();
+    const input = document.getElementById("usernameInput");
+    const newName = input.value.trim();
 
     if (newName === "") {
         alert("Username cannot be empty!");
         return;
     }
 
-    // Store updated name
+    // Save to Storage
     localStorage.setItem("username", newName);
-
-    // Update UI
-    displayName.innerText = newName;
-
+    
+    // Update UI and Reset Buttons
+    document.getElementById("displayName").innerText = newName;
     cancelEdit();
-
-    // Force reload target page so new data is picked up
-    window.location.href = "movie.html?reload=" + new Date().getTime();
 }
 
-function cancelEdit() {
-    usernameInput.hidden = true;
-    displayName.style.display = "inline";
+// --- AVATAR & IMAGE LOGIC ---
 
-    editBtn.hidden = false;
-    saveBtn.hidden = true;
-    cancelBtn.hidden = true;
+function openAvatarModal() {
+    // If you have a specific modal for selecting pre-set avatars
+    const modal = document.getElementById("avatarModal");
+    if (modal) {
+        modal.classList.add("show");
+    } else {
+        // Fallback: Just trigger file upload if no modal exists
+        document.getElementById("imageInput").click();
+    }
 }
+
+function closeAvatarModal() {
+    const modal = document.getElementById("avatarModal");
+    if (modal) modal.classList.remove("show");
+}
+
+function updateAvatar(src) {
+    const picElem = document.getElementById("profilePic");
+    picElem.src = src;
+    localStorage.setItem("profileImage", src);
+    closeAvatarModal();
+}
+
+function handleCustomImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const result = e.target.result;
+        document.getElementById("profilePic").src = result;
+        localStorage.setItem("profileImage", result);
+        closeAvatarModal();
+    };
+    reader.readAsDataURL(file);
+}
+
+// --- SIDEBAR & NAVIGATION ---
+
+function toggleSidebar() {
+    const sidebar = document.getElementById("navSidebar");
+    if (sidebar) {
+        sidebar.classList.toggle("active");
+    }
+}
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener("click", (e) => {
+    const sidebar = document.getElementById("navSidebar");
+    const menuBtn = document.querySelector(".menu-toggle");
+    
+    if (sidebar && sidebar.classList.contains("active")) {
+        if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+            sidebar.classList.remove("active");
+        }
+    }
+});
+
+// --- SESSION CONTROL ---
+
+function logout() {
+    // Clear login status but keep settings if preferred, 
+    // or use localStorage.clear() to wipe everything.
+    localStorage.removeItem("isLoggedIn");
+    window.location.replace("index.html");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Load initial data
+    const savedName = localStorage.getItem("username");
+    const savedImg = localStorage.getItem("profileImage");
+
+    if (savedName) document.getElementById("displayName").innerText = savedName;
+    if (savedImg) document.getElementById("profilePic").src = savedImg;
+
+    // Listen for custom file upload
+    document.getElementById("imageInput").addEventListener("change", function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                updateAvatar(event.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+});
+
+// Modal Controls
+function openAvatarModal() {
+    document.getElementById("avatarModal").classList.add("show");
+}
+
+function closeAvatarModal() {
+    document.getElementById("avatarModal").classList.remove("show");
+}
+
+// Function to actually save and update the UI
+function updateAvatar(source) {
+    // 1. Update UI
+    document.getElementById("profilePic").src = source;
+    
+    // 2. Save to LocalStorage
+    localStorage.setItem("profileImage", source);
+    
+    // 3. Close Modal
+    closeAvatarModal();
+}
+
+// --- IMAGE PREVIEW LOGIC ---//
+// Get Preview Elements
+const imagePreview = document.getElementById("imagePreview");
+const previewImg = document.getElementById("previewImg");
+const closeBtn = document.querySelector(".image-preview .close");
+const profilePic = document.getElementById("profilePic");
+
+// 1. Open Preview when clicking the Profile Picture
+if (profilePic) {
+    profilePic.style.cursor = "zoom-in"; // Visual hint for user
+    profilePic.addEventListener("click", () => {
+        imagePreview.style.display = "flex";
+        previewImg.src = profilePic.src;
+    });
+}
+
+// 2. Close Preview when clicking the 'X'
+if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+        imagePreview.style.display = "none";
+    });
+}
+
+// 3. Close Preview when clicking the dark background
+imagePreview.addEventListener("click", (e) => {
+    if (e.target === imagePreview) {
+        imagePreview.style.display = "none";
+    }
+});

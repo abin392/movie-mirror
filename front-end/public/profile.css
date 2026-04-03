@@ -1,173 +1,517 @@
 body {
-    background-color: #0097a7;
+    background: black;
+    /* Matches movie.html background */
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .header {
     display: flex;
-    justify-content: start;
-    font-size: 20px;
-    font-family: 'Times New Roman', Times, serif;
-    background-color: #003d40;
-    color: white;
-    position: relative;
-    top: 0;
-    height: 80px;
+    justify-content: space-between;
     align-items: center;
-    padding-left: 20px;
+    background: #2a0e3c;
+    /* Matches movie.html primary purple */
+    color: white;
+    padding: 15px 20px;
+    border-bottom: 2px solid #8e44ad;
+}
+
+.header h1 {
+    font-size: 22px;
+    margin: 0;
 }
 
 .header button {
-    position: absolute;
-    right: 20px;
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #ff4d4d;
+    padding: 8px 15px;
+    font-size: 14px;
+    background: linear-gradient(135deg, #ff4d4d, #a30000);
     color: white;
-    border: none;
+    border: 1px solid white;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.header button:hover {
-    background-color: #e60000;
+    transition: 0.3s;
 }
 
 .center-content {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    min-height: 80vh;
 }
 
 .user-details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 50%;
-    height: 500px;
-    margin-top: 20px;
-    background-color: #d4f1f4;
-    padding: 20px;
-    border: 2px solid #004d40;
-    border-radius: 15px;
+    background: #1a1a1a;
+    /* Dark card background */
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid #8e44ad;
+    /* Purple border matching voice btn */
+    box-shadow: 0 0 20px rgba(142, 68, 173, 0.3);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
 }
 
-.user-details .un {
+/* Unique Avatar Style */
+.avatar-picker {
     display: flex;
     justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    padding: 5px;
+    margin-bottom: 20px;
 }
 
-.user-details span {
-    font-size: 36px;
-    font-weight: bold;
-    margin-top: 10px;
-    color: #004d40;
-    text-align: center;
-    margin: 10px;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-.user-details img {
-    cursor: pointer;
-    border-radius: 50%;
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    margin-top: 20px;
-    margin-bottom: 15px;
-    border: 3px solid #004d40;
-}
-
-/* Popup background */
-.image-preview {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    object-fit: cover;
-}
-
-/* Enlarged image */
-.image-preview img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 10px;
-}
-
-/* Close button */
-.image-preview .close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 40px;
-    color: #fff;
-    cursor: pointer;
-}
-
-.user-details button {
-    background-color: #005f6a;
-    width: 150px;
-    height: 30px;
-    font-size: 17px;
-    border: none;
-    border-radius: 10px;
+.image-wrapper {
     position: relative;
-    bottom: 10px;
-    right: -140px;
+    width: 130px;
+    height: 130px;
+}
+
+#profilePic {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #8e44ad;
+}
+
+.camera-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: #8e44ad;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+.camera-btn i {
+    color: white;
+    font-size: 16px;
 }
 
 .user-details h3 {
-    text-decoration: underline;
+    margin: 10px 0;
+    color: #8e44ad;
+    text-decoration: none;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#displayName {
+    font-size: 24px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 20px;
+}
+
+/* Action Buttons */
+.user-details button {
+    background: linear-gradient(135deg, #8e44ad, #2a0e3c);
+    color: white;
+    width: 100%;
+    height: 45px;
+    margin-top: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
 .user-details button:hover {
-    background-color: #004d40;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 0 15px #003d40;
+    transform: scale(1.02);
+    box-shadow: 0 0 10px #8e44ad;
 }
 
 #usernameInput {
-    padding: 8px;
-    font-size: 16px;
-    width: 220px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    border: 1px solid #8e44ad;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    outline: none;
 }
 
-button {
-    padding: 6px 12px;
-    margin: 5px;
-    border-radius: 6px;
+/* Layout Container */
+.main-layout {
+    margin-left: 260px;
+    /* Space for sidebar on PC */
+    transition: 0.3s;
+}
+
+/* Sidebar Styling */
+.nav-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100%;
+    background: #2a0e3c;
+    /* Theme match */
+    border-right: 2px solid #8e44ad;
+    z-index: 1000;
+    transition: 0.3s ease;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 20px 0;
+    margin: 0;
+}
+
+.nav-links li {
+    padding: 15px 25px;
+    transition: 0.3s;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-links li:hover,
+.nav-links li.active {
+    background: rgba(142, 68, 173, 0.2);
+    border-left: 4px solid #8e44ad;
+}
+
+/* Mobile Adjustments */
+.menu-toggle {
+    display: none;
+    /* Hidden on PC */
+    position: fixed;
+    top: 10px;
+    left: 20px;
+    font-size: 24px;
+    color: white;
+    z-index: 1100;
     cursor: pointer;
+    background: #8e44ad;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
 }
 
-button:hover {
-    box-shadow: 0 0 10px #666;
+@media (max-width: 768px) {
+    .main-layout {
+        margin-left: 0;
+    }
+
+    .nav-sidebar {
+        left: -260px;
+        /* Hide sidebar off-screen */
+    }
+
+    .nav-sidebar.active {
+        left: 0;
+        /* Slide in on mobile */
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
 }
 
-@media (max-width: 600px) {
-    .user-details {
-        width: 80%;
-        height: 100%;
+/* TV/Large Screen (Optimization) */
+@media (min-width: 1500px) {
+    .nav-sidebar {
+        width: 300px;
     }
 
-    .user-details img {
-        width: 150px;
-        height: 150px;
+    .main-layout {
+        margin-left: 300px;
     }
+}
 
-    .user-details button {
-        width: 120px;
-        height: 25px;
-        font-size: 14px;
-        right: -100px;
+:root {
+    --primary-purple: #8e44ad;
+    --dark-bg: #0a0a0a;
+    --card-bg: rgba(42, 14, 60, 0.4);
+    --text-main: #ffffff;
+    --text-dim: #b3b3b3;
+}
+
+body {
+    background: radial-gradient(circle at top, #1a0b2e 0%, #000000 100%);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Glassmorphism Card */
+.profile-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(142, 68, 173, 0.3);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+.profile-header h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--primary-purple);
+    margin-bottom: 30px;
+}
+
+/* Avatar Styling */
+.image-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 20px;
+}
+
+#profilePic {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-purple);
+    box-shadow: 0 0 15px rgba(142, 68, 173, 0.5);
+}
+
+.camera-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: var(--primary-purple);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #1a0b2e;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.camera-btn:hover {
+    transform: scale(1.1);
+    background: #a349cc;
+}
+
+/* Typography */
+#displayName {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 10px 0 5px;
+}
+
+.user-role {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+/* Forms & Buttons */
+#usernameInput {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--primary-purple);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #8e44ad, #5e2b6d);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-btn {
+    margin-top: 40px;
+    background: none;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logout-btn:hover {
+    background: #ff4d4d;
+    color: white;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+/* Modal Content Box */
+.modal-box {
+    background: #1a0b2e;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid var(--primary-purple);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.preset-avatar {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+.preset-avatar:hover {
+    border-color: var(--primary-purple);
+    transform: scale(1.1);
+}
+
+.upload-option {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    border: 2px dashed var(--primary-purple);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Image Preview Overlay */
+.image-preview {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    /* Darker for better focus */
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    /* Must be higher than Sidebar and Modals */
+    cursor: zoom-out;
+}
+
+/* The actual enlarged image */
+#previewImg {
+    max-width: 90%;
+    max-height: 80vh;
+    border-radius: 15px;
+    border: 2px solid var(--primary-purple);
+    box-shadow: 0 0 30px rgba(142, 68, 173, 0.4);
+    transform: scale(0.9);
+    animation: zoomIn 0.3s forwards;
+}
+
+@keyframes zoomIn {
+    to {
+        transform: scale(1);
     }
+}
+
+/* Close Button */
+.image-preview .close {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 50px;
+    color: white;
+    cursor: pointer;
+    line-height: 1;
+    transition: 0.3s;
+}
+
+.image-preview .close:hover {
+    color: #ff4d4d;
+    transform: rotate(90deg);
 }

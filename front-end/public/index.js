@@ -1,51 +1,59 @@
+// --- Alert Logic ---
 function showAlert(message, title = "Alert") {
-        document.getElementById("alertTitle").innerText = title;
-        document.getElementById("alertMessage").innerText = message;
-        document.getElementById("customAlert").classList.add("show");
+    document.getElementById("alertTitle").innerText = title;
+    document.getElementById("alertMessage").innerText = message;
+    document.getElementById("customAlert").classList.add("show");
+}
+
+function closeAlert() {
+    document.getElementById("customAlert").classList.remove("show");
+}
+
+// --- Avatar Modal Logic ---
+// --- Modal Controls ---
+function openAvatarModal() {
+    document.getElementById("avatarModal").classList.add("show");
+}
+
+function closeAvatarModal() {
+    document.getElementById("avatarModal").classList.remove("show");
+}
+
+// Automatically update preview when a default image is clicked
+function selectAvatar(src) {
+    document.getElementById("yourImage").src = src;
+    closeAvatarModal();
+}
+
+// --- Enhanced Login Logic ---
+function login() {
+    const username = document.getElementById("username").value.trim();
+    const currentImg = document.getElementById("yourImage").src;
+
+    if (!username) {
+        // Reusing your custom alert logic
+        showAlert("Please enter a username to continue.", "Identity Required");
+        return;
     }
 
-    function closeAlert() {
-        document.getElementById("customAlert").classList.remove("show");
-    }
+    // Save state for the media portal
+    localStorage.setItem("username", username);
+    localStorage.setItem("profileImage", currentImg);
+    localStorage.setItem("isLoggedIn", "true");
 
-        // Auto redirect if already logged in
-    if (localStorage.getItem("isLoggedIn") === "true") {
-        window.location.replace("movie.html");
-    }
+    // Seamless transition to movie page
+    window.location.replace("movie.html");
+}
 
-    function login() {
-        const username = document.getElementById("username").value.trim();
-        const imageInput = document.getElementById("profileImage");
-
-        if (!username || imageInput.files.length === 0) {
-            showAlert("Please enter username and select image", "Login Required");
-            return;
-        }
-
+// --- Live File Upload Preview ---
+document.getElementById("profileImage").addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) {
         const reader = new FileReader();
-        reader.onload = function () {
-            localStorage.setItem("username", username);
-            localStorage.setItem("profileImage", reader.result);
-            localStorage.setItem("isLoggedIn", "true");
-
-            // Prevent back button
-            window.location.replace("movie.html");
-        };
-
-        reader.readAsDataURL(imageInput.files[0]);
-    }
-
-    //Live image preview
-    const imageInput = document.getElementById("profileImage");
-    const previewImage = document.getElementById("yourImage");
-
-    imageInput.addEventListener("change", () => {
-        const file = imageInput.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            previewImage.src = reader.result;
+        reader.onload = (e) => {
+            document.getElementById("yourImage").src = e.target.result;
+            closeAvatarModal(); // Close modal after successful upload
         };
         reader.readAsDataURL(file);
-    });
+    }
+});
