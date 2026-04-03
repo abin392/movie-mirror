@@ -351,6 +351,7 @@ function addToDownloads(icon) {
     showToastAndRedirect(true);
 }
 
+// Show toast notification and optionally redirect to download page
 function showToastAndRedirect(shouldRedirect) {
     const toast = document.getElementById("download-toast");
 
@@ -366,6 +367,7 @@ function showToastAndRedirect(shouldRedirect) {
     }, 2000);
 }
 
+// Styled error message function
 function showStyledError(message) {
     // Prevent multiple toasts from stacking
     const existingToast = document.querySelector('.movie-error-toast');
