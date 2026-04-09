@@ -16,6 +16,30 @@
 
 <body>
 
+
+    <div class="voice-assistant-wrapper">
+        <div id="voice-options-menu" class="voice-hidden">
+            <button onclick="startVoiceRecognition('movie')">
+                <i class="fas fa-film"></i> Search Movie
+            </button>
+            <button onclick="startVoiceRecognition('music')">
+                <i class="fas fa-music"></i> Search Music
+            </button>
+        </div>
+
+        <div id="voice-assistant-btn" onclick="toggleVoiceMenu()">
+            <i class="fas fa-microphone"></i>
+            <div class="pulse-ring"></div>
+        </div>
+    </div>
+
+    <div id="listening-overlay" class="voice-hidden">
+        <div class="overlay-content">
+            <div class="mic-glow"><i class="fas fa-microphone"></i></div>
+            <p id="voice-status">Say "Playing Dude Movie"</p>
+        </div>
+    </div>
+
     <div id="download-toast" class="toast-hidden">
         <div class="toast-content">
             <i class="fas fa-check-circle"></i>
@@ -1609,17 +1633,6 @@
         <br><br><br>
     </div>
 
-    <div id="voice-assistant-btn" onclick="startVoiceRecognition()">
-        <i class="fas fa-microphone"></i>
-        <div class="pulse-ring"></div>
-    </div>
-
-    <div id="listening-overlay" class="voice-hidden">
-        <div class="overlay-content">
-            <div class="mic-glow"><i class="fas fa-microphone"></i></div>
-            <p id="voice-status">Say "Playing Dude Movie"</p>
-        </div>
-    </div>
 </body>
 <script src="voice-assistant.js"></script>
 <script src="movie.js"></script>
