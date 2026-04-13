@@ -21,23 +21,44 @@
         <div class="trailer">
             <h1 style="color: white;">MOVIE TRAILER & EPISODES</h1>
         </div><br>
+
         <div class="video-box" id="fullscreenContainer">
-            <video id="movieVideo" onclick="togglePlay()" controls>
+            <video id="movieVideo" onclick="togglePlay()">
                 <source id="videoSource" src="" type="video/mp4">
             </video>
 
             <div class="video-overlay-controls" id="overlayControls">
-                <button class="nav-btn" onclick="playPrevious()" data-tooltip="Previous">
-                    <i class="fas fa-step-backward"></i>
-                </button>
+                <div class="main-controls">
+                    <button class="nav-btn" onclick="playPrevious()" data-tooltip="Previous">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button class="nav-btn play-btn" onclick="togglePlay()" data-tooltip="Play/Pause">
+                        <i class="fas fa-play" id="playIcon"></i>
+                    </button>
+                    <button class="nav-btn" onclick="playNext()" data-tooltip="Next">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                </div>
 
-                <button class="nav-btn play-btn" onclick="togglePlay()" data-tooltip="Play/Pause">
-                    <i class="fas fa-play" id="playIcon"></i>
-                </button>
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-dot" id="progressDot"></div>
+                    </div>
+                </div>
+                <div class="bottom-controls">
+                    <div class="timer-display">
+                        <span id="currentTime">0:00</span> / <span id="durationTime">0:00</span>
+                    </div>
 
-                <button class="nav-btn" onclick="playNext()" data-tooltip="Next">
-                    <i class="fas fa-step-forward"></i>
-                </button>
+                    <div class="volume-container">
+                        <i class="fas fa-volume-up" id="volumeIcon"></i>
+                        <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+                    </div>
+
+                    <button class="fullscreen-btn" onclick="toggleCustomFullscreen()">
+                        <i class="fas fa-expand" id="fullScreenIcon"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -67,6 +88,6 @@
 
 </body>
 <script src="movie-view.js"></script>
-<script src="security.js"></script>
 <script src="voice-assistant.js"></script>
+
 </html>

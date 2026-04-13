@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Wait 2 seconds then play next
             setTimeout(() => {
                 changeEpisode(nextEpisode.link, nextEpisode.title);
-            }, 2500);
+            }, 500);
         } else {
             console.log("End of series/movie.");
         }
@@ -234,4 +234,138 @@ navButtons.forEach(btn => {
         // We just ensure the UI timer is reset so they can see the name
         showUI();
     });
+});
+
+
+// Additional Controls Logic (Volume, Timer, Custom Fullscreen)
+const video = document.getElementById('movieVideo');
+const volumeSlider = document.getElementById('volumeSlider');
+const currentTimeDisplay = document.getElementById('currentTime');
+const durationTimeDisplay = document.getElementById('durationTime');
+
+// 1. Volume Control
+volumeSlider.addEventListener('input', (e) => {
+    video.volume = e.target.value;
+    const icon = document.getElementById('volumeIcon');
+    if (video.volume == 0) icon.className = "fas fa-volume-mute";
+    else icon.className = "fas fa-volume-up";
+});
+
+// 2. Timer Control (Format seconds to MM:SS)
+function formatTime(seconds) {
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${min}:${sec < 10 ? '0' + sec : sec}`;
+}
+
+video.addEventListener('loadedmetadata', () => {
+    durationTimeDisplay.textContent = formatTime(video.duration);
+});
+
+video.addEventListener('timeupdate', () => {
+    currentTimeDisplay.textContent = formatTime(video.currentTime);
+});
+
+// 3. Custom Fullscreen (Z-Index Method)
+function toggleCustomFullscreen() {
+    const container = document.getElementById('fullscreenContainer');
+    const icon = document.getElementById('fullScreenIcon');
+    
+    container.classList.toggle('custom-fullscreen');
+
+    if (container.classList.contains('custom-fullscreen')) {
+        icon.classList.replace('fa-expand', 'fa-compress');
+        document.body.style.overflow = "hidden"; // Prevent scrolling behind
+    } else {
+        icon.classList.replace('fa-compress', 'fa-expand');
+        document.body.style.overflow = "auto";
+    }
+}
+
+// Ensure UI shows on hover (already in your logic, just verify)
+function showUI() {
+    const overlay = document.getElementById('overlayControls');
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "auto";
+    
+    clearTimeout(window.uiTimeout);
+    window.uiTimeout = setTimeout(() => {
+        if (!video.paused) {
+            overlay.style.opacity = "0";
+            overlay.style.pointerEvents = "none";
+        }
+    }, 3000);
+}
+
+document.getElementById('fullscreenContainer').addEventListener('mousemove', showUI);
+
+// Progress Bar Logic
+const progressBar = document.getElementById('progressBar');
+const progressContainer = document.getElementById('progressContainer');
+
+// 1. Update the Bar as the Video Plays
+video.addEventListener('timeupdate', () => {
+    if (video.duration) {
+        const percentage = (video.currentTime / video.duration) * 100;
+        // The ball moves because it's attached to the right side of this bar
+        progressBar.style.width = `${percentage}%`;
+        
+        document.getElementById('currentTime').textContent = formatTime(video.currentTime);
+    }
+});
+
+// 2. Click to Seek (Jump to a specific time)
+progressContainer.addEventListener('click', (e) => {
+    const containerWidth = progressContainer.offsetWidth;
+    const clickX = e.offsetX; // Where the user clicked
+    const duration = video.duration;
+
+    if (duration) {
+        // Calculate new time: (click position / total width) * total duration
+        video.currentTime = (clickX / containerWidth) * duration;
+    }
+});
+
+// 3. Reset Bar on Episode Change
+// Add this inside your existing changeEpisode(url, title) function
+function changeEpisode(url, title) {
+    const video = document.getElementById('movieVideo');
+    const source = document.getElementById('videoSource');
+
+    progressBar.style.width = '0%'; // Reset visual bar
+    source.src = url;
+    video.load();
+    
+    video.play();
+    document.getElementById('movieTitle').textContent = title;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Optional: Show tooltip on progress bar hover (for desktop)
+// Hide cursor and UI when inactive
+let timeout;
+const container = document.getElementById('fullscreenContainer');
+const overlay = document.getElementById('overlayControls');
+
+function hideControls() {
+    if (video.paused) return; // Don't hide if paused
+    overlay.style.opacity = "0";
+    container.style.cursor = "none";
+}
+
+container.addEventListener('mousemove', () => {
+    overlay.style.opacity = "1";
+    container.style.cursor = "default";
+    clearTimeout(timeout);
+    timeout = setTimeout(hideControls, 1500);
+});
+
+// Update the volume icon dynamically
+volumeSlider.addEventListener('input', (e) => {
+    const val = e.target.value;
+    video.volume = val;
+    const icon = document.getElementById('volumeIcon');
+    if (val == 0) icon.className = "fas fa-volume-mute";
+    else if (val < 0.5) icon.className = "fas fa-volume-down";
+    else icon.className = "fas fa-volume-up";
 });
