@@ -15,7 +15,7 @@
     <link rel="icon" href="img/cropped_circle_image (8).png" type="image-icon">
 </head>
 
-<body style="background: black;">
+<body style="background: #2a0e3c;">
 
     <div class="player-container">
         <div class="trailer">
@@ -29,13 +29,13 @@
 
             <div class="video-overlay-controls" id="overlayControls">
                 <div class="main-controls">
-                    <button class="nav-btn" onclick="playPrevious()" data-tooltip="Previous">
+                    <button class="nav-btn" onclick="playPrevious()" data-tooltip="Previous" style="position: absolute; left: 50px;">
                         <i class="fas fa-step-backward"></i>
                     </button>
                     <button class="nav-btn play-btn" onclick="togglePlay()" data-tooltip="Play/Pause">
                         <i class="fas fa-play" id="playIcon"></i>
                     </button>
-                    <button class="nav-btn" onclick="playNext()" data-tooltip="Next">
+                    <button class="nav-btn" onclick="playNext()" data-tooltip="Next" style="position: absolute; right: 50px;">
                         <i class="fas fa-step-forward"></i>
                     </button>
                 </div>
@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="volume-container">
-                        <i class="fas fa-volume-up" id="volumeIcon"></i>
+                        <i class="fas fa-volume-up" id="volumeIcon" style="color: white;"></i>
                         <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
                     </div>
 
@@ -76,7 +76,7 @@
         <div class="section-title">
             <h2>Episodes</h2>
         </div>
-        <div class="episodes-grid" id="episodesGrid"></div>
+        <div class="episodes-grid" id="episodesGrid" style="margin: 10px;"></div>
     </div>
 
     <div id="custom-alert" class="alert-hidden">
@@ -88,6 +88,7 @@
 
 </body>
 <script src="movie-view.js"></script>
+<script src="security.js"></script>
 <script src="voice-assistant.js"></script>
 
 </html>

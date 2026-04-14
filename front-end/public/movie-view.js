@@ -1,67 +1,43 @@
-//Get details from localStorage in movie.html and populate the movie view page
+// --- 1. Global Variables & Initialization ---
+const video = document.getElementById('movieVideo');
+const source = document.getElementById('videoSource');
+const container = document.getElementById('fullscreenContainer');
+const overlay = document.getElementById('overlayControls');
+const progressBar = document.getElementById('progressBar');
+const progressContainer = document.getElementById('progressContainer');
+const volumeSlider = document.getElementById('volumeSlider');
+const currentTimeDisplay = document.getElementById('currentTime');
+const durationTimeDisplay = document.getElementById('durationTime');
+
+let uiTimeout; // Controls the auto-hide timer
+
+// --- 2. Load Movie Data on Page Start ---
 document.addEventListener("DOMContentLoaded", () => {
     const savedMovie = localStorage.getItem('selectedMovie');
-    const video = document.getElementById('movieVideo');
-
-    //Switch to next episode when current one ends
-    video.addEventListener('ended', () => {
-        const savedMovie = localStorage.getItem('selectedMovie');
-        if (!savedMovie) return;
-
-        const movieData = JSON.parse(savedMovie);
-        const currentSrc = document.getElementById('videoSource').src;
-
-        // Find the index of the episode that just finished
-        const currentIndex = movieData.episodes.findIndex(ep => ep.link === currentSrc);
-
-        // Check if there is a next episode available
-        if (currentIndex !== -1 && currentIndex < movieData.episodes.length - 1) {
-            const nextEpisode = movieData.episodes[currentIndex + 1];
-
-            // Show a quick "Playing Next" message (Optional)
-            showAutoPlayToast(nextEpisode.title);
-
-            // Wait 2 seconds then play next
-            setTimeout(() => {
-                changeEpisode(nextEpisode.link, nextEpisode.title);
-            }, 500);
-        } else {
-            console.log("End of series/movie.");
-        }
-    });
-
-    // Simple toast to tell the user the next episode is starting
-    function showAutoPlayToast(title) {
-        const toast = document.createElement('div');
-        toast.innerHTML = `Up Next: ${title}`;
-        toast.style.cssText = `
-        position: fixed; bottom: 50px; right: 20px; 
-        background: #2a0e3c; color: white; border: 1px solid #8e44ad;
-        padding: 15px 25px; border-radius: 10px; z-index: 10000;
-    `;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    }
 
     if (savedMovie) {
         const movieData = JSON.parse(savedMovie);
 
-        // 1. Fill Main Movie Details
+        // Fill Main Movie Details
         document.getElementById('movieTitle').textContent = movieData.title;
-        document.getElementById('videoSource').src = movieData.video;
-        document.getElementById('movieVideo').load();
         document.getElementById('movieInfo').innerHTML = `
             Hero: ${movieData.hero} <br>
             Year: ${movieData.year} <br>
             Language: ${movieData.language}
         `;
 
-        // 2. Generate Episode Cards Automatically
+        // Inject video and play
+        if (movieData.video) {
+            source.src = movieData.video;
+            video.load();
+            video.play().catch(err => console.log("Autoplay prevented", err));
+        }
+
+        // Generate Episode Cards Automatically
         const grid = document.getElementById('episodesGrid');
-        grid.innerHTML = ''; // Clear existing static content
+        grid.innerHTML = '';
 
         movieData.episodes.forEach((ep) => {
-            // Only create the card if the episode data exists
             if (ep.link && ep.title) {
                 const card = document.createElement('div');
                 card.className = 'episode-card';
@@ -80,11 +56,58 @@ document.addEventListener("DOMContentLoaded", () => {
                 grid.appendChild(card);
             }
         });
+    } else {
+        document.getElementById('movieTitle').textContent = "Movie Not Found";
     }
 });
 
+// --- 3. UI Visibility (Mobile & Desktop Fix) ---
+function showUI() {
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "auto";
+    container.style.cursor = "default";
 
-// Function to show the styled alert
+    clearTimeout(uiTimeout);
+
+    // Auto-hide after 2.5 seconds if video is playing
+    uiTimeout = setTimeout(() => {
+        if (!video.paused) {
+            overlay.style.opacity = "0";
+            overlay.style.pointerEvents = "none";
+            container.style.cursor = "none";
+        }
+    }, 2500);
+}
+
+// Show controls on mouse move (Desktop)
+container.addEventListener('mousemove', showUI);
+
+// Show controls on tap/touch (Mobile)
+container.addEventListener('touchstart', showUI, { passive: true });
+container.addEventListener('click', showUI);
+
+// --- 4. Video Playback Controls ---
+function togglePlay() {
+    const icon = document.getElementById('playIcon');
+
+    if (video.paused) {
+        video.play();
+    } else {
+        video.pause();
+    }
+    showUI(); // Keep controls visible when interacting
+}
+
+// Sync icon automatically
+video.addEventListener('play', () => {
+    document.getElementById('playIcon').classList.replace('fa-play', 'fa-pause');
+});
+
+video.addEventListener('pause', () => {
+    document.getElementById('playIcon').classList.replace('fa-pause', 'fa-play');
+});
+
+// --- 5. Episode Navigation ---
 function showAlert(message) {
     const alertBox = document.getElementById("custom-alert");
     const alertText = document.getElementById("alert-text");
@@ -92,166 +115,76 @@ function showAlert(message) {
     alertText.innerText = message;
     alertBox.classList.add("show");
 
-    // Hide it automatically after 3 seconds
     setTimeout(() => {
         alertBox.classList.remove("show");
     }, 3000);
 }
 
-//Video play and pause button logic
-function togglePlay() {
-    const video = document.getElementById('movieVideo');
-    const icon = document.getElementById('playIcon');
-
-    if (video.paused) {
-        video.play();
-        icon.classList.remove('fa-play');
-        icon.classList.add('fa-pause');
-        console.log("Video Playing");
-    } else {
-        video.pause();
-        icon.classList.remove('fa-pause');
-        icon.classList.add('fa-play');
-        console.log("Video Paused");
-    }
-
-    // Call showUI to ensure controls don't hide immediately while pausing
-    showUI();
-}
-
-// Sync icon if video is played/paused via native controls or other scripts
-movieVideo.addEventListener('play', () => {
-    document.getElementById('playIcon').classList.replace('fa-play', 'fa-pause');
-});
-
-movieVideo.addEventListener('pause', () => {
-    document.getElementById('playIcon').classList.replace('fa-pause', 'fa-play');
-});
-//end
-
-//Play next episode
 function playNext() {
     const savedMovie = localStorage.getItem('selectedMovie');
     if (!savedMovie) return;
 
     const movieData = JSON.parse(savedMovie);
-    const currentSrc = document.getElementById('videoSource').src;
+    const currentSrc = source.src;
     const currentIndex = movieData.episodes.findIndex(ep => ep.link === currentSrc);
 
-    // ... your existing logic ...
     if (currentIndex !== -1 && currentIndex < movieData.episodes.length - 1) {
         const next = movieData.episodes[currentIndex + 1];
         changeEpisode(next.link, next.title);
     } else {
-        showAlert("This is the last episode."); // Updated!
+        showAlert("This is the last episode.");
     }
 }
 
-// Play previous episode function
 function playPrevious() {
     const savedMovie = localStorage.getItem('selectedMovie');
     if (!savedMovie) return;
 
     const movieData = JSON.parse(savedMovie);
-    const currentSrc = document.getElementById('videoSource').src;
+    const currentSrc = source.src;
     const currentIndex = movieData.episodes.findIndex(ep => ep.link === currentSrc);
 
-    // ... your existing logic ...
     if (currentIndex > 0) {
         const prev = movieData.episodes[currentIndex - 1];
         changeEpisode(prev.link, prev.title);
     } else {
-        showAlert("This is the first episode."); // Updated!
+        showAlert("This is the first episode.");
     }
 }
 
-//change episode function to update video source and title
 function changeEpisode(url, title) {
-    const video = document.getElementById('movieVideo');
-    const source = document.getElementById('videoSource');
-
+    progressBar.style.width = '0%'; // Reset visual bar immediately
     source.src = url;
     video.load();
-
-
     video.play();
+
     document.getElementById('movieTitle').textContent = title;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Retrieve the saved movie data
+// Auto-play next episode when current ends
+// Inside movie-view.js, update the 'ended' listener for a better experience
+video.addEventListener('ended', () => {
     const savedMovie = localStorage.getItem('selectedMovie');
+    if (!savedMovie) return;
 
-    if (savedMovie) {
-        const movieData = JSON.parse(savedMovie);
+    const movieData = JSON.parse(savedMovie);
+    const currentSrc = source.src;
+    const currentIndex = movieData.episodes.findIndex(ep => ep.link === currentSrc);
 
-        // Inject text details 
-        document.getElementById('movieTitle').textContent = movieData.title;
-        document.getElementById('movieInfo').innerHTML = `
-                    Hero: ${movieData.hero} <br>
-                    Year: ${movieData.year} <br>
-                    Language: ${movieData.language} <br>
-                `;
+    if (currentIndex !== -1 && currentIndex < movieData.episodes.length - 1) {
+        const nextEpisode = movieData.episodes[currentIndex + 1];
 
-        // Inject video and play
-        if (movieData.video) {
-            const videoElement = document.getElementById('movieVideo');
-            const sourceElement = document.getElementById('videoSource');
+        // Use bold formatting for the title in the alert
+        showAlert(`🎬 Up Next: ${nextEpisode.title}`);
 
-            sourceElement.src = movieData.video;
-            videoElement.load(); // Crucial: forces the player to load the new source
-            videoElement.play().catch(err => console.log("Autoplay prevented", err));
-        }
-    } else {
-        document.getElementById('movieTitle').textContent = "Movie Not Found";
+        setTimeout(() => {
+            changeEpisode(nextEpisode.link, nextEpisode.title);
+        }, 1000); // Give them 2 seconds to read it before switching
     }
 });
 
-// Detect if the device is touch-enabled
-const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-if (isTouchDevice) {
-    // Single tap on video shows/hides controls
-    container.addEventListener('click', function () {
-        if (overlay.classList.contains('inactive')) {
-            showUI();
-        } else {
-            // Optional: Hide immediately on second tap
-            // overlay.classList.add('inactive');
-        }
-    });
-}
-
-
-// This ensures that when a user taps a button on mobile, 
-// the tooltip shows up but doesn't get "stuck"
-const navButtons = document.querySelectorAll('.nav-btn');
-
-navButtons.forEach(btn => {
-    btn.addEventListener('touchstart', function () {
-        // The CSS :hover will trigger on touch
-        // We just ensure the UI timer is reset so they can see the name
-        showUI();
-    });
-});
-
-
-// Additional Controls Logic (Volume, Timer, Custom Fullscreen)
-const video = document.getElementById('movieVideo');
-const volumeSlider = document.getElementById('volumeSlider');
-const currentTimeDisplay = document.getElementById('currentTime');
-const durationTimeDisplay = document.getElementById('durationTime');
-
-// 1. Volume Control
-volumeSlider.addEventListener('input', (e) => {
-    video.volume = e.target.value;
-    const icon = document.getElementById('volumeIcon');
-    if (video.volume == 0) icon.className = "fas fa-volume-mute";
-    else icon.className = "fas fa-volume-up";
-});
-
-// 2. Timer Control (Format seconds to MM:SS)
+// --- 6. Progress Bar & Timer Logic (Mobile Safe) ---
 function formatTime(seconds) {
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
@@ -263,109 +196,113 @@ video.addEventListener('loadedmetadata', () => {
 });
 
 video.addEventListener('timeupdate', () => {
-    currentTimeDisplay.textContent = formatTime(video.currentTime);
+    if (video.duration) {
+        // Calculate the exact percentage of completion
+        const percentage = (video.currentTime / video.duration) * 100;
+
+        // Apply the width to the inner color line
+        progressBar.style.width = `${percentage}%`;
+
+        // Update the numbers
+        document.getElementById('currentTime').textContent = formatTime(video.currentTime);
+    }
 });
 
-// 3. Custom Fullscreen (Z-Index Method)
+// Mobile-safe Seeking
+progressContainer.addEventListener('click', (e) => {
+    // getBoundingClientRect ensures accurate click position on any screen size
+    const rect = progressContainer.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const containerWidth = rect.width;
+
+    if (video.duration) {
+        video.currentTime = (clickX / containerWidth) * video.duration;
+    }
+});
+
+// --- 7. Volume & Fullscreen ---
+volumeSlider.addEventListener('input', (e) => {
+    const val = e.target.value;
+    video.volume = val;
+    const icon = document.getElementById('volumeIcon');
+
+    if (val == 0) icon.className = "fas fa-volume-mute";
+    else if (val < 0.5) icon.className = "fas fa-volume-down";
+    else icon.className = "fas fa-volume-up";
+});
+
 function toggleCustomFullscreen() {
-    const container = document.getElementById('fullscreenContainer');
     const icon = document.getElementById('fullScreenIcon');
-    
     container.classList.toggle('custom-fullscreen');
 
     if (container.classList.contains('custom-fullscreen')) {
         icon.classList.replace('fa-expand', 'fa-compress');
-        document.body.style.overflow = "hidden"; // Prevent scrolling behind
+        document.body.style.overflow = "hidden";
     } else {
         icon.classList.replace('fa-compress', 'fa-expand');
         document.body.style.overflow = "auto";
     }
 }
 
-// Ensure UI shows on hover (already in your logic, just verify)
-function showUI() {
-    const overlay = document.getElementById('overlayControls');
-    overlay.style.opacity = "1";
-    overlay.style.pointerEvents = "auto";
-    
-    clearTimeout(window.uiTimeout);
-    window.uiTimeout = setTimeout(() => {
-        if (!video.paused) {
-            overlay.style.opacity = "0";
-            overlay.style.pointerEvents = "none";
+
+// --- TV Remote Support Logic ---
+
+const TV_KEYS = {
+    UP: 38,
+    DOWN: 40,
+    LEFT: 37,
+    RIGHT: 39,
+    ENTER: 13,
+    BACK: 8,      // Standard back
+    BACK_ALT: 461, // LG WebOS back
+    BACK_TIZEN: 10009, // Samsung Tizen back
+    PLAY_PAUSE: 179,
+    REWIND: 412,
+    FORWARD: 417
+};
+
+document.addEventListener('keydown', (e) => {
+    const keyCode = e.keyCode;
+    const activeElement = document.activeElement;
+
+    // 1. Handle Media Controls via Remote Buttons
+    if (keyCode === TV_KEYS.PLAY_PAUSE) {
+        togglePlay();
+    } else if (keyCode === TV_KEYS.REWIND) {
+        video.currentTime -= 10;
+    } else if (keyCode === TV_KEYS.FORWARD) {
+        video.currentTime += 10;
+    }
+
+    // 2. Handle Back Button (Exit Fullscreen or Go Back)
+    if (keyCode === TV_KEYS.BACK || keyCode === TV_KEYS.BACK_ALT || keyCode === TV_KEYS.BACK_TIZEN) {
+        if (container.classList.contains('custom-fullscreen')) {
+            toggleCustomFullscreen();
+            e.preventDefault();
+        } else {
+            // Optional: history.back() or close app logic
         }
-    }, 3000);
-}
-
-document.getElementById('fullscreenContainer').addEventListener('mousemove', showUI);
-
-// Progress Bar Logic
-const progressBar = document.getElementById('progressBar');
-const progressContainer = document.getElementById('progressContainer');
-
-// 1. Update the Bar as the Video Plays
-video.addEventListener('timeupdate', () => {
-    if (video.duration) {
-        const percentage = (video.currentTime / video.duration) * 100;
-        // The ball moves because it's attached to the right side of this bar
-        progressBar.style.width = `${percentage}%`;
-        
-        document.getElementById('currentTime').textContent = formatTime(video.currentTime);
     }
+
+    // 3. Spatial Navigation (D-Pad)
+    // Most browsers handle basic Up/Down/Left/Right focus automatically 
+    // IF the elements have tabindex="0".
 });
 
-// 2. Click to Seek (Jump to a specific time)
-progressContainer.addEventListener('click', (e) => {
-    const containerWidth = progressContainer.offsetWidth;
-    const clickX = e.offsetX; // Where the user clicked
-    const duration = video.duration;
-
-    if (duration) {
-        // Calculate new time: (click position / total width) * total duration
-        video.currentTime = (clickX / containerWidth) * duration;
-    }
-});
-
-// 3. Reset Bar on Episode Change
-// Add this inside your existing changeEpisode(url, title) function
-function changeEpisode(url, title) {
-    const video = document.getElementById('movieVideo');
-    const source = document.getElementById('videoSource');
-
-    progressBar.style.width = '0%'; // Reset visual bar
-    source.src = url;
-    video.load();
-    
-    video.play();
-    document.getElementById('movieTitle').textContent = title;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+// Function to make dynamic elements focusable
+function makeElementsFocusable() {
+    // Make sure all buttons and the video itself can be focused
+    const focusableItems = document.querySelectorAll('button, .episode-card, input[type="range"]');
+    focusableItems.forEach(item => {
+        item.setAttribute('tabindex', '0');
+    });
 }
 
-// Optional: Show tooltip on progress bar hover (for desktop)
-// Hide cursor and UI when inactive
-let timeout;
-const container = document.getElementById('fullscreenContainer');
-const overlay = document.getElementById('overlayControls');
-
-function hideControls() {
-    if (video.paused) return; // Don't hide if paused
-    overlay.style.opacity = "0";
-    container.style.cursor = "none";
-}
-
-container.addEventListener('mousemove', () => {
-    overlay.style.opacity = "1";
-    container.style.cursor = "default";
-    clearTimeout(timeout);
-    timeout = setTimeout(hideControls, 1500);
-});
-
-// Update the volume icon dynamically
-volumeSlider.addEventListener('input', (e) => {
-    const val = e.target.value;
-    video.volume = val;
-    const icon = document.getElementById('volumeIcon');
-    if (val == 0) icon.className = "fas fa-volume-mute";
-    else if (val < 0.5) icon.className = "fas fa-volume-down";
-    else icon.className = "fas fa-volume-up";
-});
+// Call this whenever you generate your Episodes Grid
+// Example: After your forEach loop that creates episode cards
+makeElementsFocusable();
+// Auto-focus the play button or video container for TV users
+setTimeout(() => {
+    const playBtn = document.querySelector('.main-controls button');
+    if (playBtn) playBtn.focus();
+}, 500);
