@@ -31,12 +31,36 @@ document.getElementById("movieSearchInput").addEventListener("keypress", functio
     }
 });
 
-// SKELETON LOADER
+// ==========================================
+// SYNCED ONE-BY-ONE REVEAL LOGIC
+// ==========================================
 window.addEventListener("load", () => {
+    const skeleton = document.getElementById("skeletonLoader");
+    const real = document.getElementById("realContent");
+    
+    // Get every direct section/div inside the real content
+    const realSections = real.querySelectorAll(":scope > section, :scope > div");
+
     setTimeout(() => {
-        document.getElementById("skeletonLoader").style.display = "none";
-        document.getElementById("realContent").style.display = "block";
-    }, 2000); // loading delay
+        // 1. Hide the loader and show the real container at the exact same time
+        skeleton.style.display = "none";
+        real.style.display = "block";
+
+        // 2. Loop through every section to show them one-by-one
+        realSections.forEach((section, index) => {
+            // Set initial invisible state
+            section.style.opacity = "0";
+            section.style.transform = "translateY(20px)";
+            section.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+
+            // Trigger the reveal with a staggered delay based on its index
+            setTimeout(() => {
+                section.style.opacity = "1";
+                section.style.transform = "translateY(0)";
+            }, index * 300); // 600ms delay between each section
+        });
+
+    }, 800); // How long the skeleton stays visible
 });
 
 // auto scroll in cart//

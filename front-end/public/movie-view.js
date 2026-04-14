@@ -1,4 +1,9 @@
-// --- 1. Global Variables & Initialization ---
+/**
+ * Movie View Controller
+ * Handles: Playback, Volume Gain (Web Audio API), TV Navigation, and Episode Management
+ */
+
+// --- 1. Constants & State ---
 const video = document.getElementById('movieVideo');
 const source = document.getElementById('videoSource');
 const container = document.getElementById('fullscreenContainer');
@@ -9,124 +14,106 @@ const volumeSlider = document.getElementById('volumeSlider');
 const currentTimeDisplay = document.getElementById('currentTime');
 const durationTimeDisplay = document.getElementById('durationTime');
 
-let uiTimeout; // Controls the auto-hide timer
+const TV_KEYS = {
+    UP: 38, DOWN: 40, LEFT: 37, RIGHT: 39, ENTER: 13,
+    BACK: 8, BACK_ALT: 461, BACK_TIZEN: 10009,
+    PLAY_PAUSE: 179, REWIND: 412, FORWARD: 417, A_KEY: 65
+};
 
-// --- 2. Load Movie Data on Page Start ---
+let audioCtx, gainNode, track, uiTimeout;
+
+// --- 2. Core Initialization ---
 document.addEventListener("DOMContentLoaded", () => {
     const savedMovie = localStorage.getItem('selectedMovie');
-
-    if (savedMovie) {
-        const movieData = JSON.parse(savedMovie);
-
-        // Fill Main Movie Details
-        document.getElementById('movieTitle').textContent = movieData.title;
-        document.getElementById('movieInfo').innerHTML = `
-            Hero: ${movieData.hero} <br>
-            Year: ${movieData.year} <br>
-            Language: ${movieData.language}
-        `;
-
-        // Inject video and play
-        if (movieData.video) {
-            source.src = movieData.video;
-            video.load();
-            video.play().catch(err => console.log("Autoplay prevented", err));
-        }
-
-        // Generate Episode Cards Automatically
-        const grid = document.getElementById('episodesGrid');
-        grid.innerHTML = '';
-
-        movieData.episodes.forEach((ep) => {
-            if (ep.link && ep.title) {
-                const card = document.createElement('div');
-                card.className = 'episode-card';
-                card.onclick = () => changeEpisode(ep.link, ep.title);
-
-                card.innerHTML = `
-                    <div class="episode-thumbnail">
-                        <img src="${movieData.image}" alt="${ep.title}">
-                        <i class="fas fa-play-circle play-icon"></i>
-                    </div>
-                    <div class="episode-info">
-                        <h4>${ep.title}</h4>
-                        <p>${ep.time || 'N/A'}</p>
-                    </div>
-                `;
-                grid.appendChild(card);
-            }
-        });
-    } else {
+    if (!savedMovie) {
         document.getElementById('movieTitle').textContent = "Movie Not Found";
+        return;
     }
-});
 
-// --- 3. UI Visibility (Mobile & Desktop Fix) ---
-function showUI() {
-    overlay.style.opacity = "1";
-    overlay.style.pointerEvents = "auto";
-    container.style.cursor = "default";
+    const movieData = JSON.parse(savedMovie);
+    renderMovieDetails(movieData);
+    renderEpisodes(movieData);
+    setupInitialVideo(movieData.video);
+    makeElementsFocusable();
 
-    clearTimeout(uiTimeout);
-
-    // Auto-hide after 2.5 seconds if video is playing
-    uiTimeout = setTimeout(() => {
-        if (!video.paused) {
-            overlay.style.opacity = "0";
-            overlay.style.pointerEvents = "none";
-            container.style.cursor = "none";
-        }
-    }, 2500);
-}
-
-// Show controls on mouse move (Desktop)
-container.addEventListener('mousemove', showUI);
-
-// Show controls on tap/touch (Mobile)
-container.addEventListener('touchstart', showUI, { passive: true });
-container.addEventListener('click', showUI);
-
-// --- 4. Video Playback Controls ---
-function togglePlay() {
-    const icon = document.getElementById('playIcon');
-
-    if (video.paused) {
-        video.play();
-    } else {
-        video.pause();
-    }
-    showUI(); // Keep controls visible when interacting
-}
-
-// Sync icon automatically
-video.addEventListener('play', () => {
-    document.getElementById('playIcon').classList.replace('fa-play', 'fa-pause');
-});
-
-video.addEventListener('pause', () => {
-    document.getElementById('playIcon').classList.replace('fa-pause', 'fa-play');
-});
-
-// --- 5. Episode Navigation ---
-function showAlert(message) {
-    const alertBox = document.getElementById("custom-alert");
-    const alertText = document.getElementById("alert-text");
-
-    alertText.innerText = message;
-    alertBox.classList.add("show");
-
+    // TV Auto-focus
     setTimeout(() => {
-        alertBox.classList.remove("show");
-    }, 3000);
+        const playBtn = document.querySelector('.main-controls button');
+        if (playBtn) playBtn.focus();
+    }, 500);
+});
+
+function renderMovieDetails(data) {
+    document.getElementById('movieTitle').textContent = data.title;
+    document.getElementById('movieInfo').innerHTML = `
+        Hero: ${data.hero} <br>
+        Year: ${data.year} <br>
+        Language: ${data.language}
+    `;
+}
+
+function renderEpisodes(data) {
+    const grid = document.getElementById('episodesGrid');
+    grid.innerHTML = '';
+
+    data.episodes.forEach((ep) => {
+        if (ep.link && ep.title) {
+            const card = document.createElement('div');
+            card.className = 'episode-card';
+            card.tabIndex = 0;
+            card.onclick = () => changeEpisode(ep.link, ep.title);
+            card.innerHTML = `
+                <div class="episode-thumbnail">
+                    <img src="${data.image}" alt="${ep.title}">
+                    <i class="fas fa-play-circle play-icon"></i>
+                </div>
+                <div class="episode-info">
+                    <h4>${ep.title}</h4>
+                    <p>${ep.time || 'N/A'}</p>
+                </div>`;
+            grid.appendChild(card);
+        }
+    });
+}
+
+function setupInitialVideo(url) {
+    if (url) {
+        source.src = url;
+        video.load();
+        video.play().catch(err => console.log("Autoplay prevented", err));
+    }
+}
+
+// --- 3. Playback & Navigation Logic ---
+function togglePlay() {
+    video.paused ? video.play() : video.pause();
+    showUI();
+}
+
+function changeEpisode(url, title) {
+    progressBar.style.width = '0%';
+    source.src = url;
+    video.load();
+    video.play();
+    document.getElementById('movieTitle').textContent = title;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function seekForward() {
+    video.currentTime = Math.min(video.duration, video.currentTime + 10);
+    showAlert("⏩ +10s");
+    showUI();
+}
+
+function seekBackward() {
+    video.currentTime = Math.max(0, video.currentTime - 10);
+    showAlert("⏪ -10s");
+    showUI();
 }
 
 function playNext() {
-    const savedMovie = localStorage.getItem('selectedMovie');
-    if (!savedMovie) return;
-
-    const movieData = JSON.parse(savedMovie);
-    const currentSrc = source.src;
-    const currentIndex = movieData.episodes.findIndex(ep => ep.link === currentSrc);
+    const movieData = JSON.parse(localStorage.getItem('selectedMovie'));
+    const currentIndex = movieData.episodes.findIndex(ep => source.src.includes(ep.link));
 
     if (currentIndex !== -1 && currentIndex < movieData.episodes.length - 1) {
         const next = movieData.episodes[currentIndex + 1];
@@ -137,12 +124,8 @@ function playNext() {
 }
 
 function playPrevious() {
-    const savedMovie = localStorage.getItem('selectedMovie');
-    if (!savedMovie) return;
-
-    const movieData = JSON.parse(savedMovie);
-    const currentSrc = source.src;
-    const currentIndex = movieData.episodes.findIndex(ep => ep.link === currentSrc);
+    const movieData = JSON.parse(localStorage.getItem('selectedMovie'));
+    const currentIndex = movieData.episodes.findIndex(ep => source.src.includes(ep.link));
 
     if (currentIndex > 0) {
         const prev = movieData.episodes[currentIndex - 1];
@@ -152,157 +135,178 @@ function playPrevious() {
     }
 }
 
-function changeEpisode(url, title) {
-    progressBar.style.width = '0%'; // Reset visual bar immediately
-    source.src = url;
-    video.load();
-    video.play();
+// --- 4. Video Event Listeners ---
+video.addEventListener('play', () => {
+    document.getElementById('playIcon').classList.replace('fa-play', 'fa-pause');
+    if (audioCtx?.state === 'suspended') audioCtx.resume();
+});
 
-    document.getElementById('movieTitle').textContent = title;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+video.addEventListener('pause', () => {
+    document.getElementById('playIcon').classList.replace('fa-pause', 'fa-play');
+});
 
-// Auto-play next episode when current ends
-// Inside movie-view.js, update the 'ended' listener for a better experience
-video.addEventListener('ended', () => {
-    const savedMovie = localStorage.getItem('selectedMovie');
-    if (!savedMovie) return;
-
-    const movieData = JSON.parse(savedMovie);
-    const currentSrc = source.src;
-    const currentIndex = movieData.episodes.findIndex(ep => ep.link === currentSrc);
-
-    if (currentIndex !== -1 && currentIndex < movieData.episodes.length - 1) {
-        const nextEpisode = movieData.episodes[currentIndex + 1];
-
-        // Use bold formatting for the title in the alert
-        showAlert(`🎬 Up Next: ${nextEpisode.title}`);
-
-        setTimeout(() => {
-            changeEpisode(nextEpisode.link, nextEpisode.title);
-        }, 1000); // Give them 2 seconds to read it before switching
+video.addEventListener('timeupdate', () => {
+    if (video.duration) {
+        const percentage = (video.currentTime / video.duration) * 100;
+        progressBar.style.width = `${percentage}%`;
+        currentTimeDisplay.textContent = formatTime(video.currentTime);
     }
 });
 
-// --- 6. Progress Bar & Timer Logic (Mobile Safe) ---
+video.addEventListener('loadedmetadata', () => {
+    durationTimeDisplay.textContent = formatTime(video.duration);
+});
+
+video.addEventListener('ended', () => {
+    const movieData = JSON.parse(localStorage.getItem('selectedMovie'));
+    if (!movieData) return;
+
+    // Logic for Trailer -> Episode 1
+    if (source.src.includes(movieData.video)) {
+        if (movieData.episodes?.length > 0) {
+            const firstEp = movieData.episodes[0];
+            showAlert(`🎥 Trailer Ended. Starting: ${firstEp.title}`);
+            setTimeout(() => changeEpisode(firstEp.link, firstEp.title), 1500);
+        }
+    }
+    // Logic for Next Episode
+    else {
+        const currentIndex = movieData.episodes.findIndex(ep => source.src.includes(ep.link));
+        if (currentIndex !== -1 && currentIndex < movieData.episodes.length - 1) {
+            const nextEp = movieData.episodes[currentIndex + 1];
+            showAlert(`🎬 Up Next: ${nextEp.title}`);
+            setTimeout(() => changeEpisode(nextEp.link, nextEp.title), 1000);
+        }
+    }
+});
+
+// --- 5. Audio & Volume (Web Audio API) ---
+function initAudio() {
+    if (audioCtx) return;
+    const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioCtxClass();
+    track = audioCtx.createMediaElementSource(video);
+    gainNode = audioCtx.createGain();
+    track.connect(gainNode).connect(audioCtx.destination);
+    video.volume = 1;
+}
+
+volumeSlider.addEventListener('input', (e) => {
+    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const val = parseFloat(e.target.value);
+    if (gainNode) gainNode.gain.value = val;
+
+    const icon = document.getElementById('volumeIcon');
+    if (val === 0) icon.className = "fas fa-volume-mute";
+    else if (val < 0.5) icon.className = "fas fa-volume-down";
+    else icon.className = "fas fa-volume-up";
+
+    icon.style.color = val > 1 ? "#8e44ad" : "white";
+});
+
+// --- 6. UI & Utility Functions ---
+function showUI() {
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "auto";
+    container.style.cursor = "default";
+    clearTimeout(uiTimeout);
+    uiTimeout = setTimeout(() => {
+        if (!video.paused) {
+            overlay.style.opacity = "0";
+            overlay.style.pointerEvents = "none";
+            container.style.cursor = "none";
+        }
+    }, 2500);
+}
+
+// This function remains in your movie-view.js
+function toggleCustomFullscreen() {
+    const icon = document.getElementById('fullScreenIcon');
+    container.classList.toggle('custom-fullscreen');
+
+    const isFull = container.classList.contains('custom-fullscreen');
+
+    // Switch icons
+    icon.classList.replace(isFull ? 'fa-expand' : 'fa-compress', isFull ? 'fa-compress' : 'fa-expand');
+
+    // Update Tooltip text dynamically
+    const fsBtn = document.querySelector('.fullscreen-btn');
+    fsBtn.setAttribute('data-tooltip', isFull ? "Exit Full Screen (A)" : "Full Screen (A)");
+
+    // Prevent scrolling behind fullscreen
+    document.body.style.overflow = isFull ? "hidden" : "auto";
+
+    // Show alert for feedback
+    showAlert(isFull ? "Full Screen Enabled" : "Exit Full Screen");
+}
+
+function showAlert(message) {
+    const alertBox = document.getElementById("custom-alert");
+    document.getElementById("alert-text").innerText = message;
+    alertBox.classList.add("show");
+    setTimeout(() => alertBox.classList.remove("show"), 3000);
+}
+
 function formatTime(seconds) {
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
     return `${min}:${sec < 10 ? '0' + sec : sec}`;
 }
 
-video.addEventListener('loadedmetadata', () => {
-    durationTimeDisplay.textContent = formatTime(video.duration);
-});
-
-video.addEventListener('timeupdate', () => {
-    if (video.duration) {
-        // Calculate the exact percentage of completion
-        const percentage = (video.currentTime / video.duration) * 100;
-
-        // Apply the width to the inner color line
-        progressBar.style.width = `${percentage}%`;
-
-        // Update the numbers
-        document.getElementById('currentTime').textContent = formatTime(video.currentTime);
-    }
-});
-
-// Mobile-safe Seeking
-progressContainer.addEventListener('click', (e) => {
-    // getBoundingClientRect ensures accurate click position on any screen size
-    const rect = progressContainer.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const containerWidth = rect.width;
-
-    if (video.duration) {
-        video.currentTime = (clickX / containerWidth) * video.duration;
-    }
-});
-
-// --- 7. Volume & Fullscreen ---
-volumeSlider.addEventListener('input', (e) => {
-    const val = e.target.value;
-    video.volume = val;
-    const icon = document.getElementById('volumeIcon');
-
-    if (val == 0) icon.className = "fas fa-volume-mute";
-    else if (val < 0.5) icon.className = "fas fa-volume-down";
-    else icon.className = "fas fa-volume-up";
-});
-
-function toggleCustomFullscreen() {
-    const icon = document.getElementById('fullScreenIcon');
-    container.classList.toggle('custom-fullscreen');
-
-    if (container.classList.contains('custom-fullscreen')) {
-        icon.classList.replace('fa-expand', 'fa-compress');
-        document.body.style.overflow = "hidden";
-    } else {
-        icon.classList.replace('fa-compress', 'fa-expand');
-        document.body.style.overflow = "auto";
-    }
+function makeElementsFocusable() {
+    document.querySelectorAll('button, .episode-card, input[type="range"]')
+        .forEach(item => item.setAttribute('tabindex', '0'));
 }
 
-
-// --- TV Remote Support Logic ---
-
-const TV_KEYS = {
-    UP: 38,
-    DOWN: 40,
-    LEFT: 37,
-    RIGHT: 39,
-    ENTER: 13,
-    BACK: 8,      // Standard back
-    BACK_ALT: 461, // LG WebOS back
-    BACK_TIZEN: 10009, // Samsung Tizen back
-    PLAY_PAUSE: 179,
-    REWIND: 412,
-    FORWARD: 417
-};
-
-document.addEventListener('keydown', (e) => {
-    const keyCode = e.keyCode;
-    const activeElement = document.activeElement;
-
-    // 1. Handle Media Controls via Remote Buttons
-    if (keyCode === TV_KEYS.PLAY_PAUSE) {
-        togglePlay();
-    } else if (keyCode === TV_KEYS.REWIND) {
-        video.currentTime -= 10;
-    } else if (keyCode === TV_KEYS.FORWARD) {
-        video.currentTime += 10;
+// --- 7. Input Handlers (Mouse, Touch, Remote) ---
+container.addEventListener('mousemove', showUI);
+container.addEventListener('click', showUI);
+progressContainer.addEventListener('click', (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    if (video.duration) {
+        video.currentTime = ((e.clientX - rect.left) / rect.width) * video.duration;
     }
+});
 
-    // 2. Handle Back Button (Exit Fullscreen or Go Back)
-    if (keyCode === TV_KEYS.BACK || keyCode === TV_KEYS.BACK_ALT || keyCode === TV_KEYS.BACK_TIZEN) {
+// Double Click/Tap Seeking
+container.addEventListener('dblclick', (e) => {
+    const rect = container.getBoundingClientRect();
+    (e.clientX - rect.left > rect.width / 2) ? seekForward() : seekBackward();
+});
+
+let lastTap = 0;
+container.addEventListener('touchstart', (e) => {
+    showUI();
+    const now = Date.now();
+    if (now - lastTap < 300) {
+        e.preventDefault();
+        const rect = container.getBoundingClientRect();
+        const touchX = e.touches[0].clientX - rect.left;
+        (touchX > rect.width / 2) ? seekForward() : seekBackward();
+    }
+    lastTap = now;
+}, { passive: false });
+
+// Keydown / TV Remote Logic
+document.addEventListener('keydown', (e) => {
+    const code = e.keyCode;
+    const isInput = ['BUTTON', 'INPUT'].includes(document.activeElement.tagName);
+
+    if (code === TV_KEYS.A_KEY) {
+        e.preventDefault();
+        toggleCustomFullscreen();
+    } else if (code === TV_KEYS.PLAY_PAUSE) {
+        togglePlay();
+    } else if (code === TV_KEYS.REWIND || (code === TV_KEYS.LEFT && !isInput)) {
+        seekBackward();
+    } else if (code === TV_KEYS.FORWARD || (code === TV_KEYS.RIGHT && !isInput)) {
+        seekForward();
+    } else if ([TV_KEYS.BACK, TV_KEYS.BACK_ALT, TV_KEYS.BACK_TIZEN].includes(code)) {
         if (container.classList.contains('custom-fullscreen')) {
             toggleCustomFullscreen();
             e.preventDefault();
-        } else {
-            // Optional: history.back() or close app logic
         }
     }
-
-    // 3. Spatial Navigation (D-Pad)
-    // Most browsers handle basic Up/Down/Left/Right focus automatically 
-    // IF the elements have tabindex="0".
 });
-
-// Function to make dynamic elements focusable
-function makeElementsFocusable() {
-    // Make sure all buttons and the video itself can be focused
-    const focusableItems = document.querySelectorAll('button, .episode-card, input[type="range"]');
-    focusableItems.forEach(item => {
-        item.setAttribute('tabindex', '0');
-    });
-}
-
-// Call this whenever you generate your Episodes Grid
-// Example: After your forEach loop that creates episode cards
-makeElementsFocusable();
-// Auto-focus the play button or video container for TV users
-setTimeout(() => {
-    const playBtn = document.querySelector('.main-controls button');
-    if (playBtn) playBtn.focus();
-}, 500);

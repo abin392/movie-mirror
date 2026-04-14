@@ -377,6 +377,10 @@ body {
     overflow-x: hidden;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
 /* --- Player Container & Video Box --- */
 .player-container {
     padding: 20px;
@@ -465,6 +469,7 @@ video {
     font-weight: 900;
     margin: 0;
     background: linear-gradient(to right, #fff, #a29bfe);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -558,9 +563,11 @@ video {
 .volume-container input:focus,
 #voice-assistant-btn:focus {
     outline: none;
-    border: 3px solid #00d2ff !important; /* Bright blue or gold focus ring */
+    border: 3px solid #00d2ff !important;
+    /* Bright blue or gold focus ring */
     box-shadow: 0 0 20px #00d2ff;
-    transform: scale(1.1); /* Slightly enlarge focused item */
+    transform: scale(1.1);
+    /* Slightly enlarge focused item */
     transition: transform 0.2s ease-in-out;
 }
 
@@ -575,22 +582,23 @@ video {
     position: fixed;
     top: 30px;
     left: 50%;
-    width: 100% !important;
-    max-width: 400px;
-    transform: translateX(-50%) translateY(-150px);
-    background: rgba(42, 14, 60, 0.95); /* Deep purple */
+    transform: translateX(-50%) translateY(-200px);
+    background: rgba(42, 14, 60, 0.95);
+    /* Deep purple */
     backdrop-filter: blur(15px);
     color: white;
     padding: 16px 32px;
-    border-radius: 50px; /* Pill shape */
+    border-radius: 50px;
+    /* Pill shape */
     border: 2px solid var(--primary-purple);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px var(--accent-glow);
-    
+
     /* CRITICAL: Must be higher than the .custom-fullscreen z-index */
-    z-index: 100001; 
-    
+    z-index: 100001;
+
     transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    pointer-events: none; /* Won't block clicks to the video */
+    pointer-events: none;
+    /* Won't block clicks to the video */
 }
 
 #custom-alert.show {
@@ -611,6 +619,65 @@ video {
     font-size: 1.4rem;
     filter: drop-shadow(0 0 5px var(--primary-purple));
 }
+
+/* --- Fullscreen Button & Tooltip Logic --- */
+
+/* Base style for the fullscreen button to match your other nav-btns */
+.fullscreen-btn {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: none;
+    color: white;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* Tooltip Styling */
+.fullscreen-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background: rgba(42, 14, 60, 0.95);
+    /* Deep purple */
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--primary-purple);
+    pointer-events: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Show Tooltip on Hover or Focus (for TV/Remote users) */
+.fullscreen-btn:hover::after,
+.fullscreen-btn:focus::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Specific Focus Ring for TV Navigation */
+.fullscreen-btn:focus {
+    outline: none;
+    border: 2px solid #00d2ff !important;
+    box-shadow: 0 0 15px #00d2ff;
+    transform: scale(1.1);
+}
+
 
 /* --- Voice Assistant Refinement --- */
 #voice-assistant-btn {
@@ -692,12 +759,14 @@ video {
 .progress-container {
     width: 100%;
     height: 6px;
-    background: rgba(255, 255, 255, 0.15); /* Subtle track */
+    background: rgba(255, 255, 255, 0.15);
+    /* Subtle track */
     border-radius: 10px;
     cursor: pointer;
     position: relative;
     margin-bottom: 15px;
-    overflow: hidden; /* CRITICAL: This keeps the color "inner" */
+    overflow: hidden;
+    /* CRITICAL: This keeps the color "inner" */
     display: flex;
     align-items: center;
 }
@@ -705,24 +774,27 @@ video {
 /* The Completed Line (Inner Color) */
 .progress-bar {
     height: 100%;
-    width: 0%; /* Managed by JS */
+    width: 0%;
+    /* Managed by JS */
     background: var(--primary-purple);
     border-radius: 10px;
     position: relative;
     /* Remove outer box-shadow and add inner depth instead */
-    box-shadow: inset 0 0px 20px rgb(128, 0, 174); 
+    box-shadow: inset 0 0px 20px rgb(128, 0, 174);
     pointer-events: none;
 }
 
 /* The Scrubber Ball (Now looks like it's sliding on top) */
 .progress-dot {
     position: absolute;
-    right: 0; 
+    right: 0;
     top: 0;
-    height: 100%;
-    width: 4px; /* Thin vertical line instead of a big ball for "Inner" style */
+    height: 16px;
+    width: 6px;
+    border-radius: 50px;
+    /* Thin vertical line instead of a big ball for "Inner" style */
     background: white;
-    box-shadow: 0 0 10px white;
+    box-shadow: 0 0 10px #8e44ad;
     opacity: 0.8;
 }
 
@@ -745,9 +817,11 @@ video {
 .volume-container input:focus,
 #voice-assistant-btn:focus {
     outline: none;
-    border: 3px solid #2a0e3c !important; /* Bright blue or gold focus ring */
+    border: 3px solid #2a0e3c !important;
+    /* Bright blue or gold focus ring */
     box-shadow: 0 0 20px #2a0e3c;
-    transform: scale(1.1); /* Slightly enlarge focused item */
+    transform: scale(1.1);
+    /* Slightly enlarge focused item */
     transition: transform 0.2s ease-in-out;
 }
 
@@ -788,5 +862,10 @@ video {
     .main-controls .nav-btn {
         width: 35px;
         height: 35px;
+    }
+
+    /* Hide tooltips on small touch devices where hover doesn't exist */
+    .fullscreen-btn::after {
+        display: none;
     }
 }

@@ -25,7 +25,7 @@ function toggleVoiceMenu() {
 }
 
 function startVoiceRecognition(searchType = 'movie') {
-    if (isVoiceProcessing) return; 
+    if (isVoiceProcessing) return;
 
     const menu = document.getElementById('voice-options-menu');
     if (menu) menu.classList.add('voice-hidden');
@@ -38,12 +38,12 @@ function startVoiceRecognition(searchType = 'movie') {
     const statusText = document.getElementById('voice-status');
 
     recognition.lang = 'en-US';
-    recognition.continuous = false; 
+    recognition.continuous = false;
     recognition.interimResults = false;
 
     statusText.innerText = searchType === 'movie' ? 'Say "Playing Dude"' : 'Say "Playing Dude Song"';
     overlay.classList.remove('voice-hidden');
-    isVoiceProcessing = true; 
+    isVoiceProcessing = true;
 
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.toLowerCase();
@@ -51,7 +51,7 @@ function startVoiceRecognition(searchType = 'movie') {
 
         if (match && match[1]) {
             let spokenName = match[1].trim().toUpperCase();
-            
+
             if (searchType === 'movie') {
                 for (const [correctName, variants] of Object.entries(MOVIE_TRAINING)) {
                     if (variants.includes(spokenName)) {
@@ -64,8 +64,8 @@ function startVoiceRecognition(searchType = 'movie') {
                 if (searchInput) {
                     searchInput.value = spokenName;
                     if (typeof executeSearch === "function") {
-                        executeSearch(); 
-                        
+                        executeSearch();
+
                         setTimeout(() => {
                             const movieCards = document.querySelectorAll('.movies');
                             let found = false;
@@ -73,12 +73,12 @@ function startVoiceRecognition(searchType = 'movie') {
                             movieCards.forEach(card => {
                                 if (card.dataset.title.toUpperCase() === spokenName && card.style.display !== 'none') {
                                     assistantSpeak(`Now playing ${spokenName.toLowerCase()} movie`);
-                                    
+
                                     // ADDED TIMEOUT: Wait 1.5s for voice to finish before clicking
                                     setTimeout(() => {
                                         card.click();
                                     }, 1500);
-                                    
+
                                     found = true;
                                 }
                             });
@@ -86,7 +86,7 @@ function startVoiceRecognition(searchType = 'movie') {
                             if (!found) {
                                 assistantSpeak(`Sorry, I couldn't find ${spokenName.toLowerCase()}`);
                             }
-                            resetVoiceState(); 
+                            resetVoiceState();
                         }, 600);
                     }
                 } else {
@@ -94,7 +94,7 @@ function startVoiceRecognition(searchType = 'movie') {
                     // ADDED TIMEOUT: Wait 1.5s before page redirect
                     setTimeout(() => {
                         window.location.href = `movie.html?autoPlay=${encodeURIComponent(spokenName)}`;
-                    }, 1500); 
+                    }, 1500);
                 }
             } else if (searchType === 'music') {
                 const cleanedSongName = spokenName.replace(" SONG", "").trim();
@@ -110,7 +110,7 @@ function startVoiceRecognition(searchType = 'movie') {
     recognition.onend = () => {
         setTimeout(() => {
             overlay.classList.add('voice-hidden');
-            isVoiceProcessing = false; 
+            isVoiceProcessing = false;
         }, 1000);
     };
 
@@ -125,23 +125,23 @@ function handleMusicSearch(songName) {
     for (let btn of musicButtons) {
         const data = btn.dataset;
         for (let i = 1; i <= 20; i++) {
-            const titleVal = data[`songtitle${i}`] || data[`songTitle${i}`]; 
+            const titleVal = data[`songtitle${i}`] || data[`songTitle${i}`];
             if (titleVal) {
                 const cleanTitle = titleVal.toUpperCase().replace(/[^A-Z0-9]/g, "");
                 if (cleanTitle.includes(searchQuery) || searchQuery.includes(cleanTitle)) {
                     assistantSpeak(`Now playing ${songName.toLowerCase()} song`);
-                    
+
                     // ADDED TIMEOUT: Wait 1.5s for voice before playing music
                     setTimeout(() => {
-                        btn.click(); 
+                        btn.click();
                     }, 1500);
-                    
+
                     found = true;
                     break;
                 }
             }
         }
-        if (found) break; 
+        if (found) break;
     }
 
     if (!found) {
@@ -155,3 +155,40 @@ function resetVoiceState() {
     if (overlay) overlay.classList.add('voice-hidden');
     isVoiceProcessing = false;
 }
+
+
+
+// --- Samsung TV Remote Integration ---
+document.addEventListener('keydown', function (e) {
+    // Key codes for Samsung Smart TV remotes
+    const KEY_SEARCH = 10225; // Search button
+    const KEY_RED = 403;    // Red color button
+    const KEY_GREEN = 404;  // Green color button
+    const KEY_ENTER = 13;   // OK/Enter button
+    const KEY_RETURN = 10009; // Return/Back button
+
+    switch (e.keyCode) {
+        case KEY_SEARCH:
+            // Triggers your existing menu toggle
+            if (typeof toggleVoiceMenu === "function") toggleVoiceMenu();
+            break;
+
+        case KEY_RED:
+            // Directly starts Movie search
+            if (typeof startVoiceRecognition === "function") startVoiceRecognition('movie');
+            break;
+
+        case KEY_GREEN:
+            // Directly starts Music search
+            if (typeof startVoiceRecognition === "function") startVoiceRecognition('music');
+            break;
+
+        case KEY_RETURN:
+            // Hide menu if return is pressed while menu is open
+            const menu = document.getElementById('voice-options-menu');
+            if (menu && !menu.classList.contains('voice-hidden')) {
+                menu.classList.add('voice-hidden');
+            }
+            break;
+    }
+});
