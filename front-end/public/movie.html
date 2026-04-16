@@ -19,24 +19,27 @@
 
     <div class="voice-assistant-wrapper">
         <div id="voice-options-menu" class="voice-hidden">
-            <button onclick="startVoiceRecognition('movie')">
+            <button onclick="startVoiceRecognition('movie')" data-tooltip="Search Movie (M)">
                 <i class="fas fa-film"></i> Search Movie
             </button>
-            <button onclick="startVoiceRecognition('music')">
+            <button onclick="startVoiceRecognition('music')" data-tooltip="Search Music (S)">
                 <i class="fas fa-music"></i> Search Music
             </button>
         </div>
 
-        <div id="voice-assistant-btn" onclick="toggleVoiceMenu()">
+        <div id="voice-assistant-btn" onclick="toggleVoiceMenu()" data-tooltip="Voice Assistant (V)">
             <i class="fas fa-microphone"></i>
             <div class="pulse-ring"></div>
         </div>
     </div>
 
     <div id="listening-overlay" class="voice-hidden">
+        <i class="fas fa-times" onclick="stopVoiceRecognition()"
+            style="position: absolute; top: 25px; right: 25px; font-size: 2rem; color: white; cursor: pointer; z-index: 10001;"></i>
+
         <div class="overlay-content">
             <div class="mic-glow"><i class="fas fa-microphone"></i></div>
-            <p id="voice-status">Say "Playing Dude Movie"</p>
+            <p id="voice-status">Listening...</p>
         </div>
     </div>
 
@@ -183,18 +186,17 @@
         <section id="Home">
             <nav>
                 <div class="profile-img">
-                    <a href="profile.html"><img id="userImage" src="img/user.png" onclick="movieView(this)" alt=""></a>
-                    <h3 id="userName">User Name</h3>
+                    <a href="profile.html"><img id="userImage" src="img/user.png" alt="Profile"></a>
+                    <h3 id="userName">Loading...</h3>
                 </div>
 
-                <div class="menu" id="menu">
-                    <a href="">Home</a>
-                    <a href="feedback.html">FeedBack</a>
-                    <a href="download.html">Downloads</a>
-                    <a href="profile.html">Setting</a>
-                    <button onclick="logout()">Logout</button>
+                <div class="menu" id="menu"></div>
+
+                <div class="nav-right">
+                    <a href="profile.html" style="color: white; font-size: 24px;">
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
                 </div>
-                <i class="fa-solid fa-bars menu-icon" id="menuIcon"></i>
             </nav>
         </section>
 
@@ -311,7 +313,7 @@
             </div>
             <div class="cart">
                 <div class="media-box">
-                    <img src="img/vip.jpeg" onclick="movieView(this)" alt="">
+                    <img src="img/bison.jpeg" onclick="movieView(this)" alt="">
                     <video src="trailers/vip.mp4" loop preload="metadata"></video>
                 </div>
                 <div class="movie-description">

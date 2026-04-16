@@ -1,5 +1,5 @@
 const MOVIE_TRAINING = {
-    "DUDE": ["DUDE", "DOOD", "DUD", "DEWD", "DOODLE", "DUDES", "DEW", "DUDDY", "DUDLY", "DUDLEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY", "BUILD", "DUDEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY"],
+    "DUDE": ["DUDE", "DOOD", "DUD", "DEWD", "DOODLE", "DUDES", "DEW", "DUDDY", "DUDLY", "DUDLEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY", "BUILD", "DUDEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY", "DUDE MOVIE", "DOOD MOVIE", "DUD MOVIE", "DEWD MOVIE", "DOODLE MOVIE", "DUDES MOVIE", "DEW MOVIE", "DUDDY MOVIE", "DUDLY MOVIE", "DUDLEY MOVIE", "DUDES MOVIE", "DEWDE MOVIE", "DUDDY MOVIE", "DUDLY MOVIE", "DUDLEY MOVIE", "BUILD MOVIE", "DUDEY MOVIE", "DUNE MOVIE"],
     "AMPULI": ["AMBULI", "AMPULI", "AMPU LEE", "AMBLY", "AMBILY", "AMBERLY", "AMBOLI", "HUMBLY", "AMBALI", "AMB", "AMPU", "AMPU LEE", "AMPULI", "AMBULI", "AMPU LEE", "AMBLY", "AMBILY", "AMBERLY", "AMBOLI", "HUMBLY", "AMBALI", "AMB", "AMPU", "AMPU LEE", "AMPULI", "AMBULI", "AMPU LEE", "AMBLY", "AMBILY", "AMBERLY", "AMBOLI", "HUMBLY", "AMBALI", "AMB", "AMPU"],
     "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "IDLI KADAY", "ITALY", "IDLY", "IDLI KADAI", "ITALY KADAI", "IDLY KADAY", "IDLI KADAI", "ITALY KADAI", "IDLY KADAY"]
 };
@@ -33,19 +33,21 @@ function startVoiceRecognition(searchType = 'movie') {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) return;
 
-    const recognition = new SpeechRecognition();
+    // We attach this to 'window' so stopVoiceRecognition() can see it
+    window.recognition = new SpeechRecognition();
+
     const overlay = document.getElementById('listening-overlay');
     const statusText = document.getElementById('voice-status');
 
-    recognition.lang = 'en-US';
-    recognition.continuous = false;
-    recognition.interimResults = false;
+    window.recognition.lang = 'en-US';
+    window.recognition.continuous = false;
+    window.recognition.interimResults = false;
 
     statusText.innerText = searchType === 'movie' ? 'Say "Playing Dude"' : 'Say "Playing Dude Song"';
     overlay.classList.remove('voice-hidden');
     isVoiceProcessing = true;
 
-    recognition.onresult = (event) => {
+    window.recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.toLowerCase();
         const match = transcript.match(/(?:playing|play|open)\s+(.*)/);
 
@@ -73,12 +75,7 @@ function startVoiceRecognition(searchType = 'movie') {
                             movieCards.forEach(card => {
                                 if (card.dataset.title.toUpperCase() === spokenName && card.style.display !== 'none') {
                                     assistantSpeak(`Now playing ${spokenName.toLowerCase()} movie`);
-
-                                    // ADDED TIMEOUT: Wait 1.5s for voice to finish before clicking
-                                    setTimeout(() => {
-                                        card.click();
-                                    }, 1500);
-
+                                    setTimeout(() => { card.click(); }, 1500);
                                     found = true;
                                 }
                             });
@@ -91,7 +88,6 @@ function startVoiceRecognition(searchType = 'movie') {
                     }
                 } else {
                     assistantSpeak(`Now playing ${spokenName.toLowerCase()}`);
-                    // ADDED TIMEOUT: Wait 1.5s before page redirect
                     setTimeout(() => {
                         window.location.href = `movie.html?autoPlay=${encodeURIComponent(spokenName)}`;
                     }, 1500);
@@ -106,15 +102,34 @@ function startVoiceRecognition(searchType = 'movie') {
         }
     };
 
-    recognition.onerror = () => resetVoiceState();
-    recognition.onend = () => {
-        setTimeout(() => {
-            overlay.classList.add('voice-hidden');
-            isVoiceProcessing = false;
-        }, 1000);
+    window.recognition.onerror = () => resetVoiceState();
+
+    window.recognition.onend = () => {
+        // REMOVED the 1000ms timeout here so it closes instantly
+        overlay.classList.add('voice-hidden');
+        isVoiceProcessing = false;
     };
 
-    recognition.start();
+    window.recognition.start();
+}
+
+// --- voice-assistant.js ---
+
+function stopVoiceRecognition() {
+    // This stops the mic instantly and ignores any results
+    if (window.recognition) {
+        window.recognition.abort();
+    }
+
+    const overlay = document.getElementById('listening-overlay');
+    if (overlay) {
+        overlay.classList.add('voice-hidden');
+    }
+
+    // Stop assistant from speaking if it's currently talking
+    window.speechSynthesis.cancel();
+
+    isVoiceProcessing = false;
 }
 
 function handleMusicSearch(songName) {
@@ -188,6 +203,49 @@ document.addEventListener('keydown', function (e) {
             const menu = document.getElementById('voice-options-menu');
             if (menu && !menu.classList.contains('voice-hidden')) {
                 menu.classList.add('voice-hidden');
+            }
+            break;
+    }
+});
+
+
+
+// --- PC/Laptop Keyboard Shortcuts for Voice Assistant ---
+document.addEventListener('keydown', function (e) {
+    // 1. Prevent shortcuts from triggering if the user is typing in a search bar or text input
+    const activeTag = document.activeElement.tagName;
+    if (activeTag === 'INPUT' || activeTag === 'TEXTAREA') return;
+
+    // 2. Ignore if modifier keys are pressed (like Ctrl+S to save)
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+    const key = e.key.toLowerCase();
+
+    switch (key) {
+        case 'v':
+            e.preventDefault(); // Stop default browser behavior
+            // Click the main button if it exists, otherwise just toggle the menu
+            const voiceBtn = document.getElementById('voice-assistant-btn');
+            if (voiceBtn) {
+                voiceBtn.click();
+            } else if (typeof toggleVoiceMenu === 'function') {
+                toggleVoiceMenu();
+            }
+            break;
+
+        case 'm':
+            e.preventDefault();
+            // Start Movie Search
+            if (typeof startVoiceRecognition === 'function') {
+                startVoiceRecognition('movie');
+            }
+            break;
+
+        case 's':
+            e.preventDefault();
+            // Start Music Search
+            if (typeof startVoiceRecognition === 'function') {
+                startVoiceRecognition('music');
             }
             break;
     }
