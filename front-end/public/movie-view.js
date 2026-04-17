@@ -65,11 +65,10 @@ function renderEpisodes(data) {
             card.innerHTML = `
                 <div class="episode-thumbnail">
                     <img src="${data.image}" alt="${ep.title}">
-                    <i class="fas fa-play-circle play-icon"></i>
                 </div>
                 <div class="episode-info">
                     <h4>${ep.title}</h4>
-                    <p>${ep.time || 'N/A'}</p>
+                    <p>${ep.time}</p>
                 </div>`;
             grid.appendChild(card);
         }
@@ -310,3 +309,75 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
+
+
+
+// Optional: Handle TV-specific focus navigation if needed (e.g., for episode cards)
+// --- 8. Dynamic Top/Bottom Ambilight Logic ---
+const ambilightCanvas = document.createElement('canvas');
+const ambilightCtx = ambilightCanvas.getContext('2d', { willReadFrequently: true });
+let ambilightFrameId;
+
+function updateAmbilight() {
+    if (video.paused || video.ended) return;
+
+    try {
+        // Sample a small version of the video for performance
+        ambilightCanvas.width = 64;
+        ambilightCanvas.height = 64;
+        ambilightCtx.drawImage(video, 0, 0, ambilightCanvas.width, ambilightCanvas.height);
+        
+        const imageData = ambilightCtx.getImageData(0, 0, 64, 64).data;
+        let r = 0, g = 0, b = 0, count = 0;
+
+        // Calculate average color
+        for (let i = 0; i < imageData.length; i += 16) {
+            r += imageData[i];
+            g += imageData[i + 1];
+            b += imageData[i + 2];
+            count++;
+        }
+
+        r = Math.floor(r / count);
+        g = Math.floor(g / count);
+        b = Math.floor(b / count);
+
+        const color = `rgba(${r}, ${g}, ${b}, 0.8)`;
+
+        // 1. Apply Top & Bottom Box Shadow to Video
+        // Spread is negative (-15px) to prevent side-bleeding on all devices
+        video.style.boxShadow = `
+            0px -35px 50px -15px ${color}, 
+            0px 35px 50px -15px ${color}
+        `;
+
+        // 2. Fullscreen Background Automation
+        if (container.classList.contains('custom-fullscreen')) {
+            // Create a subtle dark tint of the video color for the background
+            const bgR = Math.floor(r * 0.2);
+            const bgG = Math.floor(g * 0.2);
+            const bgB = Math.floor(b * 0.2);
+            
+            container.style.background = `linear-gradient(
+                to bottom, 
+                rgb(${bgR}, ${bgG}, ${bgB}) 0%, 
+                #000 15%, 
+                #000 85%, 
+                rgb(${bgR}, ${bgG}, ${bgB}) 100%
+            )`;
+        } else {
+            container.style.background = "#000";
+        }
+
+    } catch (e) {
+        console.error("Ambilight Error:", e);
+    }
+
+    ambilightFrameId = requestAnimationFrame(updateAmbilight);
+}
+
+// Attach listeners without affecting existing logic
+video.addEventListener('play', () => updateAmbilight());
+video.addEventListener('pause', () => cancelAnimationFrame(ambilightFrameId));
+video.addEventListener('ended', () => cancelAnimationFrame(ambilightFrameId));

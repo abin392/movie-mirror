@@ -1,364 +1,4 @@
-#voice-assistant-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #8e44ad, #2a0e3c);
-    border: 1px solid white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 9999;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-.pulse-ring {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 2px solid #8e44ad;
-    border-radius: 50%;
-    animation: ripple 1.5s infinite;
-}
-
-@keyframes ripple {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: scale(1.8);
-        opacity: 0;
-    }
-}
-
-#listening-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-    transition: opacity 0.3s;
-}
-
-.voice-hidden {
-    visibility: hidden;
-    opacity: 0;
-}
-
-.overlay-content {
-    text-align: center;
-    color: white;
-}
-
-.mic-glow {
-    font-size: 50px;
-    color: #a87ca0;
-    margin-bottom: 20px;
-    animation: glow 1s infinite alternate;
-}
-
-@keyframes glow {
-    from {
-        text-shadow: 0 0 10px #5e2b6d;
-    }
-
-    to {
-        text-shadow: 0 0 30px #8e44ad, 0 0 40px #2a0e3c;
-    }
-}
-
-/* Styled Error Toast */
-.movie-error-toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(42, 14, 60, 0.95);
-    /* Dark purple theme */
-    color: white;
-    padding: 12px 25px;
-    border-radius: 50px;
-    border: 2px solid #8e44ad;
-    box-shadow: 0 0 15px rgba(162, 30, 233, 0.4);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Poppins', sans-serif;
-    animation: slideDown 0.4s ease-out;
-    transition: opacity 0.5s ease;
-}
-
-@keyframes slideDown {
-    from {
-        transform: translate(-50%, -100px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translate(-50%, 0);
-        opacity: 1;
-    }
-}
-
-/* Container */
-.player-container {
-    padding: 20px;
-}
-
-
-.nav-btn {
-    pointer-events: auto;
-    /* Re-enable clicking for buttons */
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: 2px solid rgba(142, 68, 173, 0.5);
-    /* Purple theme */
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    font-size: 20px;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.nav-btn:hover {
-    background: #8e44ad;
-    border-color: white;
-    transform: scale(1.1);
-}
-
-/* Hide buttons if there is no previous or next episode */
-.nav-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-    background: gray;
-}
-
-.video-box video {
-    width: 100%;
-    height: 400px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(196, 1, 255, 0.801);
-}
-
-
-/* --- Desktop & Default Sizes --- */
-.nav-btn {
-    width: 60px;
-    height: 60px;
-    font-size: 22px;
-    margin: 0 10px;
-    position: relative;
-    /* Required to position the tooltip */
-}
-
-/* --- The Tooltip Text --- */
-.nav-btn::after {
-    content: attr(data-tooltip);
-    /* Pulls text from the data-tooltip attribute */
-    position: absolute;
-    bottom: 120%;
-    /* Position above the button */
-    left: 50%;
-    transform: translateX(-50%) scale(0.8);
-    background: rgba(42, 14, 60, 0.9);
-    /* Your theme purple */
-    color: white;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-    border: 1px solid #8e44ad;
-    pointer-events: none;
-    /* Prevents tooltip from blocking clicks */
-}
-
-/* --- Show Tooltip on Hover --- */
-.nav-btn:hover::after {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) scale(1);
-}
-
-
-/* Movie Details */
-.movie-details {
-    max-width: 1000px;
-    margin: 20px auto;
-}
-
-.movie-details h1 {
-    font-size: 28px;
-    color: #8e44ad;
-}
-
-.movie-details p {
-    color: #ccc;
-    line-height: 1.6;
-}
-
-/* --- Episodes Section Styles --- */
-.episodes-container {
-    padding: 20px;
-    color: white;
-    max-width: 1200px;
-    margin: 20px auto;
-}
-
-.section-title h2 {
-    border-left: 4px solid #8e44ad;
-    /* Matches your purple theme color #2a0e3c */
-    padding-left: 10px;
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
-.episodes-grid {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
-    /* Enables horizontal scrolling */
-    padding-bottom: 15px;
-    scroll-behavior: smooth;
-}
-
-/* Custom scrollbar for webkit browsers */
-.episodes-grid::-webkit-scrollbar {
-    height: 8px;
-}
-
-.episodes-grid::-webkit-scrollbar-track {
-    background: #111;
-    border-radius: 4px;
-}
-
-.episodes-grid::-webkit-scrollbar-thumb {
-    background: #444;
-    border-radius: 4px;
-}
-
-.episodes-grid::-webkit-scrollbar-thumb:hover {
-    background: #8e44ad;
-}
-
-/* Individual Episode Card */
-.episode-card {
-    min-width: 250px;
-    background: #1a1a1a;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-.episode-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(142, 68, 173, 0.4);
-}
-
-.episode-thumbnail {
-    position: relative;
-    width: 100%;
-    height: 140px;
-}
-
-.episode-thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Play button overlay */
-.play-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 45px;
-    color: rgba(255, 255, 255, 0.8);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.episode-card:hover .play-icon {
-    opacity: 1;
-}
-
-.episode-info {
-    padding: 12px;
-}
-
-.episode-info h4 {
-    margin: 0 0 5px 0;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.episode-info p {
-    margin: 0;
-    font-size: 13px;
-    color: #aaa;
-}
-
-
-/* Custom Alert Styles */
-#custom-alert {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    background: #2a0e3c;
-    /* Your Dark Purple */
-    color: white;
-    padding: 12px 25px;
-    border-radius: 8px;
-    border: 1px solid #8e44ad;
-    /* Glowing Purple Border */
-    box-shadow: 0 0 15px rgba(142, 68, 173, 0.5);
-    z-index: 10000;
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#custom-alert.show {
-    transform: translateX(-50%) translateY(0);
-}
-
-.alert-content {
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-}
-
-.alert-content i {
-    color: #e74c3c;
-    /* Red color for warnings */
-    font-size: 1.2rem;
-    margin-right: 10px;
-}
-
-/* --- Root Variables for Easy Theme Tweaks --- */
+/* --- Root Variables --- */
 :root {
     --primary-purple: #8e44ad;
     --accent-glow: rgba(142, 68, 173, 0.6);
@@ -372,7 +12,7 @@
 body {
     margin: 0;
     font-family: 'Inter', -apple-system, sans-serif;
-    background: var(--bg-dark);
+    background: #2a0e3c; /* Main Theme Background */
     color: var(--text-main);
     overflow-x: hidden;
 }
@@ -381,7 +21,7 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-/* --- Player Container & Video Box --- */
+/* --- Player Layout --- */
 .player-container {
     padding: 20px;
     max-width: 1200px;
@@ -389,40 +29,65 @@ body::-webkit-scrollbar {
 }
 
 .trailer h1 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
     letter-spacing: 3px;
-    color: var(--primary-purple);
+    color: white;
     font-weight: 800;
-    margin-bottom: -20px;
+    margin-bottom: 15px;
 }
 
+/* --- Automatic Sizing Video Box --- */
 .video-box {
     position: relative;
     width: 100%;
+    /* No fixed height - follows video file */
+    background: #000;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    background: #000;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition);
 }
 
 video {
     width: 100%;
+    height: auto; 
     display: block;
-    aspect-ratio: 16 / 9;
-    filter: brightness(1.05);
+    aspect-ratio: auto; /* Uses metadata to set height */
+    cursor: pointer;
 }
 
-/* --- Floating Video Controls --- */
+/* --- Fullscreen Mode --- */
+.video-box.custom-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    background: black;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-box.custom-fullscreen video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Prevents stretching */
+}
+
+/* --- Controls (No Tooltips) --- */
 .video-overlay-controls {
     position: absolute;
     inset: 0;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
     opacity: 0;
     transition: var(--transition);
     pointer-events: none;
@@ -430,6 +95,14 @@ video {
 
 .video-box:hover .video-overlay-controls {
     opacity: 1;
+}
+
+.main-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    flex-grow: 1;
 }
 
 .nav-btn {
@@ -441,27 +114,77 @@ video {
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    font-size: 20px;
+    font-size: 22px;
     cursor: pointer;
     transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.nav-btn:hover {
+.nav-btn:hover, .nav-btn:focus {
     background: var(--primary-purple);
     transform: scale(1.1);
     box-shadow: 0 0 20px var(--accent-glow);
+    outline: none;
+    border: 2px solid white;
 }
 
 .play-btn {
-    width: 85px !important;
-    height: 85px !important;
+    width: 80px !important;
+    height: 80px !important;
     font-size: 30px !important;
     background: var(--primary-purple) !important;
 }
 
-/* --- Movie Details & Meta --- */
+/* Bottom Control Bar */
+.bottom-controls {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 12px 20px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    pointer-events: auto;
+}
+
+/* --- Progress Bar --- */
+.progress-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: 10px;
+    pointer-events: auto;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--primary-purple);
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 0 10px var(--primary-purple);
+}
+
+.progress-dot {
+    position: absolute;
+    right: -3px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 14px;
+    width: 14px;
+    background: white;
+    border-radius: 50%;
+}
+
+/* --- Movie Details --- */
 .movie-details {
-    margin-top: 35px;
+    margin-top: 30px;
 }
 
 #movieTitle {
@@ -475,7 +198,6 @@ video {
 }
 
 #movieInfo {
-    font-size: 1.1rem;
     color: var(--text-dim);
     line-height: 1.8;
     margin-top: 15px;
@@ -483,27 +205,24 @@ video {
     padding-left: 15px;
 }
 
-/* --- Episode Container & Topic Section --- */
+/* --- Episodes Grid --- */
 .episodes-container {
-    padding: 40px 20px;
+    padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.section-title h2 {
-    font-size: 1.6rem;
+.section-title {
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+    margin-bottom: 20px;
+    padding-left: 12px;
+    border-left: 3px solid var(--primary-purple);
+    background: linear-gradient(to right, #fff, #a29bfe);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 
-.section-title h2::after {
-    content: '';
-    flex-grow: 1;
-    height: 1px;
-    background: linear-gradient(to right, var(--primary-purple), transparent);
 }
 
 .episodes-grid {
@@ -515,7 +234,7 @@ video {
 }
 
 .episodes-grid::-webkit-scrollbar {
-    height: 4px;
+    height: 10px;
 }
 
 .episodes-grid::-webkit-scrollbar-thumb {
@@ -523,20 +242,26 @@ video {
     border-radius: 10px;
 }
 
+.episodes-grid::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-purple);
+}
+
 .episode-card {
-    min-width: 300px;
-    background: var(--card-bg);
+    min-width: 280px;
+    background: #121212;
     border-radius: 12px;
+    color: white;
     overflow: hidden;
-    border: 1px solid #222;
+    cursor: pointer;
     transition: var(--transition);
-    scroll-snap-align: start;
+    border: 1px solid #333;
 }
 
 .episode-card:hover {
     transform: translateY(-8px);
     border-color: var(--primary-purple);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+
 }
 
 .episode-thumbnail {
@@ -552,320 +277,45 @@ video {
 }
 
 .episode-info {
-    padding: 15px;
+    padding: 12px;
 }
 
-/* Add this to movie-view.css */
-
-/* High-visibility focus indicator */
-.episodes-grid .episode-card:focus,
-.bottom-controls button:focus,
-.volume-container input:focus,
-#voice-assistant-btn:focus {
-    outline: none;
-    border: 3px solid #00d2ff !important;
-    /* Bright blue or gold focus ring */
-    box-shadow: 0 0 20px #00d2ff;
-    transform: scale(1.1);
-    /* Slightly enlarge focused item */
-    transition: transform 0.2s ease-in-out;
+.episode-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
 }
 
-/* Ensure episode cards are focusable */
-.episode-card {
-    cursor: pointer;
+.episode-time {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin: 0;
 }
 
-/* --- New Styled Alert Message --- */
-/* Update this section in movie-view.css */
+/* --- Custom Alerts --- */
 #custom-alert {
     position: fixed;
     top: 30px;
     left: 50%;
     transform: translateX(-50%) translateY(-200px);
     background: rgba(42, 14, 60, 0.95);
-    /* Deep purple */
-    backdrop-filter: blur(15px);
     color: white;
-    padding: 16px 32px;
+    padding: 12px 25px;
     border-radius: 50px;
-    /* Pill shape */
-    border: 2px solid var(--primary-purple);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px var(--accent-glow);
-
-    /* CRITICAL: Must be higher than the .custom-fullscreen z-index */
+    border: 1px solid var(--primary-purple);
     z-index: 100001;
-
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    pointer-events: none;
-    /* Won't block clicks to the video */
+    transition: transform 0.5s ease;
 }
 
 #custom-alert.show {
     transform: translateX(-50%) translateY(0);
 }
 
-.alert-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-/* Ensure icons within alert are styled */
-.alert-content i {
-    color: #a29bfe;
-    font-size: 1.4rem;
-    filter: drop-shadow(0 0 5px var(--primary-purple));
-}
-
-/* --- Fullscreen Button & Tooltip Logic --- */
-
-/* Base style for the fullscreen button to match your other nav-btns */
-.fullscreen-btn {
-    position: relative;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    border: none;
-    color: white;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-/* Tooltip Styling */
-.fullscreen-btn::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 125%;
-    /* Position above the button */
-    left: 50%;
-    transform: translateX(-50%) scale(0.8);
-    background: rgba(42, 14, 60, 0.95);
-    /* Deep purple */
-    color: white;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid var(--primary-purple);
-    pointer-events: none;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* Show Tooltip on Hover or Focus (for TV/Remote users) */
-.fullscreen-btn:hover::after,
-.fullscreen-btn:focus::after {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) scale(1);
-}
-
-/* Specific Focus Ring for TV Navigation */
-.fullscreen-btn:focus {
-    outline: none;
-    border: 2px solid #00d2ff !important;
-    box-shadow: 0 0 15px #00d2ff;
-    transform: scale(1.1);
-}
-
-
-/* --- Voice Assistant Refinement --- */
-#voice-assistant-btn {
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    background: var(--primary-purple);
-    width: 65px;
-    height: 65px;
-    box-shadow: 0 8px 32px var(--accent-glow);
-    border: none;
-}
-
-/* Layout for new controls */
-.video-overlay-controls {
-    flex-direction: column;
-    /* Stack buttons and bottom bar */
-    justify-content: space-between;
-    padding: 20px;
-}
-
-.main-controls {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-.bottom-controls {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 10px 20px;
-    border-radius: 12px;
-    backdrop-filter: blur(5px);
-}
-
-/* Volume Slider */
-.volume-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#volumeSlider {
-    width: 80px;
-    accent-color: var(--primary-purple);
-    cursor: pointer;
-}
-
-/* Timer */
-.timer-display {
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    color: white;
-}
-
-/* Custom Fullscreen Mode (Z-Index approach) */
-.video-box.custom-fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 99999;
-    background: black;
-    border-radius: 0;
-}
-
-.video-box.custom-fullscreen video {
-    height: 100vh;
-    border-radius: 0;
-}
-
-/* The Main Track (Unplayed area) */
-.progress-container {
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.15);
-    /* Subtle track */
-    border-radius: 10px;
-    cursor: pointer;
-    position: relative;
-    margin-bottom: 15px;
-    overflow: hidden;
-    /* CRITICAL: This keeps the color "inner" */
-    display: flex;
-    align-items: center;
-}
-
-/* The Completed Line (Inner Color) */
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    /* Managed by JS */
-    background: var(--primary-purple);
-    border-radius: 10px;
-    position: relative;
-    /* Remove outer box-shadow and add inner depth instead */
-    box-shadow: inset 0 0px 20px rgb(128, 0, 174);
-    pointer-events: none;
-}
-
-/* The Scrubber Ball (Now looks like it's sliding on top) */
-.progress-dot {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 16px;
-    width: 6px;
-    border-radius: 50px;
-    /* Thin vertical line instead of a big ball for "Inner" style */
-    background: white;
-    box-shadow: 0 0 10px #8e44ad;
-    opacity: 0.8;
-}
-
-.bottom-controls button {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    border: none;
-    color: white;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-/* Add this to movie-view.css */
-
-/* High-visibility focus indicator */
-.episodes-grid .episode-card:focus,
-.bottom-controls button:focus,
-.volume-container input:focus,
-#voice-assistant-btn:focus {
-    outline: none;
-    border: 3px solid #2a0e3c !important;
-    /* Bright blue or gold focus ring */
-    box-shadow: 0 0 20px #2a0e3c;
-    transform: scale(1.1);
-    /* Slightly enlarge focused item */
-    transition: transform 0.2s ease-in-out;
-}
-
-/* Ensure episode cards are focusable */
-.episode-card {
-    cursor: pointer;
-}
-
-
-/* --- Responsive Timer/Layout Fixes --- */
+/* --- Responsive Timer/Layout --- */
 @media (max-width: 768px) {
-    #movieTitle {
-        font-size: 2rem;
-    }
-
-    .episode-card {
-        min-width: 240px;
-    }
-
-    .nav-btn {
-        width: 50px;
-        height: 50px;
-    }
-
-    .play-btn {
-        width: 70px !important;
-        height: 70px !important;
-    }
-
-    .main-controls {
-        display: flex;
-        align-items: center;
-        gap: 25px;
-        margin-top: auto;
-        margin-bottom: 10px;
-    }
-
-    .main-controls .nav-btn {
-        width: 35px;
-        height: 35px;
-    }
-
-    /* Hide tooltips on small touch devices where hover doesn't exist */
-    .fullscreen-btn::after {
-        display: none;
-    }
+    #movieTitle { font-size: 1.8rem; }
+    .nav-btn { width: 45px; height: 45px; font-size: 18px; }
+    .play-btn { width: 65px !important; height: 65px !important; }
+    .episode-card { min-width: 220px; }
+    .main-controls { gap: 15px; }
 }
