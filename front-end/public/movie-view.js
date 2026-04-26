@@ -13,6 +13,8 @@ const progressContainer = document.getElementById('progressContainer');
 const volumeSlider = document.getElementById('volumeSlider');
 const currentTimeDisplay = document.getElementById('currentTime');
 const durationTimeDisplay = document.getElementById('durationTime');
+const hoverTimer = document.getElementById('hover-timer');
+const bufferBar = document.getElementById('bufferBar');
 
 const TV_KEYS = {
     UP: 38, DOWN: 40, LEFT: 37, RIGHT: 39, ENTER: 13,
@@ -89,8 +91,10 @@ function togglePlay() {
     showUI();
 }
 
+// Also clear the buffer bar when changing episodes
 function changeEpisode(url, title) {
     progressBar.style.width = '0%';
+    bufferBar.style.width = '0%'; // Reset buffer view
     source.src = url;
     video.load();
     video.play();
@@ -381,3 +385,99 @@ function updateAmbilight() {
 video.addEventListener('play', () => updateAmbilight());
 video.addEventListener('pause', () => cancelAnimationFrame(ambilightFrameId));
 video.addEventListener('ended', () => cancelAnimationFrame(ambilightFrameId));
+
+//currect calculation for the timer line
+// --- Updated Progress Bar Logic (Click & Drag) ---
+let isDragging = false;
+
+function scrub(e) {
+    if (video.duration) {
+        const rect = progressContainer.getBoundingClientRect();
+        // Calculate percentage based on mouse position relative to bar width
+        let pos = (e.clientX - rect.left) / rect.width;
+        
+        // Constrain between 0 and 1
+        pos = Math.max(0, Math.min(1, pos));
+        
+        video.currentTime = pos * video.duration;
+        
+        // Immediate UI update for smoothness while dragging
+        progressBar.style.width = `${pos * 100}%`;
+    }
+}
+
+// Mouse Events
+progressContainer.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    scrub(e); // Seek immediately on click
+});
+
+window.addEventListener('mousemove', (e) => {
+    if (isDragging) scrub(e); // Seek while moving if mouse is down
+});
+
+window.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+// Touch Events (For Mobile/Tablets)
+progressContainer.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    scrub(e.touches[0]);
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+    if (isDragging) scrub(e.touches[0]);
+}, { passive: true });
+
+window.addEventListener('touchend', () => {
+    isDragging = false;
+});
+
+
+//download video time-line view
+video.addEventListener('progress', () => {
+    if (video.duration > 0) {
+        for (let i = 0; i < video.buffered.length; i++) {
+            // Check if the current time of the video is within a buffered range
+            if (video.buffered.start(video.buffered.length - 1 - i) < video.currentTime) {
+                const bufferedEnd = video.buffered.end(video.buffered.length - 1 - i);
+                const width = (bufferedEnd / video.duration) * 100;
+                bufferBar.style.width = `${width}%`;
+                break;
+            }
+        }
+    }
+});
+
+
+
+//hover to view video time on the top 
+progressContainer.addEventListener('mousemove', (e) => {
+    if (video.duration) {
+        const rect = progressContainer.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const width = rect.width;
+        
+        // Calculate the percentage of the bar hovered
+        const percent = Math.max(0, Math.min(1, offsetX / width));
+        
+        // Calculate the time at that specific point
+        const hoverTime = percent * video.duration;
+        
+        // Update the tooltip text
+        hoverTimer.textContent = formatTime(hoverTime);
+        
+        // Move the tooltip to follow the mouse
+        hoverTimer.style.left = `${offsetX}px`;
+    }
+});
+
+// Optional: Ensure it hides correctly when mouse leaves
+progressContainer.addEventListener('mouseleave', () => {
+    hoverTimer.style.display = 'none';
+});
+
+progressContainer.addEventListener('mouseenter', () => {
+    hoverTimer.style.display = 'block';
+});

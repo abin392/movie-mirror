@@ -1,10 +1,43 @@
 /* ==========================================
    1. AUTHENTICATION & PROFILE AUTO-LOAD
    ========================================== */
-// Immediate check for login status
-if (localStorage.getItem("isLoggedIn") !== "true" || !localStorage.getItem("username")) {
-    window.location.replace("index.html");
-}
+document.addEventListener("DOMContentLoaded", () => {
+    // Automatically load User Name and Image from localStorage
+    const savedName = localStorage.getItem("username");
+    const savedImage = localStorage.getItem("profileImage");
+
+    const nameElement = document.getElementById("userName");
+    const imageElement = document.getElementById("userImage");
+
+    if (savedName && nameElement) {
+        nameElement.textContent = savedName;
+    } else if (nameElement) {
+        // NEW: Fallback for guests who aren't logged in yet
+        nameElement.textContent = "Guest";
+    }
+
+    if (savedImage && imageElement) {
+        imageElement.src = savedImage;
+    }
+
+    // Initialize core page functions
+    initializeRevealLogic();
+    startAutoScroll();
+    //login to view the music page--
+    // Add or update this logic in your movie.js
+    document.getElementById('music').addEventListener('click', () => {
+        // --- LOGIN CHECK ---
+        if (localStorage.getItem("isLoggedIn") !== "true" || !localStorage.getItem("username")) {
+            // Redirect to login if not authenticated
+            window.location.href = "index.html";
+            return;
+        }
+        // -------------------
+
+        // If logged in, proceed to your music/jukebox logic
+        window.location.href = 'music-viewer.html'; // Or your specific music page link
+    });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     // Automatically load User Name and Image from localStorage
@@ -55,7 +88,7 @@ function executeSearch() {
 function initializeRevealLogic() {
     const skeleton = document.getElementById("skeletonLoader");
     const real = document.getElementById("realContent");
-    
+
     if (!skeleton || !real) return;
 
     const realSections = real.querySelectorAll(":scope > section, :scope > div");
@@ -95,7 +128,7 @@ function startAutoScroll() {
 
         scrollIndex++;
         if (scrollIndex >= carts.length) scrollIndex = 0;
-        
+
         const cart = carts[scrollIndex];
         const cartRect = cart.getBoundingClientRect();
         const scrollerRect = scroller.getBoundingClientRect();
@@ -125,7 +158,7 @@ function setupEventListeners() {
         card.addEventListener("mouseenter", () => {
             isHoveringCart = true;
             video.currentTime = 0;
-            video.play().catch(() => {});
+            video.play().catch(() => { });
         });
 
         card.addEventListener("mouseleave", () => {
@@ -137,6 +170,16 @@ function setupEventListeners() {
 }
 
 function movieView(element) {
+    //login to view movie page--
+    // --- NEW LOGIC: Check if logged in before proceeding ---
+    if (localStorage.getItem("isLoggedIn") !== "true" || !localStorage.getItem("username")) {
+        // If not logged in, redirect them to the login page
+        window.location.href = "index.html";
+        return; // Stop the rest of the function from running
+    }
+    // -------------------------------------------------------
+
+    // Your existing logic remains completely unchanged below this line
     const movie = element.closest('.movies');
     const movieData = {
         title: movie.dataset.title,
@@ -145,9 +188,9 @@ function movieView(element) {
         year: movie.dataset.year,
         language: movie.dataset.language,
         image: movie.dataset.img,
-        episodes: Array.from({length: 16}, (_, i) => ({
-            link: movie.dataset[`link${i+2}`],
-            title: movie.dataset[`episode${i+1}`],
+        episodes: Array.from({ length: 16 }, (_, i) => ({
+            link: movie.dataset[`link${i + 2}`],
+            title: movie.dataset[`episode${i + 1}`],
             time: movie.dataset[`time${i === 0 ? '' : i + 1}`]
         }))
     };

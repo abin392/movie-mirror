@@ -393,7 +393,7 @@ nav {
     -webkit-backdrop-filter: blur(12px);
     padding: 10px 20px;
     position: sticky;
-    top: 10px;
+    top: 2px;
     z-index: 100;
     height: 70px;
     border-radius: 16px;
@@ -442,7 +442,8 @@ nav i:hover {
 }
 
 /* Hide the old menu and menu icon for all devices */
-.menu, #menuIcon {
+.menu,
+#menuIcon {
     display: none !important;
 }
 
@@ -467,7 +468,8 @@ nav {
 }
 
 .settings-btn:hover {
-    color: #8e44ad; /* Matches your purple theme */
+    color: #8e44ad;
+    /* Matches your purple theme */
     transform: rotate(90deg);
 }
 
@@ -884,15 +886,41 @@ nav {
     color: #ccc;
 }
 
+/* Responsive Footer Container Adjustment */
 .container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    background: rgba(26, 9, 38, 0.6);
-    color: white;
-    margin: 0 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 0 0 20px 20px;
-    overflow: hidden;
+    display: flex; /* Enables flexible layout */
+    flex-wrap: wrap; /* Allows items to move to the next line on small screens */
+    justify-content: space-around; /* Distributes items evenly across the width */
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px; /* Adds space between the about and contact sections */
+}
+
+/* Ensure child containers take up appropriate space */
+.container .about-container, 
+.container .contect-container {
+    flex: 1; /* Allows sections to grow equally */
+    min-width: 280px; /* Prevents sections from getting too narrow on mobile */
+    text-align: center; /* Centers text and icons for a professional look */
+}
+
+/* Make icons display horizontally inside their sections */
+.container a {
+    display: inline-block; /* Keeps icons on the same horizontal line */
+    margin: 10px; /* Adds comfortable spacing between clickable icons */
+    font-size: 1.5rem; /* Ensures icons are touch-friendly on mobile */
+}
+
+/* Mobile-Specific Optimization */
+@media screen and (max-width: 600px) {
+    .container {
+        flex-direction: column; /* Stacks the two main blocks on very small screens */
+        align-items: center;
+    }
+    
+    .container a {
+        margin: 15px; /* Larger gap for easier tapping on phones */
+    }
 }
 
 .container h3 {
@@ -913,25 +941,12 @@ nav {
     background: #8e44ad;
 }
 
-.container .about-container,
-.container .contect-container {
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.container .about-container {
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(255, 255, 255, 0.02);
-}
 
 .container p {
     font-size: 0.95rem;
     line-height: 1.6;
     color: #ccc;
-    max-width: 400px;
+    max-width: 100%;
 }
 
 .container a {
@@ -1400,5 +1415,49 @@ nav {
     .bottom-footer {
         margin: 20px 10px 80px;
         /* added bottom margin to account for fixed mobile nav */
+    }
+}
+
+
+/* PC & SMART TV: Show search in Nav, hide external search */
+@media screen and (min-width: 1025px) {
+    nav .search-box {
+        display: block;
+        width: 400px;
+    }
+    
+    #realContent > .search-box {
+        display: none;
+    }
+
+    /* Skeleton Adjustment for PC/TV */
+    .skeleton-searchbox {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+    }
+    .skeleton-line.input {
+        width: 400px;
+    }
+}
+
+/* MOBILE & TABLET: Hide search in Nav, show in previous place */
+@media screen and (max-width: 1024px) {
+    nav .search-box {
+        display: none;
+    }
+
+    #realContent > .search-box {
+        display: flex;
+        justify-content: center;
+        margin: 20px 10px;
+    }
+
+    /* Skeleton Adjustment for Mobile/Tablet */
+    .skeleton-searchorder {
+        justify-content: center;
+    }
+    .skeleton-line.input {
+        width: 80%; /* Takes more width on smaller screens */
     }
 }

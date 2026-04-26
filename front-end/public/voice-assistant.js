@@ -102,7 +102,24 @@ function startVoiceRecognition(searchType = 'movie') {
         }
     };
 
-    window.recognition.onerror = () => resetVoiceState();
+    window.recognition.onerror = (event) => {
+        console.log("Speech Recognition Error Fired:", event.error); // Add this line!
+        
+        switch (event.error) {
+            case 'no-speech':
+                assistantSpeak("No speech detected. Please try again.");
+                break;
+            case 'audio-capture':
+                assistantSpeak("No microphone found. Please check your settings.");
+                break;
+            case 'not-allowed':
+                assistantSpeak("Microphone permission denied.");
+                break;
+            default:
+                assistantSpeak("A voice recognition error occurred.");
+        }
+        resetVoiceState();
+    };
 
     window.recognition.onend = () => {
         // REMOVED the 1000ms timeout here so it closes instantly

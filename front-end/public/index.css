@@ -1,341 +1,260 @@
-body {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Arial, Helvetica, sans-serif;
-
+/* =========================================
+   1. GLOBAL RESET & FOUNDATION
+   ========================================= */
+:root {
+    --primary-bg: #0b0510;        /* Deep space black */
+    --card-bg: #1a0b2e;           /* Rich dark purple */
+    --accent-purple: #8e44ad;     /* Professional purple */
+    --accent-hover: #a349c2;
+    --text-main: #ffffff;
+    --text-dim: #b3b3b3;
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--primary-bg);
+    background-image: radial-gradient(circle at center, #1a0b2e 0%, #0b0510 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: var(--text-main);
+    padding: 20px;
+}
+
+/* =========================================
+   2. PROFESSIONAL LOGIN CONTAINER
+   ========================================= */
 .login-container {
-    width: 50%;
-    height: 500px;
-    background-color: #1b3b6f;
+    width: 100%;
+    max-width: 420px;
+    background-color: var(--card-bg);
+    padding: 50px 30px;
+    border-radius: 28px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin-top: 40px;
-    border-radius: 20px;
-    border: none;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .login-container:hover {
-    box-shadow: 0px 0px 15px rgb(0, 0, 0);
+    transform: translateY(-8px);
 }
 
-.login-container img {
-    width: 150px;
-    height: 150px;
-    border: 2px solid #e1e2e1;
-    border-radius: 50pc;
-    margin-top: -30px;
-    margin-bottom: 100px;
-}
-
-.login-container #profileImage {
-    position: absolute;
-    height: 150px;
-    width: 150px;
-    top: 135px;
-    cursor: pointer;
-    border: none;
-    border-radius: 50pc;
-}
-
-.login-container #username {
-    height: 30px;
-    width: 50%;
-    margin-top: -50px;
-    border-radius: 10px;
-    text-align: center;
-    background-color: #000000;
-    font-size: 18px;
-    color: white;
-    border: none;
-}
-
-.login-container button {
-    width: 40%;
-    height: 30px;
-    border: 1px solid;
-    border-radius: 10px;
-    background-color: #0d1b2a;
-    color: white;
-    margin-top: -30px;
-}
-
-.login-container button:hover {
-    background-color: #e1e2e1;
-    color: black;
-    cursor: pointer;
-}
-
-.profile-wrapper {
-    position: relative;
-    width: 150px;
-    margin: 0 auto;
-}
-
-#yourImage {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.camera-icon {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background: #1b3b6f;
-    padding: 8px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid white;
-}
-
-.camera-icon img {
-    width: 20px;
-    height: 20px;
-    filter: invert(1);
-    /* Makes icon white */
-}
-
-.avatar-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin: 15px 0;
-}
-
-.avatar-grid img {
-    width: 60px;
-    height: 60px;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: transform 0.2s;
-}
-
-.avatar-grid img:hover {
-    transform: scale(1.1);
-}
-
+/* =========================================
+   3. AVATAR PICKER STYLE
+   ========================================= */
 .avatar-picker {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 25px;
+    margin-bottom: 40px;
+    position: relative;
 }
 
 .image-wrapper {
+    width: 140px;
+    height: 140px;
     position: relative;
-    width: 120px;
-    height: 120px;
 }
 
-#yourImage {
+.image-wrapper img {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #1b3b6f;
+    border-radius: 50%;
+    border: 3px solid var(--accent-purple);
+    padding: 5px;
+    background: var(--input-bg);
+    box-shadow: 0 0 20px rgba(142, 68, 173, 0.2);
 }
 
 .camera-btn {
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     right: 5px;
-    background: #1b3b6f;
-    width: 35px;
-    height: 35px;
+    background: var(--accent-purple);
+    color: white;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border: 2px solid #fff;
+    border: 3px solid var(--card-bg);
     transition: 0.3s;
 }
 
 .camera-btn:hover {
+    background: var(--accent-hover);
     transform: scale(1.1);
-    background: #2a5298;
 }
 
 .camera-btn svg {
-    width: 20px;
+    width: 18px;
+    height: 18px;
 }
 
-/* Avatar Grid Styling */
-.avatar-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+/* =========================================
+   4. FORM INPUTS & BUTTON
+   ========================================= */
+#username {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 25px;
+    outline: none;
+    transition: 0.3s;
+}
+
+#username:focus {
+    border-color: var(--accent-purple);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(142, 68, 173, 0.15);
+}
+
+#username::placeholder {
+    color: var(--text-dim);
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px -5px rgba(142, 68, 173, 0.4);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px -5px rgba(142, 68, 173, 0.5);
+    filter: brightness(1.1);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* =========================================
+   5. MODAL & OVERLAY STYLE
+   ========================================= */
+.alert-overlay, .avatar-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
     padding: 20px;
 }
 
-.default-img, .upload-option {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+.alert-overlay.show, .avatar-modal.show {
+    display: flex;
+}
+
+.alert-box, .modal-content {
+    background: #1a1a1a;
+    border: 1px solid var(--glass-border);
+    padding: 30px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    animation: modalSlide 0.4s ease-out;
+}
+
+@keyframes modalSlide {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.alert-box h3, .modal-content h3 {
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.avatar-grid img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 12px;
     cursor: pointer;
+    transition: 0.2s;
     border: 2px solid transparent;
 }
 
+.avatar-grid img:hover {
+    transform: scale(1.1);
+    border-color: var(--accent-purple);
+}
+
 .upload-option {
-    background: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    color: #666;
-}
-
-.default-img:hover {
-    border-color: #1b3b6f;
-}
-
-.alert-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.3s ease;
-}
-
-.alert-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.alert-box {
-    background: #0f172a;
-    color: #fff;
-    padding: 22px;
-    width: 280px;
-    border-radius: 14px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-    animation: pop 0.3s ease;
-}
-
-.alert-box h3 {
-    margin: 0 0 10px;
-    font-size: 18px;
-}
-
-.alert-box p {
-    font-size: 14px;
-    opacity: 0.85;
-}
-
-.alert-box button {
-    margin-top: 15px;
-    padding: 8px 22px;
-    background: #38bdf8;
-    border: none;
-    color: #000;
-    font-weight: bold;
-    border-radius: 20px;
+    grid-column: span 4;
+    background: var(--input-bg);
+    border: 2px dashed var(--glass-border);
+    padding: 15px;
+    border-radius: 12px;
     cursor: pointer;
+    font-weight: 500;
+    margin-top: 10px;
+    transition: 0.3s;
 }
 
-@keyframes pop {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+.upload-option:hover {
+    background: rgba(142, 68, 173, 0.1);
+    border-color: var(--accent-purple);
 }
 
-@media (max-width: 768px) {
+.close-btn {
+    margin-top: 20px;
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    box-shadow: none;
+}
+
+.close-btn:hover {
+    background: var(--input-bg);
+    box-shadow: none;
+}
+
+/* =========================================
+   6. RESPONSIVE OPTIMIZATIONS
+   ========================================= */
+@media (max-width: 480px) {
     .login-container {
-        width: 80%;
-        height: 600px;
-    }
-
-    .login-container #username {
-        width: 70%;
-    }
-
-    .login-container button {
-        width: 60%;
-    }
-
-    .login-container #profileImage {
-        top: 180px;
-    }
-
-    .alert-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.55);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        opacity: 0;
-        pointer-events: none;
-        transition: 0.3s ease;
-    }
-
-    .alert-overlay.show {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .alert-box {
-        background: #0f172a;
-        color: #fff;
-        padding: 22px;
-        width: 280px;
-        border-radius: 14px;
-        text-align: center;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-        animation: pop 0.3s ease;
-    }
-
-    .alert-box h3 {
-        margin: 0 0 10px;
-        font-size: 18px;
-    }
-
-    .alert-box p {
-        font-size: 14px;
-        opacity: 0.85;
-    }
-
-    .alert-box button {
-        margin-top: 15px;
-        padding: 8px 22px;
-        background: #38bdf8;
-        border: none;
-        color: #000;
-        font-weight: bold;
+        padding: 40px 20px;
         border-radius: 20px;
-        cursor: pointer;
     }
-
-    @keyframes pop {
-        0% {
-            transform: scale(0.8);
-            opacity: 0;
-        }
-
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
+    
+    .avatar-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
-
 }
