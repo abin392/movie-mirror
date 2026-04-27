@@ -99,7 +99,7 @@ audioPlayer.onended = () => {
     playSong(nextIndex);
 };
 
-// Create the list of 6 songs in the UI
+// Create the list of songs in the UI
 if (playlist && playlist.length > 0) {
     listContainer.innerHTML = ""; // Clear existing placeholder items
 
@@ -116,8 +116,21 @@ if (playlist && playlist.length > 0) {
         listContainer.appendChild(item);
     });
 
-    // Start playing the first song immediately
-    playSong(0);
+    // --- NEW LOGIC FOR SPECIFIC SONG START ---
+    // Read the targeted song index from Voice Assistant, default to 0 if not present
+    let startIndex = parseInt(localStorage.getItem('targetSongIndex')) || 0;
+    
+    // Safety check: ensure index exists in the playlist
+    if (startIndex < 0 || startIndex >= playlist.length) {
+        startIndex = 0; 
+    }
+
+    // Start playing the targeted song immediately
+    playSong(startIndex);
+
+    // Clear the stored index so manual clicks default back to index 0 next time
+    localStorage.removeItem('targetSongIndex');
+    // -----------------------------------------
 }
 
 // New Selectors

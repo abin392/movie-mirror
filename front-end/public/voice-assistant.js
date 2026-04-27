@@ -156,18 +156,34 @@ function handleMusicSearch(songName) {
 
     for (let btn of musicButtons) {
         const data = btn.dataset;
+        const movieContainer = btn.closest('.movies');
+        
+        // 1. Check if the user asked for a Movie's album (e.g., "Dude song")
+        if (movieContainer) {
+            const movieTitle = movieContainer.dataset.title || "";
+            const cleanMovieTitle = movieTitle.toUpperCase().replace(/[^A-Z0-9]/g, "");
+            
+            if (cleanMovieTitle === searchQuery || cleanMovieTitle.includes(searchQuery)) {
+                assistantSpeak(`Now playing ${movieTitle.toLowerCase()} playlist`);
+                localStorage.setItem('targetSongIndex', 0); // Start from the beginning
+                setTimeout(() => { btn.click(); }, 1500);
+                found = true;
+                break;
+            }
+        }
+
+        // 2. Check if the user asked for a Specific Song (e.g., "Singari song")
         for (let i = 1; i <= 20; i++) {
             const titleVal = data[`songtitle${i}`] || data[`songTitle${i}`];
             if (titleVal) {
                 const cleanTitle = titleVal.toUpperCase().replace(/[^A-Z0-9]/g, "");
                 if (cleanTitle.includes(searchQuery) || searchQuery.includes(cleanTitle)) {
-                    assistantSpeak(`Now playing ${songName.toLowerCase()} song`);
+                    assistantSpeak(`Now playing ${songName.toLowerCase()}`);
+                    
+                    // Store the target index (0-based) for the music viewer to pick up
+                    localStorage.setItem('targetSongIndex', i - 1);
 
-                    // ADDED TIMEOUT: Wait 1.5s for voice before playing music
-                    setTimeout(() => {
-                        btn.click();
-                    }, 1500);
-
+                    setTimeout(() => { btn.click(); }, 1500);
                     found = true;
                     break;
                 }

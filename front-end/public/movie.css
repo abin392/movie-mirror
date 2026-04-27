@@ -9,7 +9,7 @@
 }
 
 body {
-    background: #0b0510;
+    background: linear-gradient(135deg, rgba(26, 9, 38, 0.95), rgba(11, 5, 16, 0.95));
     /* Deep space dark background */
     color: #e0e0e0;
     margin: 0;
