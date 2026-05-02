@@ -1,7 +1,21 @@
 const MOVIE_TRAINING = {
-    "DUDE": ["DUDE", "DOOD", "DUD", "DEWD", "DOODLE", "DUDES", "DEW", "DUDDY", "DUDLY", "DUDLEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY", "BUILD", "DUDEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY", "DUDE MOVIE", "DOOD MOVIE", "DUD MOVIE", "DEWD MOVIE", "DOODLE MOVIE", "DUDES MOVIE", "DEW MOVIE", "DUDDY MOVIE", "DUDLY MOVIE", "DUDLEY MOVIE", "DUDES MOVIE", "DEWDE MOVIE", "DUDDY MOVIE", "DUDLY MOVIE", "DUDLEY MOVIE", "BUILD MOVIE", "DUDEY MOVIE", "DUNE MOVIE"],
+    "DUDE": ["DUDEMOVIE", "DOOD", "DUD", "DEWD", "DOODLE", "DUDES", "DEW", "DUDDY", "DUDLY", "DUDLEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY", "BUILD", "DUDEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY", "DUDE MOVIE", "DOOD MOVIE", "DUD MOVIE", "DEWD MOVIE", "DOODLE MOVIE", "DUDES MOVIE", "DEW MOVIE", "DUDDY MOVIE", "DUDLY MOVIE", "DUDLEY MOVIE", "DUDES MOVIE", "DEWDE MOVIE", "DUDDY MOVIE", "DUDLY MOVIE", "DUDLEY MOVIE", "BUILD MOVIE", "DUDEY MOVIE", "DUNE MOVIE"],
     "AMPULI": ["AMBULI", "AMPULI", "AMPU LEE", "AMBLY", "AMBILY", "AMBERLY", "AMBOLI", "HUMBLY", "AMBALI", "AMB", "AMPU", "AMPU LEE", "AMPULI", "AMBULI", "AMPU LEE", "AMBLY", "AMBILY", "AMBERLY", "AMBOLI", "HUMBLY", "AMBALI", "AMB", "AMPU", "AMPU LEE", "AMPULI", "AMBULI", "AMPU LEE", "AMBLY", "AMBILY", "AMBERLY", "AMBOLI", "HUMBLY", "AMBALI", "AMB", "AMPU"],
-    "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "IDLI KADAY", "ITALY", "IDLY", "IDLI KADAI", "ITALY KADAI", "IDLY KADAY", "IDLI KADAI", "ITALY KADAI", "IDLY KADAY"]
+    "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "IDLI KADAY", "ITALY", "IDLY", "IDLI KADAI", "ITALY KADAI", "IDLY KADAY", "IDLI KADAI", "ITALY KADAI", "IDLY KADAY"],
+    "DARBAR": ["DARBAAR", "DARBAR", "DARPAR"]
+};
+
+// --- NEW: Add this right below MOVIE_TRAINING ---
+const MUSIC_TRAINING = {
+    "OORUM BLOOD": ["OORUM BLOOD", "ORUM BLOOD", "OORAM BLOOD", "OUR BLOOD", "ROOM BLOOD", "OORUM BLED", "OORUM BLUE", "OORUM BLU", "OORUM", "BLOOD"],
+    "SINGARI": ["SINGARI", "SINGARY", "SHINGARI", "CHINGARI", "SINGARI SONG", "SINGARY SONG", "SHINGARI SONG", "CHINGARI SONG"],
+    "KANNUKULLA": ["KANNUKULLA", "KANUKULLA", "KANNUKULA", "KANNU KULLA", "CANNUKULA"],
+    "NALLARU PO": ["NALLARU PO", "NALARU PO", "NALLARU PAA", "NALLA RUPU"],
+    "YUMABAIBESA": ["YUMABAIBESA", "YUMA", "YAMBAI", "YAMABAI", "YUMMABAI"],
+    "JUKEBOX": ["JUKEBOX", "JUKE BOX", "ALL SONGS", "FULL ALBUM", "DUDE SONGS"],
+    // --- NEW: Added Idli Kadai variations here ---
+    "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "IDLI KADAY", "ITALY", "IDLY", "IDLY KADAY", "ILLY KADAI", "IDLI KADA", "IDLI KADAI ALBUM"],
+    "Ethana_Saami__Idli_Kadai": ["Ethana Saami", "Ethana Sami", "Ethana Saamy", "Ethana Saami Song", "Ethana Sami Song", "Ethana Saamy Song", " Eterna", "Eterna Song", "Idli Kadai Ethana Saami", "Idli Kadai Ethana Sami", "Idli Kadai Ethana Saamy", "Etna Sami", "Etna Saami", "Etna Saamy"],
 };
 
 let isVoiceProcessing = false;
@@ -41,70 +55,105 @@ function startVoiceRecognition(searchType = 'movie') {
 
     window.recognition.lang = 'en-US';
     window.recognition.continuous = false;
-    window.recognition.interimResults = false;
+    // 1. Change this to TRUE to allow live-text updates while speaking
+    window.recognition.interimResults = true;
 
     statusText.innerText = searchType === 'movie' ? 'Say "Playing Dude"' : 'Say "Playing Dude Song"';
     overlay.classList.remove('voice-hidden');
     isVoiceProcessing = true;
 
     window.recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        const match = transcript.match(/(?:playing|play|open)\s+(.*)/);
+        // Get the live transcript of what the user is currently saying
+        const transcript = event.results[0][0].transcript;
+        const statusText = document.getElementById('voice-status');
 
-        if (match && match[1]) {
-            let spokenName = match[1].trim().toUpperCase();
+        // 2. Automatically change the text under the mic to the user's spoken words
+        statusText.innerText = `"${transcript}"`;
 
-            if (searchType === 'movie') {
-                for (const [correctName, variants] of Object.entries(MOVIE_TRAINING)) {
-                    if (variants.includes(spokenName)) {
-                        spokenName = correctName;
-                        break;
+        // 3. Only run the search logic when the user FINISHES speaking (isFinal)
+        if (event.results[0].isFinal) {
+            const finalTranscript = transcript.toLowerCase();
+            const match = finalTranscript.match(/(?:playing|play|open)\s+(.*)/);
+
+            if (match && match[1]) {
+                let spokenName = match[1].trim().toUpperCase();
+
+                // Clean up extra words
+                spokenName = spokenName.replace(/\b(MOVIE|TAMIL|TELUGU|MALAYALAM|HINDI|ENGLISH|FULL|HD)\b/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+
+                if (searchType === 'movie') {
+                    for (const [correctName, variants] of Object.entries(MOVIE_TRAINING)) {
+                        if (variants.includes(spokenName)) {
+                            spokenName = correctName;
+                            break;
+                        }
                     }
-                }
 
-                const searchInput = document.getElementById("movieSearchInput");
-                if (searchInput) {
-                    searchInput.value = spokenName;
-                    if (typeof executeSearch === "function") {
-                        executeSearch();
+                    const searchInput = document.getElementById("movieSearchInput");
+                    if (searchInput) {
+                        searchInput.value = spokenName;
 
-                        setTimeout(() => {
-                            const movieCards = document.querySelectorAll('.movies');
-                            let found = false;
+                        const movieCards = Array.from(document.querySelectorAll('.movies'));
+                        const foundCard = movieCards.find(card => card.dataset.title.toUpperCase() === spokenName && card.style.display !== 'none');
 
-                            movieCards.forEach(card => {
-                                if (card.dataset.title.toUpperCase() === spokenName && card.style.display !== 'none') {
-                                    assistantSpeak(`Now playing ${spokenName.toLowerCase()} movie`);
-                                    setTimeout(() => { card.click(); }, 1500);
-                                    found = true;
+                        if (foundCard) {
+                            assistantSpeak(`Now playing ${spokenName.toLowerCase()} movie`);
+
+                            // Visual feedback before redirecting
+                            statusText.innerText = `Found ${spokenName}! Playing in 2s...`;
+
+                            // 4. Delay exactly 2 seconds (2000ms) before playing
+                            setTimeout(() => {
+                                if (typeof movieView === "function") {
+                                    movieView(foundCard);
                                 }
-                            });
+                            }, 2000);
+                        } else {
+                            assistantSpeak(`Sorry, I couldn't find ${spokenName.toLowerCase()}`);
+                            statusText.innerText = `Couldn't find "${spokenName}"`;
+                            setTimeout(resetVoiceState, 2000);
+                        }
+                    } else {
+                        assistantSpeak(`Now playing ${spokenName.toLowerCase()}`);
+                        statusText.innerText = `Playing ${spokenName} in 2s...`;
 
-                            if (!found) {
-                                assistantSpeak(`Sorry, I couldn't find ${spokenName.toLowerCase()}`);
-                            }
-                            resetVoiceState();
-                        }, 600);
+                        // 4. Delay exactly 2 seconds (2000ms) before playing
+                        setTimeout(() => {
+                            window.location.href = `movie.html?autoPlay=${encodeURIComponent(spokenName)}`;
+                        }, 2000);
                     }
-                } else {
-                    assistantSpeak(`Now playing ${spokenName.toLowerCase()}`);
-                    setTimeout(() => {
-                        window.location.href = `movie.html?autoPlay=${encodeURIComponent(spokenName)}`;
-                    }, 1500);
+                } else if (searchType === 'music') {
+                    // 1. Strip out extra words to isolate the song name
+                    let cleanedSongName = spokenName.replace(/\b(SONG|SONGS|MUSIC|AUDIO|TRACK|PLAYING|PLAY)\b/g, '')
+                        .replace(/\s+/g, ' ')
+                        .trim();
+
+                    // 2. Check the spoken phrase against the MUSIC_TRAINING dictionary
+                    for (const [correctName, variants] of Object.entries(MUSIC_TRAINING)) {
+                        if (variants.includes(cleanedSongName)) {
+                            cleanedSongName = correctName; // Force it to the correct spelling
+                            break;
+                        }
+                    }
+
+                    // 3. Update the UI and search
+                    statusText.innerText = `Searching for ${cleanedSongName}...`;
+                    handleMusicSearch(cleanedSongName);
+
                 }
-            } else if (searchType === 'music') {
-                const cleanedSongName = spokenName.replace(" SONG", "").trim();
-                handleMusicSearch(cleanedSongName);
-                resetVoiceState();
+            } else {
+                // Let the user know if they forgot to say "Play"
+                statusText.innerText = "Please start with 'Play' or 'Playing'.";
+                setTimeout(resetVoiceState, 2000);
             }
-        } else {
-            resetVoiceState();
         }
     };
 
     window.recognition.onerror = (event) => {
         console.log("Speech Recognition Error Fired:", event.error); // Add this line!
-        
+
         switch (event.error) {
             case 'no-speech':
                 assistantSpeak("No speech detected. Please try again.");
@@ -154,36 +203,44 @@ function handleMusicSearch(songName) {
     const musicButtons = document.querySelectorAll('i#music');
     const searchQuery = songName.toUpperCase().replace(/[^A-Z0-9]/g, "");
 
+    // Connect to the visual UI Tracker
+    const statusText = document.getElementById('voice-status');
+
     for (let btn of musicButtons) {
         const data = btn.dataset;
         const movieContainer = btn.closest('.movies');
-        
-        // 1. Check if the user asked for a Movie's album (e.g., "Dude song")
+
+        // 1. Check if the user asked for a Movie's album
         if (movieContainer) {
             const movieTitle = movieContainer.dataset.title || "";
             const cleanMovieTitle = movieTitle.toUpperCase().replace(/[^A-Z0-9]/g, "");
-            
+
             if (cleanMovieTitle === searchQuery || cleanMovieTitle.includes(searchQuery)) {
                 assistantSpeak(`Now playing ${movieTitle.toLowerCase()} playlist`);
-                localStorage.setItem('targetSongIndex', 0); // Start from the beginning
-                setTimeout(() => { btn.click(); }, 1500);
+
+                // Visual Tracking & 2-second Delay
+                if (statusText) statusText.innerText = `Found ${movieTitle} Playlist! Playing in 2s...`;
+                localStorage.setItem('targetSongIndex', 0);
+                setTimeout(() => { btn.click(); }, 2000);
+
                 found = true;
                 break;
             }
         }
 
-        // 2. Check if the user asked for a Specific Song (e.g., "Singari song")
+        // 2. Check if the user asked for a Specific Song Track
         for (let i = 1; i <= 20; i++) {
             const titleVal = data[`songtitle${i}`] || data[`songTitle${i}`];
             if (titleVal) {
                 const cleanTitle = titleVal.toUpperCase().replace(/[^A-Z0-9]/g, "");
                 if (cleanTitle.includes(searchQuery) || searchQuery.includes(cleanTitle)) {
                     assistantSpeak(`Now playing ${songName.toLowerCase()}`);
-                    
-                    // Store the target index (0-based) for the music viewer to pick up
-                    localStorage.setItem('targetSongIndex', i - 1);
 
-                    setTimeout(() => { btn.click(); }, 1500);
+                    // Visual Tracking & 2-second Delay
+                    if (statusText) statusText.innerText = `Found ${songName}! Playing in 2s...`;
+                    localStorage.setItem('targetSongIndex', i - 1);
+                    setTimeout(() => { btn.click(); }, 2000);
+
                     found = true;
                     break;
                 }
@@ -192,8 +249,13 @@ function handleMusicSearch(songName) {
         if (found) break;
     }
 
+    // 3. If the song is not found
     if (!found) {
         assistantSpeak(`I couldn't find the song ${songName.toLowerCase()}`);
+        if (statusText) statusText.innerText = `Couldn't find "${songName}"`;
+
+        // Delay 2 seconds so the user can read the text, then hide the overlay
+        setTimeout(resetVoiceState, 2000);
     }
 }
 

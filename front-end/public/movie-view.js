@@ -331,7 +331,7 @@ function updateAmbilight() {
         ambilightCanvas.width = 64;
         ambilightCanvas.height = 64;
         ambilightCtx.drawImage(video, 0, 0, ambilightCanvas.width, ambilightCanvas.height);
-        
+
         const imageData = ambilightCtx.getImageData(0, 0, 64, 64).data;
         let r = 0, g = 0, b = 0, count = 0;
 
@@ -362,7 +362,7 @@ function updateAmbilight() {
             const bgR = Math.floor(r * 0.2);
             const bgG = Math.floor(g * 0.2);
             const bgB = Math.floor(b * 0.2);
-            
+
             container.style.background = `linear-gradient(
                 to bottom, 
                 rgb(${bgR}, ${bgG}, ${bgB}) 0%, 
@@ -395,12 +395,12 @@ function scrub(e) {
         const rect = progressContainer.getBoundingClientRect();
         // Calculate percentage based on mouse position relative to bar width
         let pos = (e.clientX - rect.left) / rect.width;
-        
+
         // Constrain between 0 and 1
         pos = Math.max(0, Math.min(1, pos));
-        
+
         video.currentTime = pos * video.duration;
-        
+
         // Immediate UI update for smoothness while dragging
         progressBar.style.width = `${pos * 100}%`;
     }
@@ -458,16 +458,16 @@ progressContainer.addEventListener('mousemove', (e) => {
         const rect = progressContainer.getBoundingClientRect();
         const offsetX = e.clientX - rect.left;
         const width = rect.width;
-        
+
         // Calculate the percentage of the bar hovered
         const percent = Math.max(0, Math.min(1, offsetX / width));
-        
+
         // Calculate the time at that specific point
         const hoverTime = percent * video.duration;
-        
+
         // Update the tooltip text
         hoverTimer.textContent = formatTime(hoverTime);
-        
+
         // Move the tooltip to follow the mouse
         hoverTimer.style.left = `${offsetX}px`;
     }
