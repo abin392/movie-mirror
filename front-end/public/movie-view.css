@@ -12,7 +12,7 @@
 body {
     margin: 0;
     font-family: 'Inter', -apple-system, sans-serif;
-    background: #2a0e3c;
+    background: radial-gradient(circle at top, #2a0e3c 0%, #000000 100%);
     /* Main Theme Background */
     color: var(--text-main);
     overflow-x: hidden;
@@ -507,6 +507,65 @@ input[type="range"].tv-focused {
     transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
         top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
         left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+
+
+/* =============================
+   NORMAL VIEW (MINIMALIST PREVIEW)
+============================= */
+
+/* 1. Hide all main controls, timelines, and volume sliders when NOT in fullscreen */
+#fullscreenContainer:not(.custom-fullscreen) #progressContainer,
+#fullscreenContainer:not(.custom-fullscreen) .main-controls,
+#fullscreenContainer:not(.custom-fullscreen) input[type="range"],
+#fullscreenContainer:not(.custom-fullscreen) .time-display,
+#fullscreenContainer:not(.custom-fullscreen) .volume-container,
+#fullscreenContainer:not(.custom-fullscreen) #volumeSlider {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important; 
+}
+
+/* 2. Rip the Fullscreen button out of the bottom row and move it to the Top-Right */
+#fullscreenContainer:not(.custom-fullscreen) .fullscreen-btn {
+    position: absolute !important;
+    right: 15px !important;
+    
+    /* Premium circular styling so it looks great hovering over the video */
+    background: rgba(0, 0, 0, 0.6) !important;
+    border-radius: 50% !important;
+    width: 45px !important;
+    height: 45px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    z-index: 9999 !important;
+    margin: 0 !important;
+    
+    /* Make sure it stays visible even if the other controls are hidden */
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    visibility: visible !important;
+}
+
+/* 3. Add your theme's purple hover effect to the new top-right button */
+#fullscreenContainer:not(.custom-fullscreen) .fullscreen-btn:hover {
+    background: rgba(142, 68, 173, 0.9) !important;
+    border-color: #ffffff !important;
+    transform: scale(1.1) !important;
+}
+
+/* 4. Hide the TV focus ring if the user uses the remote while the controls are invisible */
+#fullscreenContainer:not(.custom-fullscreen) .tv-focused:not(.fullscreen-btn) {
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* 5. Hide the Smart TV Tooltip in normal view so it doesn't float over empty space */
+body:has(#fullscreenContainer:not(.custom-fullscreen)) .tv-remote-tooltip {
+    display: none !important;
 }
 
 

@@ -4,6 +4,7 @@
 const MOVIE_TRAINING = {
     // Tamil Movies
     "AMARAN": ["AMARAN", "AMARON", "AMARIN"],
+    "தூங்கி எழுந்தாச்சா": ["தூங்கி எழுந்தாச்சா", "தூங்கி எழுந்தாச்சா", "தூங்கி எழுந்தாச்சா", "தூங்கி எழுந்தாச்சா", "தூங்கி எழுந்தாச்சா", "THUNGI EZHUNTHAACHAA", "THUNGI EZHUNTHAACHAA", "THUNGI EZHUNTHAACHAA", "THUNGI EZHUNTHAACHAA", "THUNGI EZHUNTHAACHAA"],
     "DUDE": ["DUDE", "DOOD", "DUD", "DEWD", "DOODLE", "DUDES", "DEW", "DUDDY", "DUNE", "build", "WEIRD", "DEER", "BEARD", "FOOD", "DUE", "VIEW", "VIEWED", "DUDE MOVIE", "DUDE MOVIES", "DOOD MOVIE", "DOOD MOVIES"],
     "AVATAR": ["AVATAR", "AVATHAR", "AVATOR", "AWTAR"],
     "DARBAR": ["DARBAR", "DARBAAR", "DARPAR", "DURBAR"],
@@ -11,8 +12,8 @@ const MOVIE_TRAINING = {
     "KATASI VIVASAYI": ["KATASI VIVASAYI", "KADAISI VIVASAYI", "KADASI VIVASAYI", "KATAISY VIWASAYI", "KATASI VIVASAYE"],
     "CAPTAIN AMERICA": ["CAPTAIN AMERICA", "CAPTAN AMERICA", "CAPTAIN AMERICAN"],
     "BISON": ["BISON", "BYSON", "BAYSAN", "POISON"],
-    "AMPULI": ["AMPULI", "AMBULI", "AMPU LEE", "AMBLY", "AMBILY", "AMPU"],
-    "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "IDLY", "IDLI"],
+    "AMBULI": ["AMBULI", "AMBERLY", "HUMBLY", "UNBOLI", "AMBULI", "AMPU LEE", "AMBULY", "AMPULI", "AMBLY", "AMBILY", "AMPU", "AMBULLY", "ambully"],
+    "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "ITLY", "ITLI", "ITALY"],
     "KAANTHA": ["KAANTHA", "KANTHA", "KANTA", "KAANTA"],
     "AARYAN": ["AARYAN", "ARYAN", "ARIAN"],
     "DIESEL": ["DIESEL", "DEESEL", "DEZEL", "DISEL"],
@@ -34,7 +35,7 @@ const MOVIE_TRAINING = {
     "LIGER": ["LIGER", "LYGER", "LIGGER"],
     "MY NAME IS KHAN": ["MY NAME IS KHAN", "MY NAME IS KAN"],
     "ADIPURUSH": ["ADIPURUSH", "AADI PURUSH", "AADIPURUSH"],
-    "ARJUN": ["ARJUN", "ARJUNAN"],
+    "ARJUN": ["ARJUN", "ARJUNAN", "ARJUNA"],
     "COCKTAIL": ["COCKTAIL", "COCK TAIL"],
     "DEVA": ["DEVA", "THEVA"],
     "GABBAR": ["GABBAR", "GABAR", "KAPPAR"],
@@ -58,7 +59,7 @@ const MOVIE_TRAINING = {
 const MUSIC_TRAINING = {
     // Universal
     "JUKEBOX": ["JUKEBOX", "JUKE BOX", "ALL SONGS", "FULL ALBUM", "PLAYLIST"],
-    
+
     // Dude Songs
     "OORUM BLOOD": ["OORUM BLOOD", "ORUM BLOOD", "OORAM BLOOD", "OUR BLOOD", "ROOM BLOOD"],
     "SINGARI": ["SINGARI", "SINGARY", "SHINGARI", "CHINGARI"],
@@ -67,13 +68,97 @@ const MUSIC_TRAINING = {
     "YUMABAIBESA": ["YUMABAIBESA", "YUMA", "YAMBAI", "YAMABAI", "YUMMABAI"],
 
     // Ampuli Songs
-    "AATHA NEE PETHAAYE": ["AATHA NEE PETHAAYE", "AATHA NEE PETHAYE", "AATHA NI PETHAYE", "ATHA NEE PETHAYE", "AMBULI SONG", "AMPULI", "AMPULI SONG"],
+    "AATHA NEE PETHAAYE": [
+        // 1. Standard & Correct
+        "AATHA NEE PETHAAYE",
+        "AATHA NEE PETHAYE",
+        "Adan",
+        "HORROR",
+        "ORDER",
+
+        // 2. Typical Tanglish Spellings
+        "AATHAA NEE PETHAYAE",
+        "ATHA NEE PETHAYE",
+        "ATHA NI PETHAYE",
+        "AATHA NI PETHAYA",
+
+        // 3. Blended Speech (How the mic hears fast Tamil)
+        "AATHANEE PETHAYE",
+        "AATHANI PETHAYE",
+        "ATHANI PETHAYE",
+
+        // 4. Hard Consonant Mishears
+        "AATA NEE PETHAYE",
+        "AATTA NEE PETHAYE",
+
+        // 5. Context / Fallback Commands
+        "AMBULI SONG",
+        "AMBULI AATHA SONG",
+        "AMPULI SONG"
+    ],
 
     // Idli Kadai Songs
-    "YEN PAATTAN SAAMI VARUM": ["YEN PAATTAN SAAMI VARUM", "EN PATTAN SAMI VARUM", "YEN PATTAN SAMI"],
+    "YEN PAATTAN SAAMI VARUM": [
+        // 1. Standard & Correct
+        "YEN PAATTAN SAAMI VARUM",
+        "EN PAATTAN SAAMI VARUM",
+
+        // 2. Typical Tanglish Variations (Yen vs En / Pattan vs Paatan / Saami vs Sami)
+        "YEN PATTAN SAMI VARUM",
+        "EN PATTAN SAMI VARUM",
+        "YEN PATTAN SAAMY VARUM",
+        "EN PATTAN SWAMY VARUM",
+        "EN PATAN SAMI VARUM",
+        "YEN PAATAN SAMI VARUM",
+
+        // 3. Blended Speech (How the mic hears fast, continuous Tamil)
+        "YENPATTAN SAMI VARUM",
+        "ENPATTAN SAAMI VARUM",
+        "YEN PATTANSAMI VARUM",
+        "EN PATTAN SAMIVARUM",
+
+        // 4. Shortened / Casual Commands (Users often drop the last word)
+        "YEN PATTAN SAMI",
+        "EN PATTAN SAMI",
+        "PAATTAN SAAMI VARUM",
+        "PATTAN SAMI",
+
+        // 5. Context / Fallback Commands (If they include the movie name)
+        "IDLI KADAI YEN PATTAN",
+        "IDLI KADAI PATTAN SAMI",
+        "IDLI KADAI SONG"
+    ],
     "ENNA SUGAM": ["ENNA SUGAM", "ENA SUGAM"],
     "ETHANA SAAMI": ["ETHANA SAAMI", "ETHANA SAMI", "ETNA SAMI", "ETHANA SAAMY"],
-    "ENJAAMI THANDHAANE": ["ENJAAMI THANDHAANE", "ENJAMI TANDHANE", "ENJAMI"],
+    "ENJAAMI THANDHAANE": [
+        // 1. Standard & Correct
+        "ENJAAMI THANDHAANE", 
+        "ENJAMI TANDHANE", 
+        "ENJAMI",
+
+        // 2. Typical Tanglish Variations (Yen vs En / Th vs T vs D)
+        "YENJAAMI THANDHAANE",
+        "YENJAMI THANTHANE",
+        "ENJAAMI THANTHANE",
+        "ENJAMI THANDHANE",
+        "ANJAAMI THANDHAANE",
+        "ANJAMI THANTHANE",
+
+        // 3. Blended Speech (How the mic hears fast, continuous Tamil)
+        "ENJAAMITHANDHAANE",
+        "YENJAMITHANTHANE",
+        "ENJAMITHANDHANE",
+
+        // 4. Hard/Soft Consonant Mishears (Western mic engines struggle with 'Th')
+        "ENJAMI TANTANE",
+        "ENJAAMI DHANDHAANE",
+        "ENJAMI TANDANE",
+
+        // 5. Shortened / Contextual Commands
+        "ENJAAMI SONG",
+        "YENJAMI SONG",
+        "IDLI KADAI ENJAAMI"
+    ],
     "MY HEARTU SPINNING": ["MY HEARTU SPINNING", "MY HEART SPINNING", "HEART SPINNING"],
     "KULASAMY KAAVAL KAAKA": ["KULASAMY KAAVAL KAAKA", "KULASAMI KAVAL KAKA", "KULASAMY"]
 };
@@ -94,12 +179,72 @@ const HERO_TRAINING = {
 
 let isVoiceProcessing = false;
 
+
+// ==========================================
+// 4. AI AUTO-LEARNING & FUZZY MATCHING ENGINE
+// ==========================================
+
+// A. Load learned words from LocalStorage and merge with your master lists
+function getLearnedDictionary(baseDict, storageKey) {
+    let merged = JSON.parse(JSON.stringify(baseDict));
+    let learned = JSON.parse(localStorage.getItem(storageKey)) || {};
+    for (let key in learned) {
+        if (merged[key]) {
+            // Combine hardcoded training with newly learned user slang
+            merged[key] = [...new Set([...merged[key], ...learned[key]])];
+        }
+    }
+    return merged;
+}
+
+let SMART_MOVIE_DICT = getLearnedDictionary(MOVIE_TRAINING, "learned_movies");
+let SMART_MUSIC_DICT = getLearnedDictionary(MUSIC_TRAINING, "learned_music");
+
+// B. Levenshtein Distance Algorithm (Scores how similar two words are from 0.0 to 1.0)
+function calculateSimilarity(s1, s2) {
+    let longer = s1.length > s2.length ? s1 : s2;
+    let shorter = s1.length > s2.length ? s2 : s1;
+    if (longer.length === 0) return 1.0;
+    let costs = new Array();
+    for (let i = 0; i <= longer.length; i++) {
+        let lastValue = i;
+        for (let j = 0; j <= shorter.length; j++) {
+            if (i === 0) costs[j] = j;
+            else {
+                if (j > 0) {
+                    let newValue = costs[j - 1];
+                    if (longer.charAt(i - 1) !== shorter.charAt(j - 1))
+                        newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                    costs[j - 1] = lastValue;
+                    lastValue = newValue;
+                }
+            }
+        }
+        if (i > 0) costs[shorter.length] = lastValue;
+    }
+    return (longer.length - costs[shorter.length]) / parseFloat(longer.length);
+}
+
+// C. Save new slang to the browser so the bot gets smarter
+function saveLearnedSlang(spokenWord, masterKey, storageKey, memoryDict) {
+    let learned = JSON.parse(localStorage.getItem(storageKey)) || {};
+    if (!learned[masterKey]) learned[masterKey] = [];
+
+    // If the slang hasn't been learned yet, save it permanently!
+    if (!learned[masterKey].includes(spokenWord)) {
+        learned[masterKey].push(spokenWord);
+        localStorage.setItem(storageKey, JSON.stringify(learned));
+        memoryDict[masterKey].push(spokenWord); // Update active memory instantly
+        console.log(`🤖 AI Learned new slang: "${spokenWord}" mapped to "${masterKey}"`);
+    }
+}
+
 // Voice Response Logic
 function assistantSpeak(text) {
     const synth = window.speechSynthesis;
     synth.cancel(); // Stop any overlapping voices
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
+    utterance.lang = 'en-US','ta-IN', 'en-IN'; // Set language to English (India) for better Tamil/Indian accent support   
     utterance.rate = 1.0;
     synth.speak(utterance);
 }
@@ -127,7 +272,8 @@ function startVoiceRecognition(searchType = 'movie') {
     const overlay = document.getElementById('listening-overlay');
     const statusText = document.getElementById('voice-status');
 
-    window.recognition.lang = 'en-US';
+    // Set language (You can use 'ta-IN' for Tamil or 'en-IN' for Indian English)
+    window.recognition.lang = 'en-IN', 'ta-IN', 'en-US';
     window.recognition.continuous = false;
     // 1. Change this to TRUE to allow live-text updates while speaking
     window.recognition.interimResults = true;
@@ -146,24 +292,42 @@ function startVoiceRecognition(searchType = 'movie') {
 
         // 3. Only run the search logic when the user FINISHES speaking (isFinal)
         if (event.results[0].isFinal) {
-            const finalTranscript = transcript.toLowerCase();
-            const match = finalTranscript.match(/(?:playing|play|open)\s+(.*)/);
+            // --- NEW: MAKE TRIGGER WORDS OPTIONAL ---
+            // This instantly removes words like "Play", "Search", or "Open" if the user says them.
+            // If they don't say them (e.g., they just say "AMBULI"), it keeps the word perfectly intact!
+            let spokenName = transcript.toUpperCase().replace(/\b(PLAYING|PLAY|OPEN|SEARCH FOR|SEARCH|SHOW ME|I WANT TO WATCH|START)\b/g, '').trim();
 
-            if (match && match[1]) {
-                let spokenName = match[1].trim().toUpperCase();
-
-                // Clean up extra words
-                spokenName = spokenName.replace(/\b(MOVIE|TAMIL|TELUGU|MALAYALAM|HINDI|ENGLISH|FULL|HD)\b/g, '')
-                    .replace(/\s+/g, ' ')
-                    .trim();
+            // As long as they said *something*, run your existing logic
+            if (spokenName.length > 0) {
 
                 if (searchType === 'movie') {
-                    for (const [correctName, variants] of Object.entries(MOVIE_TRAINING)) {
-                        if (variants.includes(spokenName)) {
-                            spokenName = correctName;
+                    let bestMatch = null;
+                    let highestScore = 0;
+
+                    // --- AI SMART MATCHING FOR MOVIES ---
+                    for (const [correctName, variants] of Object.entries(SMART_MOVIE_DICT)) {
+                        if (variants.some(variant => spokenName.includes(variant.toUpperCase()))) {
+                            bestMatch = correctName;
+                            highestScore = 1.0; 
                             break;
                         }
+                        
+                        variants.forEach(variant => {
+                            let score = calculateSimilarity(spokenName, variant.toUpperCase());
+                            if (score > highestScore) {
+                                highestScore = score;
+                                bestMatch = correctName;
+                            }
+                        });
                     }
+
+                    if (bestMatch && highestScore >= 0.70) {
+                        if (highestScore < 1.0) {
+                            saveLearnedSlang(spokenName, bestMatch, "learned_movies", SMART_MOVIE_DICT);
+                        }
+                        spokenName = bestMatch; 
+                    }
+                    // ------------------------------------
 
                     const searchInput = document.getElementById("movieSearchInput");
                     if (searchInput) {
@@ -174,11 +338,7 @@ function startVoiceRecognition(searchType = 'movie') {
 
                         if (foundCard) {
                             assistantSpeak(`Now playing ${spokenName.toLowerCase()} movie`);
-
-                            // Visual feedback before redirecting
                             statusText.innerText = `Found ${spokenName}! Playing in 2s...`;
-
-                            // 4. Delay exactly 2 seconds (2000ms) before playing
                             setTimeout(() => {
                                 if (typeof movieView === "function") {
                                     movieView(foundCard);
@@ -192,34 +352,46 @@ function startVoiceRecognition(searchType = 'movie') {
                     } else {
                         assistantSpeak(`Now playing ${spokenName.toLowerCase()}`);
                         statusText.innerText = `Playing ${spokenName} in 2s...`;
-
-                        // 4. Delay exactly 2 seconds (2000ms) before playing
                         setTimeout(() => {
                             window.location.href = `movie.html?autoPlay=${encodeURIComponent(spokenName)}`;
                         }, 2000);
                     }
-                } else if (searchType === 'music') {
-                    // 1. Strip out extra words to isolate the song name
-                    let cleanedSongName = spokenName.replace(/\b(SONG|SONGS|MUSIC|AUDIO|TRACK|PLAYING|PLAY)\b/g, '')
-                        .replace(/\s+/g, ' ')
-                        .trim();
+                } 
+                else if (searchType === 'music') {
+                    let cleanedSongName = spokenName.replace(/\b(SONG|SONGS|MUSIC|AUDIO|TRACK)\b/g, '').replace(/\s+/g, ' ').trim();
+                    let bestMatch = null;
+                    let highestScore = 0;
 
-                    // 2. Check the spoken phrase against the MUSIC_TRAINING dictionary
-                    for (const [correctName, variants] of Object.entries(MUSIC_TRAINING)) {
-                        if (variants.includes(cleanedSongName)) {
-                            cleanedSongName = correctName; // Force it to the correct spelling
+                    // --- AI SMART MATCHING FOR MUSIC ---
+                    for (const [correctName, variants] of Object.entries(SMART_MUSIC_DICT)) {
+                        if (variants.some(variant => cleanedSongName.includes(variant.toUpperCase()))) {
+                            bestMatch = correctName;
+                            highestScore = 1.0;
                             break;
                         }
+                        variants.forEach(variant => {
+                            let score = calculateSimilarity(cleanedSongName, variant.toUpperCase());
+                            if (score > highestScore) {
+                                highestScore = score;
+                                bestMatch = correctName;
+                            }
+                        });
                     }
 
-                    // 3. Update the UI and search
+                    if (bestMatch && highestScore >= 0.70) {
+                        if (highestScore < 1.0) {
+                            saveLearnedSlang(cleanedSongName, bestMatch, "learned_music", SMART_MUSIC_DICT);
+                        }
+                        cleanedSongName = bestMatch; 
+                    }
+                    // -----------------------------------
+
                     statusText.innerText = `Searching for ${cleanedSongName}...`;
                     handleMusicSearch(cleanedSongName);
-
                 }
             } else {
-                // Let the user know if they forgot to say "Play"
-                statusText.innerText = "Please start with 'Play' or 'Playing'.";
+                // If they accidentally clicked the mic and said nothing, or JUST said "Play"
+                statusText.innerText = "Please say a movie or song name.";
                 setTimeout(resetVoiceState, 2000);
             }
         }

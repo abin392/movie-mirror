@@ -79,8 +79,20 @@ function executeSearch() {
         if (input.value.trim() !== "") rawQuery = input.value;
     });
 
-    const query = rawQuery.toUpperCase().trim();
+    let query = rawQuery.toUpperCase().trim();
     if (!query) return; // Do nothing if search is empty
+
+    // --- NEW: Case-Insensitive Movie Auto-Correct ---
+    if (typeof MOVIE_TRAINING !== 'undefined') {
+        for (const [correctName, variants] of Object.entries(MOVIE_TRAINING)) {
+            // Converts your dictionary words to uppercase on-the-fly to prevent case mismatches!
+            if (variants.some(variant => variant.toUpperCase() === query)) {
+                query = correctName;
+                break;
+            }
+        }
+    }
+    // ------------------------------------------------
 
     // 2. Check if the user is searching for a MOVIE
     const allMovies = Array.from(document.querySelectorAll('.movies'));
@@ -94,20 +106,20 @@ function executeSearch() {
     // 3. If no movie matched, check if the user is searching for MUSIC/SONG
     let foundMusic = false;
 
-    // Clean the text just like the voice assistant does
     let musicQuery = query.replace(/\b(SONG|SONGS|MUSIC|AUDIO|PLAY)\b/g, '')
         .replace(/\s+/g, ' ')
         .trim();
 
-    // Use the global MUSIC_TRAINING dictionary (from voice-assistant.js) to fix spelling
+    // --- NEW: Case-Insensitive Music Auto-Correct ---
     if (typeof MUSIC_TRAINING !== 'undefined') {
         for (const [correctName, variants] of Object.entries(MUSIC_TRAINING)) {
-            if (variants.includes(musicQuery)) {
-                musicQuery = correctName;
+            if (variants.some(variant => variant.toUpperCase() === musicQuery)) {
+                musicQuery = correctName; 
                 break;
             }
         }
     }
+    // ------------------------------------------------
 
     const cleanSearchStr = musicQuery.replace(/[^A-Z0-9]/g, "");
     const musicButtons = document.querySelectorAll('i#music');
@@ -116,12 +128,12 @@ function executeSearch() {
         const data = btn.dataset;
         const movieContainer = btn.closest('.movies');
 
-        // A. Check if they searched for a full Album (e.g., "Dude Songs" -> "DUDE")
+        // A. Check if they searched for a full Album
         if (movieContainer) {
             const movieTitle = (movieContainer.dataset.title || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
             if (cleanSearchStr && (movieTitle === cleanSearchStr || movieTitle.includes(cleanSearchStr))) {
                 localStorage.setItem('targetSongIndex', 0);
-                btn.click(); // Triggers the music player redirect
+                btn.click(); 
                 foundMusic = true;
                 break;
             }
@@ -134,7 +146,7 @@ function executeSearch() {
                 const cleanTitle = titleVal.toUpperCase().replace(/[^A-Z0-9]/g, "");
                 if (cleanSearchStr && (cleanTitle.includes(cleanSearchStr) || cleanSearchStr.includes(cleanTitle))) {
                     localStorage.setItem('targetSongIndex', i - 1);
-                    btn.click(); // Triggers the music player redirect
+                    btn.click(); 
                     foundMusic = true;
                     break;
                 }

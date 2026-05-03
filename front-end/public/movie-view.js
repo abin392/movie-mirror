@@ -601,22 +601,22 @@ function updateFocusUI() {
 
 // --- The Keydown Listener ---
 document.addEventListener('keydown', (e) => {
-
-    // 1. STRICT DEVICE DETECTION (Allows PCs, Laptops, Smart TVs. Blocks Mobile & Tablets)
+    
+    // 1. STRICT DEVICE DETECTION (Allows ONLY PCs & Laptops. Blocks Mobile, Tablets, & TVs)
     const ua = navigator.userAgent;
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobi|Tablet/i.test(ua);
-    const isMacTablet = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1; // Fix for iPad Pros
+    const isMacTablet = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1; 
     const isSmartTV = /TV|SmartTV|Web0S|Tizen|Roku|Android TV|BRAVIA|Viera/i.test(ua);
-
-    // If it is a phone or tablet AND it is definitely not a TV, exit immediately.
-    if ((isMobile || isMacTablet) && !isSmartTV) {
-        return;
+    
+    // If it is a phone, tablet, OR Smart TV, block this keyboard logic completely.
+    if (isMobile || isMacTablet || isSmartTV) {
+        return; 
     }
 
     // 2. PAGE BODY PROTECTION LOGIC (Allows normal webpage scrolling on PC)
     const isFullscreen = container.classList.contains('custom-fullscreen');
-
-    if (!isFullscreen && !isSmartTV) {
+    
+    if (!isFullscreen) {
         const isHovering = container.matches(':hover');
         const isFocused = container.contains(document.activeElement);
         if (!isHovering && !isFocused) {
@@ -627,13 +627,21 @@ document.addEventListener('keydown', (e) => {
     const code = e.keyCode;
     const isInput = ['BUTTON', 'INPUT'].includes(document.activeElement.tagName) && e.target.id !== 'volumeSlider';
 
-    // 2. Global Hotkeys 
+    // 3. GLOBAL HOTKEYS 
     if (code === 32 || code === TV_KEYS.PLAY_PAUSE) {
-        e.preventDefault();
+        e.preventDefault(); 
         togglePlay();
-        updateFocusUI();
+        updateFocusUI(); 
         return;
     }
+
+    // --- RESTORED: "A" Key for Fullscreen ---
+    if (code === TV_KEYS.A_KEY || code === 65) { 
+        e.preventDefault();
+        toggleCustomFullscreen();
+        return;
+    }
+    // ----------------------------------------
 
     if ([TV_KEYS.BACK, TV_KEYS.BACK_ALT, TV_KEYS.BACK_TIZEN].includes(code)) {
         if (isFullscreen) {
@@ -642,6 +650,7 @@ document.addEventListener('keydown', (e) => {
         }
         return;
     }
+
 
     // 3. Cinematic / Wake-up Logic
     const isFocusVisible = document.querySelector('.tv-focused');
