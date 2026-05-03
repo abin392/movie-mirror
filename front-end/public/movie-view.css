@@ -12,7 +12,8 @@
 body {
     margin: 0;
     font-family: 'Inter', -apple-system, sans-serif;
-    background: #2a0e3c; /* Main Theme Background */
+    background: #2a0e3c;
+    /* Main Theme Background */
     color: var(--text-main);
     overflow-x: hidden;
 }
@@ -52,9 +53,10 @@ body::-webkit-scrollbar {
 
 video {
     width: 100%;
-    height: auto; 
+    height: auto;
     display: block;
-    aspect-ratio: auto; /* Uses metadata to set height */
+    aspect-ratio: auto;
+    /* Uses metadata to set height */
     cursor: pointer;
 }
 
@@ -76,7 +78,8 @@ video {
 .video-box.custom-fullscreen video {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain; /* Prevents stretching */
+    object-fit: contain;
+    /* Prevents stretching */
 }
 
 /* --- Controls (No Tooltips) --- */
@@ -101,6 +104,7 @@ video {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 85px;
     gap: 25px;
     flex-grow: 1;
 }
@@ -122,7 +126,8 @@ video {
     justify-content: center;
 }
 
-.nav-btn:hover, .nav-btn:focus {
+.nav-btn:hover,
+.nav-btn:focus {
     background: var(--primary-purple);
     transform: scale(1.1);
     box-shadow: 0 0 20px var(--accent-glow);
@@ -152,7 +157,8 @@ video {
 
 /* --- Progress Bar --- */
 .progress-container {
-    position: relative; /* Ensure the timer is positioned relative to the bar */
+    position: relative;
+    /* Ensure the timer is positioned relative to the bar */
     width: 100%;
     height: 10px;
     background: rgba(255, 255, 255, 0.2);
@@ -165,19 +171,24 @@ video {
 
 .hover-timer {
     position: absolute;
-    bottom: 25px; /* Sits above the bar */
+    bottom: 25px;
+    /* Sits above the bar */
     left: 0;
-    background: rgba(142, 68, 173, 0.9); /* Your primary-purple */
+    background: rgba(142, 68, 173, 0.9);
+    /* Your primary-purple */
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 12px;
     font-weight: bold;
-    pointer-events: none; /* Prevents the mouse from flickering when hitting the text */
-    display: none; /* Hidden by default */
-    transform: translateX(-50%); /* Centers the box on the cursor */
+    pointer-events: none;
+    /* Prevents the mouse from flickering when hitting the text */
+    display: none;
+    /* Hidden by default */
+    transform: translateX(-50%);
+    /* Centers the box on the cursor */
     z-index: 10;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .progress-container:hover .hover-timer {
@@ -190,9 +201,11 @@ video {
     left: 0;
     height: 100%;
     width: 0%;
-    background: rgba(255, 255, 255, 0.3); /* Light translucent white */
+    background: rgba(255, 255, 255, 0.3);
+    /* Light translucent white */
     border-radius: 10px;
-    z-index: 1; /* Behind the progress bar */
+    z-index: 1;
+    /* Behind the progress bar */
     transition: width 0.3s ease;
 }
 
@@ -204,7 +217,8 @@ video {
     border-radius: 10px;
     position: relative;
     box-shadow: inset 0 0 10px var(--primary-purple);
-    z-index: 2; /* Sits on top of the buffer bar */
+    z-index: 2;
+    /* Sits on top of the buffer bar */
 }
 
 .progress-dot {
@@ -347,11 +361,178 @@ video {
     transform: translateX(-50%) translateY(0);
 }
 
+
+/* =============================
+   CUSTOM LOADING BORDER ANIMATION
+============================= */
+.play-btn {
+    position: relative;
+    /* Required to attach the spinning ring */
+}
+
+/* The spinning neon ring */
+.play-btn.is-loading::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 3px solid transparent;
+    border-top-color: #00ff88;
+    /* Neon green loading color */
+    border-bottom-color: #00ff88;
+    border-radius: 50%;
+    animation: spinLoad 1s linear infinite;
+    pointer-events: none;
+    /* Prevents the ring from blocking your clicks */
+}
+
+@keyframes spinLoad {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Hide the inner icon slightly to emphasize the loading ring */
+.play-btn.is-loading i {
+    opacity: 0.5;
+}
+
+
+
+/* =============================
+   PREMIUM TV & KEYBOARD FOCUS STYLING (STATIC POSITION)
+============================= */
+
+/* 1. Add a smooth color transition (removed transform transition) */
+.nav-btn,
+.progress-container,
+input[type="range"],
+.fullscreen-btn,
+.play-btn {
+    transition: background 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* 2. The Professional Focus State */
+.tv-focused {
+    /* A crisp solid white ring with a subtle dark drop-shadow for depth */
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.95), 0 10px 20px rgba(0, 0, 0, 0.6) !important;
+
+    /* Deepen the purple to make the white icon pop out */
+    background: rgba(142, 68, 173, 1) !important;
+
+    /* Bring the focused item to the absolute front */
+    z-index: 50 !important;
+
+    /* Smooth out any borders */
+    border-color: transparent !important;
+
+    /* explicitly prevent any scaling or moving */
+    transform: none !important;
+}
+
+/* =============================
+   PLAY BUTTON SPECIFIC FOCUS FIX
+============================= */
+.play-btn.tv-focused {
+    /* Preserve the exact translation (centering) but completely remove the scale */
+    transform: translate(-50%, -50%) !important;
+
+    /* ONLY show the white border (no extra drop shadows, no moving) */
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.95) !important;
+
+    /* Keep your original button background color intact */
+    background: transparent !important;
+}
+
+/* 3. Specific focus style for the Progress Bar (Timeline) */
+.progress-container.tv-focused {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8), 0 5px 15px rgba(0, 0, 0, 0.5) !important;
+    border-radius: 8px !important;
+    height: 12px !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    transform: none !important;
+}
+
+/* 4. Elegant focus for the Volume Slider */
+input[type="range"].tv-focused {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9) !important;
+    border-radius: 20px !important;
+    transform: none !important;
+}
+
+
+/* =============================
+   PREMIUM SMART TV TOOLTIP (KEYBOARD/REMOTE)
+============================= */
+.tv-remote-tooltip {
+    position: fixed;
+    transform: translateX(-50%);
+
+    /* 1. Premium Glassmorphism Look */
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* Support for Safari/iOS */
+
+    /* 2. Crisp typography to match the white focus ring */
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    /* Cinematic, professional styling */
+
+    /* 3. Subtle accent border using your page's purple theme */
+    border: 1px solid rgba(142, 68, 173, 0.6);
+
+    /* 4. Modern Pill Shape */
+    padding: 8px 16px;
+    border-radius: 30px;
+
+    /* 5. Deep cinematic drop shadow with a faint purple glow */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 15px rgba(142, 68, 173, 0.2);
+
+    pointer-events: none;
+    z-index: 99999;
+    opacity: 0;
+    white-space: nowrap;
+
+    /* 6. Buttery smooth gliding animations */
+    transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+
+
 /* --- Responsive Timer/Layout --- */
 @media (max-width: 768px) {
-    #movieTitle { font-size: 1.8rem; }
-    .nav-btn { width: 45px; height: 45px; font-size: 18px; }
-    .play-btn { width: 65px !important; height: 65px !important; }
-    .episode-card { min-width: 220px; }
-    .main-controls { gap: 15px; }
+    #movieTitle {
+        font-size: 1.8rem;
+    }
+
+    .nav-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+
+    .play-btn {
+        width: 65px !important;
+        height: 65px !important;
+    }
+
+    .episode-card {
+        min-width: 220px;
+    }
+
+    .main-controls {
+        gap: 15px;
+    }
 }

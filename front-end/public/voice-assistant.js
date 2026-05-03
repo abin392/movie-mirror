@@ -1,21 +1,95 @@
+// ==========================================
+// 1. MOVIE TITLE TRAINING (data-title)
+// ==========================================
 const MOVIE_TRAINING = {
-    "DUDE": ["DUDEMOVIE", "DOOD", "DUD", "DEWD", "DOODLE", "DUDES", "DEW", "DUDDY", "DUDLY", "DUDLEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY", "BUILD", "DUDEY", "DUDES", "DEWDE", "DUDDY", "DUDLY", "DUDLEY", "DUDE MOVIE", "DOOD MOVIE", "DUD MOVIE", "DEWD MOVIE", "DOODLE MOVIE", "DUDES MOVIE", "DEW MOVIE", "DUDDY MOVIE", "DUDLY MOVIE", "DUDLEY MOVIE", "DUDES MOVIE", "DEWDE MOVIE", "DUDDY MOVIE", "DUDLY MOVIE", "DUDLEY MOVIE", "BUILD MOVIE", "DUDEY MOVIE", "DUNE MOVIE"],
-    "AMPULI": ["AMBULI", "AMPULI", "AMPU LEE", "AMBLY", "AMBILY", "AMBERLY", "AMBOLI", "HUMBLY", "AMBALI", "AMB", "AMPU", "AMPU LEE", "AMPULI", "AMBULI", "AMPU LEE", "AMBLY", "AMBILY", "AMBERLY", "AMBOLI", "HUMBLY", "AMBALI", "AMB", "AMPU", "AMPU LEE", "AMPULI", "AMBULI", "AMPU LEE", "AMBLY", "AMBILY", "AMBERLY", "AMBOLI", "HUMBLY", "AMBALI", "AMB", "AMPU"],
-    "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "IDLI KADAY", "ITALY", "IDLY", "IDLI KADAI", "ITALY KADAI", "IDLY KADAY", "IDLI KADAI", "ITALY KADAI", "IDLY KADAY"],
-    "DARBAR": ["DARBAAR", "DARBAR", "DARPAR"]
+    // Tamil Movies
+    "AMARAN": ["AMARAN", "AMARON", "AMARIN"],
+    "DUDE": ["DUDE", "DOOD", "DUD", "DEWD", "DOODLE", "DUDES", "DEW", "DUDDY", "DUNE", "build", "WEIRD", "DEER", "BEARD", "FOOD", "DUE", "VIEW", "VIEWED", "DUDE MOVIE", "DUDE MOVIES", "DOOD MOVIE", "DOOD MOVIES"],
+    "AVATAR": ["AVATAR", "AVATHAR", "AVATOR", "AWTAR"],
+    "DARBAR": ["DARBAR", "DARBAAR", "DARPAR", "DURBAR"],
+    "AQUAMAN": ["AQUAMAN", "AQUA MAN", "ACCUA MAN", "AKUAMAN"],
+    "KATASI VIVASAYI": ["KATASI VIVASAYI", "KADAISI VIVASAYI", "KADASI VIVASAYI", "KATAISY VIWASAYI", "KATASI VIVASAYE"],
+    "CAPTAIN AMERICA": ["CAPTAIN AMERICA", "CAPTAN AMERICA", "CAPTAIN AMERICAN"],
+    "BISON": ["BISON", "BYSON", "BAYSAN", "POISON"],
+    "AMPULI": ["AMPULI", "AMBULI", "AMPU LEE", "AMBLY", "AMBILY", "AMPU"],
+    "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "IDLY", "IDLI"],
+    "KAANTHA": ["KAANTHA", "KANTHA", "KANTA", "KAANTA"],
+    "AARYAN": ["AARYAN", "ARYAN", "ARIAN"],
+    "DIESEL": ["DIESEL", "DEESEL", "DEZEL", "DISEL"],
+    "RAAYAN": ["RAAYAN", "RAYAN", "RYAN"],
+    "KASETHAN KADAVULATA": ["KASETHAN KADAVULATA", "KASETHAN KADAVULADA", "KASU THAN KADAVULADA", "KASHTHAN KADAVULADA"],
+    "CAPTAIN MILLER": ["CAPTAIN MILLER", "CAPTAN MILLER"],
+    "ASURAN": ["ASURAN", "ASHURAN", "ASURAM"],
+    "SARPATTA PARAMBARAI": ["SARPATTA PARAMBARAI", "SARBATA PARAMBARAI", "SARPATTA PARAMBARI", "SARPATTA"],
+    "BAASHSHA": ["BAASHSHA", "BASHA", "BAASHA", "PAASHA"],
+    "JAI BHIM": ["JAI BHIM", "JAI BEEM", "JAY BHIM", "JAI BHEEM"],
+    "RETRO(2025)": ["RETRO", "RETRO 2025", "RETROW"],
+    "VIKRAM": ["VIKRAM", "VICRAM", "VICKRAM"],
+    "KUTUMPASTHAN": ["KUTUMPASTHAN", "KUDUMBASTHAN", "KUTUMBASTHAN"],
+    "TEYVA MAKAN": ["TEYVA MAKAN", "DEVA MAGAN", "THEVA MAGAN"],
+    "PIREMALU": ["PIREMALU", "PREMALU", "PREM ALU"],
+
+    // Hindi Movies
+    "MAIDAAN": ["MAIDAAN", "MAIDAN", "MYDAN", "MYDAAN"],
+    "LIGER": ["LIGER", "LYGER", "LIGGER"],
+    "MY NAME IS KHAN": ["MY NAME IS KHAN", "MY NAME IS KAN"],
+    "ADIPURUSH": ["ADIPURUSH", "AADI PURUSH", "AADIPURUSH"],
+    "ARJUN": ["ARJUN", "ARJUNAN"],
+    "COCKTAIL": ["COCKTAIL", "COCK TAIL"],
+    "DEVA": ["DEVA", "THEVA"],
+    "GABBAR": ["GABBAR", "GABAR", "KAPPAR"],
+    "GAME CHANGER": ["GAME CHANGER", "GAMECHANGER"],
+    "HERO": ["HERO", "HIRO"],
+    "LOVE AJEE HAL": ["LOVE AJEE HAL", "LOVE AAJ KAL", "LOVE AJ KAL"],
+    "NAVABZAADE": ["NAVABZAADE", "NAWABZAADE", "NAWABZADE"],
+    "PINK": ["PINK", "BINK"],
+    "RAANJHANA": ["RAANJHANA", "RANJANA", "RANJHANA"],
+    "RAM LEELA": ["RAM LEELA", "RAM LILA", "RAM LELA"],
+    "RASCALES": ["RASCALES", "RASCALS"],
+    "SHUBU MANGAL SAAVDAN": ["SHUBU MANGAL SAAVDAN", "SHUBH MANGAL SAAVDHAN"],
+    "SIMMPA": ["SIMMPA", "SIMMBA", "SIMBA"],
+    "SIRAI": ["SIRAI", "SHIRAI"],
+    "SONU TITU SWEETY": ["SONU TITU SWEETY", "SONU KE TITU KI SWEETY"]
 };
 
-// --- NEW: Add this right below MOVIE_TRAINING ---
+// ==========================================
+// 2. MUSIC/SONG TITLE TRAINING (data-songTitle)
+// ==========================================
 const MUSIC_TRAINING = {
-    "OORUM BLOOD": ["OORUM BLOOD", "ORUM BLOOD", "OORAM BLOOD", "OUR BLOOD", "ROOM BLOOD", "OORUM BLED", "OORUM BLUE", "OORUM BLU", "OORUM", "BLOOD"],
-    "SINGARI": ["SINGARI", "SINGARY", "SHINGARI", "CHINGARI", "SINGARI SONG", "SINGARY SONG", "SHINGARI SONG", "CHINGARI SONG"],
+    // Universal
+    "JUKEBOX": ["JUKEBOX", "JUKE BOX", "ALL SONGS", "FULL ALBUM", "PLAYLIST"],
+    
+    // Dude Songs
+    "OORUM BLOOD": ["OORUM BLOOD", "ORUM BLOOD", "OORAM BLOOD", "OUR BLOOD", "ROOM BLOOD"],
+    "SINGARI": ["SINGARI", "SINGARY", "SHINGARI", "CHINGARI"],
     "KANNUKULLA": ["KANNUKULLA", "KANUKULLA", "KANNUKULA", "KANNU KULLA", "CANNUKULA"],
     "NALLARU PO": ["NALLARU PO", "NALARU PO", "NALLARU PAA", "NALLA RUPU"],
     "YUMABAIBESA": ["YUMABAIBESA", "YUMA", "YAMBAI", "YAMABAI", "YUMMABAI"],
-    "JUKEBOX": ["JUKEBOX", "JUKE BOX", "ALL SONGS", "FULL ALBUM", "DUDE SONGS"],
-    // --- NEW: Added Idli Kadai variations here ---
-    "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "IDLI KADAY", "ITALY", "IDLY", "IDLY KADAY", "ILLY KADAI", "IDLI KADA", "IDLI KADAI ALBUM"],
-    "Ethana_Saami__Idli_Kadai": ["Ethana Saami", "Ethana Sami", "Ethana Saamy", "Ethana Saami Song", "Ethana Sami Song", "Ethana Saamy Song", " Eterna", "Eterna Song", "Idli Kadai Ethana Saami", "Idli Kadai Ethana Sami", "Idli Kadai Ethana Saamy", "Etna Sami", "Etna Saami", "Etna Saamy"],
+
+    // Ampuli Songs
+    "AATHA NEE PETHAAYE": ["AATHA NEE PETHAAYE", "AATHA NEE PETHAYE", "AATHA NI PETHAYE", "ATHA NEE PETHAYE", "AMBULI SONG", "AMPULI", "AMPULI SONG"],
+
+    // Idli Kadai Songs
+    "YEN PAATTAN SAAMI VARUM": ["YEN PAATTAN SAAMI VARUM", "EN PATTAN SAMI VARUM", "YEN PATTAN SAMI"],
+    "ENNA SUGAM": ["ENNA SUGAM", "ENA SUGAM"],
+    "ETHANA SAAMI": ["ETHANA SAAMI", "ETHANA SAMI", "ETNA SAMI", "ETHANA SAAMY"],
+    "ENJAAMI THANDHAANE": ["ENJAAMI THANDHAANE", "ENJAMI TANDHANE", "ENJAMI"],
+    "MY HEARTU SPINNING": ["MY HEARTU SPINNING", "MY HEART SPINNING", "HEART SPINNING"],
+    "KULASAMY KAAVAL KAAKA": ["KULASAMY KAAVAL KAAKA", "KULASAMI KAVAL KAKA", "KULASAMY"]
+};
+
+// ==========================================
+// 3. HERO/ACTOR TRAINING (data-name)
+// ==========================================
+const HERO_TRAINING = {
+    "PRADEEP RANGANATHAN": ["PRADEEP RANGANATHAN", "PRADHEEP", "PRADEEP", "PRADIP"],
+    "PARTHIBAN": ["PARTHIBAN", "PARTIBAN"],
+    "DHANUSH": ["DHANUSH", "DANUSH", "THANUSH"],
+    "RAJINI": ["SUPER STAR RAJINI", "RAJINI", "RAJINIKANTH", "RAJNI", "RAJINI SS"],
+    "SIVA KARTHIC": ["SIVA KARTHIC", "SIVA KARTHIKEYAN", "SHIVA KARTHIK"],
+    "SAM WARTHINTON": ["SAM WARTHINTON", "SAM WORTHINGTON"],
+    "HARI WACKER": ["HARI WACKER", "HARI WORKER"],
+    "VIJAY SETHUPATHY": ["VIJAY SETHUPATHY", "VIJAY SETHUPATHI", "VJS", "SETHUPATHI"]
 };
 
 let isVoiceProcessing = false;
@@ -157,15 +231,19 @@ function startVoiceRecognition(searchType = 'movie') {
         switch (event.error) {
             case 'no-speech':
                 assistantSpeak("No speech detected. Please try again.");
+                alert("No speech detected. Please try again.");
                 break;
             case 'audio-capture':
                 assistantSpeak("No microphone found. Please check your settings.");
+                alert("No microphone found. Please check your settings.");
                 break;
             case 'not-allowed':
                 assistantSpeak("Microphone permission denied.");
+                alert("Microphone permission denied.");
                 break;
             default:
-                assistantSpeak("A voice recognition error occurred.");
+                assistantSpeak("A voice recognition error occurred, Pleas wait and say again");
+                alert("A voice recognition error occurred, Pleas wait and say again");
         }
         resetVoiceState();
     };
@@ -234,7 +312,7 @@ function handleMusicSearch(songName) {
             if (titleVal) {
                 const cleanTitle = titleVal.toUpperCase().replace(/[^A-Z0-9]/g, "");
                 if (cleanTitle.includes(searchQuery) || searchQuery.includes(cleanTitle)) {
-                    assistantSpeak(`Now playing ${songName.toLowerCase()}`);
+                    assistantSpeak(`Now playing ${songName.toLowerCase()} song`);
 
                     // Visual Tracking & 2-second Delay
                     if (statusText) statusText.innerText = `Found ${songName}! Playing in 2s...`;

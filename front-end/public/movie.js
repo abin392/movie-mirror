@@ -1,7 +1,7 @@
 /* ==========================================
    1. AUTHENTICATION & PROFILE AUTO-LOAD
    ========================================== */
-document.addEventListener(populateSearchOptions(), () => {
+document.addEventListener("DOMContentLoaded", () => {
     // Automatically load User Name and Image from localStorage
     const savedName = localStorage.getItem("username");
     const savedImage = localStorage.getItem("profileImage");
@@ -12,7 +12,7 @@ document.addEventListener(populateSearchOptions(), () => {
     if (savedName && nameElement) {
         nameElement.textContent = savedName;
     } else if (nameElement) {
-        // NEW: Fallback for guests who aren't logged in yet
+        // Fallback for guests who aren't logged in yet
         nameElement.textContent = "Guest";
     }
 
@@ -20,22 +20,26 @@ document.addEventListener(populateSearchOptions(), () => {
         imageElement.src = savedImage;
     }
 
-    // Initialize core page functions
+    // --- ONLY CALL THESE ONCE ---
     initializeRevealLogic();
     startAutoScroll();
-    //login to view the music page--
-    // Add or update this logic in your movie.js
-    document.getElementById('music').addEventListener('click', () => {
-        // --- LOGIN CHECK ---
-        if (localStorage.getItem("isLoggedIn") !== "true" || !localStorage.getItem("username")) {
-            // Redirect to login if not authenticated
-            window.location.href = "index.html";
-            return;
-        }
-        // -------------------
+    setupEventListeners();
 
-        // If logged in, proceed to your music/jukebox logic
-        window.location.href = 'music-viewer.html'; // Or your specific music page link
+    // Safely trigger the Custom Search Dropdown
+    if (typeof populateSearchOptions === "function") {
+        populateSearchOptions();
+    }
+
+    // Login check to view the music page (Applies to ALL music buttons)
+    document.querySelectorAll('i#music').forEach(musicBtn => {
+        musicBtn.addEventListener('click', (e) => {
+            if (localStorage.getItem("isLoggedIn") !== "true" || !localStorage.getItem("username")) {
+                window.location.href = "index.html";
+                e.stopPropagation(); 
+            } else {
+                window.location.href = 'music-viewer.html';
+            }
+        });
     });
 });
 
@@ -145,6 +149,7 @@ function executeSearch() {
     }
 }
 
+
 /* ==========================================
    3. CONTENT REVEAL (SKELETON TO REAL)
    ========================================== */
@@ -156,6 +161,7 @@ function initializeRevealLogic() {
 
     const realSections = real.querySelectorAll(":scope > section, :scope > div");
 
+    // Reduced initial delay from 800ms to 300ms
     setTimeout(() => {
         skeleton.style.display = "none";
         real.style.display = "block";
@@ -163,14 +169,15 @@ function initializeRevealLogic() {
         realSections.forEach((section, index) => {
             section.style.opacity = "0";
             section.style.transform = "translateY(20px)";
-            section.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            section.style.transition = "opacity 0.4s ease, transform 0.4s ease";
 
+            // Reduced stagger delay from 300ms to 80ms! Content loads instantly now.
             setTimeout(() => {
                 section.style.opacity = "1";
                 section.style.transform = "translateY(0)";
-            }, index * 300);
+            }, index * 80); 
         });
-    }, 800);
+    }, 300);
 }
 
 /* ==========================================
@@ -303,43 +310,139 @@ window.addEventListener('pageshow', (event) => {
 
 
 /* ==========================================
-   7. DYNAMIC SEARCH AUTOCOMPLETE
-   ========================================== */
+   7. DYNAMIC SEARCH AUTOCOMPLETE (CUSTOM & TV READY)
+========================================== */
+let availableSearchTerms = [];
+
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function populateSearchOptions() {
-    const uniqueTitles = new Set(); // Using a Set prevents duplicate suggestions
+    try {
+        const uniqueTitles = new Set(); 
 
-    // 1. Grab all Movie Titles from data-title
-    const movieCards = document.querySelectorAll('.movies');
-    movieCards.forEach(card => {
-        const title = card.dataset.title;
-        if (title && title.trim() !== "") {
-            uniqueTitles.add(title.toUpperCase().trim());
-        }
-    });
-
-    // 2. Grab all Song Titles from the music buttons
-    const musicButtons = document.querySelectorAll('i#music');
-    musicButtons.forEach(btn => {
-        for (let i = 1; i <= 20; i++) {
-            const songTitle = btn.dataset[`songtitle${i}`] || btn.dataset[`songTitle${i}`];
-            if (songTitle) {
-                // Clean up underscores from song names (e.g., "Singari__Dude" -> "SINGARI DUDE")
-                const cleanTitle = songTitle.replace(/_+/g, ' ').toUpperCase().trim();
-                uniqueTitles.add(cleanTitle);
-            }
-        }
-    });
-
-    // 3. Populate ALL datalists on the page (handles both PC Nav and Mobile search boxes)
-    const dataLists = document.querySelectorAll('datalist#search-option');
-    dataLists.forEach(dataList => {
-        dataList.innerHTML = ''; // Clear the old hardcoded options (DUDE, AMPULI)
-
-        // Sort them alphabetically and create the <option> elements
-        Array.from(uniqueTitles).sort().forEach(title => {
-            const option = document.createElement('option');
-            option.value = title;
-            dataList.appendChild(option);
+        // Grab all Movie Titles
+        const movieCards = document.querySelectorAll('.movies');
+        movieCards.forEach(card => {
+            const title = card.dataset.title;
+            if (title && title.trim() !== "") uniqueTitles.add(title.toUpperCase().trim());
         });
-    });
+
+        // Grab all Song Titles
+        const musicButtons = document.querySelectorAll('i#music');
+        musicButtons.forEach(btn => {
+            for (let i = 1; i <= 20; i++) {
+                const songTitle = btn.dataset[`songtitle${i}`] || btn.dataset[`songTitle${i}`];
+                if (songTitle) {
+                    const cleanTitle = songTitle.replace(/_+/g, ' ').toUpperCase().trim();
+                    uniqueTitles.add(cleanTitle);
+                }
+            }
+        });
+
+        availableSearchTerms = Array.from(uniqueTitles).sort();
+
+        // Setup Custom Dropdowns for all search inputs
+        const searchInputs = document.querySelectorAll('input[type="search"]');
+        
+        searchInputs.forEach(input => {
+            input.removeAttribute('list');
+            input.setAttribute('autocomplete', 'off');
+
+            const dropdown = document.createElement('div');
+            dropdown.className = 'custom-dropdown';
+            input.parentElement.appendChild(dropdown);
+
+            let currentFocus = -1; // Tracks which option is highlighted via keyboard/remote
+
+            // 1. When the user TYPES
+            input.addEventListener('input', function() {
+                const val = this.value.toUpperCase().trim();
+                dropdown.innerHTML = ''; 
+                currentFocus = -1; // Reset focus on new input
+
+                if (!val) {
+                    dropdown.style.display = 'none';
+                    return;
+                }
+
+                const matches = availableSearchTerms.filter(term => term.includes(val));
+
+                if (matches.length > 0) {
+                    matches.forEach(match => {
+                        const option = document.createElement('div');
+                        option.className = 'custom-option';
+                        
+                        const safeVal = escapeRegExp(val);
+                        const regex = new RegExp(`(${safeVal})`, "gi");
+                        const highlightedMatch = match.replace(regex, "<span style='color: #00ff88; font-weight: bold;'>$1</span>");
+                        
+                        option.innerHTML = `<i class="fas fa-search"></i> ${highlightedMatch}`;
+                        
+                        option.addEventListener('click', () => {
+                            input.value = match; 
+                            dropdown.style.display = 'none'; 
+                            executeSearch(); 
+                        });
+                        
+                        dropdown.appendChild(option);
+                    });
+                    dropdown.style.display = 'block'; 
+                } else {
+                    dropdown.style.display = 'none'; 
+                }
+            });
+
+            // 2. NEW: PC Keyboard & Smart TV Remote Navigation
+            input.addEventListener('keydown', function(e) {
+                const options = dropdown.querySelectorAll('.custom-option');
+                if (!options || options.length === 0) return;
+
+                if (e.keyCode === 40) { // Arrow Down (PC or TV Remote)
+                    e.preventDefault(); // Stop cursor from moving in input box
+                    currentFocus++;
+                    addActive(options);
+                } else if (e.keyCode === 38) { // Arrow Up (PC or TV Remote)
+                    e.preventDefault();
+                    currentFocus--;
+                    addActive(options);
+                } else if (e.keyCode === 13) { // Enter / OK Button
+                    // If dropdown is open and an item is highlighted, select it!
+                    if (currentFocus > -1 && dropdown.style.display === 'block') {
+                        e.preventDefault(); 
+                        options[currentFocus].click(); 
+                    }
+                    // If no item is highlighted, your existing setupEventListeners handles the normal search.
+                }
+            });
+
+            // Helper function to add highlight and scroll
+            function addActive(options) {
+                removeActive(options);
+                if (currentFocus >= options.length) currentFocus = 0; // Loop to top
+                if (currentFocus < 0) currentFocus = (options.length - 1); // Loop to bottom
+                
+                const activeOption = options[currentFocus];
+                activeOption.classList.add("active");
+                
+                // Keeps the highlighted item visible by auto-scrolling the dropdown
+                activeOption.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Helper function to remove highlights
+            function removeActive(options) {
+                options.forEach(opt => opt.classList.remove("active"));
+            }
+
+            // Close dropdown on outside click
+            document.addEventListener('click', (e) => {
+                if (e.target !== input && e.target !== dropdown) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        });
+    } catch (error) {
+        console.error("Autocomplete initialized safely with bypass.", error);
+    }
 }

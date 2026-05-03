@@ -888,38 +888,50 @@ nav {
 
 /* Responsive Footer Container Adjustment */
 .container {
-    display: flex; /* Enables flexible layout */
-    flex-wrap: wrap; /* Allows items to move to the next line on small screens */
-    justify-content: space-around; /* Distributes items evenly across the width */
+    display: flex;
+    /* Enables flexible layout */
+    flex-wrap: wrap;
+    /* Allows items to move to the next line on small screens */
+    justify-content: space-around;
+    /* Distributes items evenly across the width */
     align-items: flex-start;
     padding: 20px;
-    gap: 20px; /* Adds space between the about and contact sections */
+    gap: 20px;
+    /* Adds space between the about and contact sections */
 }
 
 /* Ensure child containers take up appropriate space */
-.container .about-container, 
+.container .about-container,
 .container .contect-container {
-    flex: 1; /* Allows sections to grow equally */
-    min-width: 280px; /* Prevents sections from getting too narrow on mobile */
-    text-align: center; /* Centers text and icons for a professional look */
+    flex: 1;
+    /* Allows sections to grow equally */
+    min-width: 280px;
+    /* Prevents sections from getting too narrow on mobile */
+    text-align: center;
+    /* Centers text and icons for a professional look */
 }
 
 /* Make icons display horizontally inside their sections */
 .container a {
-    display: inline-block; /* Keeps icons on the same horizontal line */
-    margin: 10px; /* Adds comfortable spacing between clickable icons */
-    font-size: 1.5rem; /* Ensures icons are touch-friendly on mobile */
+    display: inline-block;
+    /* Keeps icons on the same horizontal line */
+    margin: 10px;
+    /* Adds comfortable spacing between clickable icons */
+    font-size: 1.5rem;
+    /* Ensures icons are touch-friendly on mobile */
 }
 
 /* Mobile-Specific Optimization */
 @media screen and (max-width: 600px) {
     .container {
-        flex-direction: column; /* Stacks the two main blocks on very small screens */
+        flex-direction: column;
+        /* Stacks the two main blocks on very small screens */
         align-items: center;
     }
-    
+
     .container a {
-        margin: 15px; /* Larger gap for easier tapping on phones */
+        margin: 15px;
+        /* Larger gap for easier tapping on phones */
     }
 }
 
@@ -1018,6 +1030,76 @@ nav {
     color: #fff;
 }
 
+
+
+/* =============================
+   CUSTOM SEARCH DROPDOWN
+============================= */
+.search-order {
+    position: relative;
+    z-index: 9999;
+    /* <-- ADD THIS LINE: Forces the search box above the scroller */
+}
+
+.custom-dropdown {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 400px;
+    max-width: 100%;
+    background: rgba(31, 11, 46, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(142, 68, 173, 0.4);
+    border-radius: 12px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+    /* This stays the same */
+    display: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    text-align: left;
+}
+
+/* Custom Scrollbar for Dropdown */
+.custom-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-dropdown::-webkit-scrollbar-thumb {
+    background: #8e44ad;
+    border-radius: 10px;
+}
+
+.custom-option {
+    padding: 12px 20px;
+    color: #e0e0e0;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+.custom-option i {
+    color: #8e44ad;
+    font-size: 12px;
+}
+
+.custom-option:last-child {
+    border-bottom: none;
+}
+
+/* Update this block at the bottom of your CSS */
+.custom-option:hover,
+.custom-option.active { /* <-- ADDED .active class here */
+    background: rgba(142, 68, 173, 0.4);
+    color: #fff;
+    padding-left: 25px; /* Cool slight slide-in animation */
+    border-left: 3px solid #00ff88; /* Optional: adds a neon line to clearly show TV/Keyboard focus */
+}
 
 /* =============================
    RESPONSIVE DESIGN (MEDIA QUERIES)
@@ -1271,9 +1353,18 @@ nav {
         color: #8e44ad;
     }
 
-    /* Search Box */
+    /* =============================
+   SEARCH SECTION
+============================= */
     .search-box {
-        padding: 10px;
+        display: block;
+        text-align: right;
+        width: 100%;
+        padding: 20px;
+
+        /* --- ADD THESE TWO LINES --- */
+        position: relative;
+        z-index: 9999;
     }
 
     .search-order {
@@ -1425,8 +1516,8 @@ nav {
         display: block;
         width: 400px;
     }
-    
-    #realContent > .search-box {
+
+    #realContent>.search-box {
         display: none;
     }
 
@@ -1436,6 +1527,7 @@ nav {
         display: flex;
         justify-content: center;
     }
+
     .skeleton-line.input {
         width: 400px;
     }
@@ -1447,7 +1539,7 @@ nav {
         display: none;
     }
 
-    #realContent > .search-box {
+    #realContent>.search-box {
         display: flex;
         justify-content: center;
         margin: 20px 10px;
@@ -1457,7 +1549,9 @@ nav {
     .skeleton-searchorder {
         justify-content: center;
     }
+
     .skeleton-line.input {
-        width: 80%; /* Takes more width on smaller screens */
+        width: 80%;
+        /* Takes more width on smaller screens */
     }
 }
