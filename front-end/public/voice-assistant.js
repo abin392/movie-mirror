@@ -1,58 +1,84 @@
-// ==========================================
-// 1. MOVIE TITLE TRAINING (data-title)
-// ==========================================
+/* ==========================================
+   HEY MIRROR / J.A.R.V.I.S. VOICE ENGINE (MANUAL TRIGGER EDITION)
+   ========================================== */
+
+// 1. UI STYLES
+const jarvisStyle = document.createElement('style');
+jarvisStyle.innerHTML = `
+    .voice-assistant-wrapper { position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
+    #jarvis-btn { width: 60px; height: 60px; border-radius: 50%; background: rgba(0, 20, 40, 0.8); border: 2px solid #9000ff; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); position: relative; overflow: hidden; transition: all 0.3s; }
+    #jarvis-btn:hover { box-shadow: 0 0 25px rgba(162, 0, 255, 0.8); transform: scale(1.05); }
+    .arc-core { width: 20px; height: 20px; background: #9000ff; border-radius: 50%; box-shadow: 0 0 10px #ffffff, 0 0 20px #9000ff; }
+    .arc-ring { position: absolute; width: 45px; height: 45px; border: 2px dashed #9000ff; border-radius: 50%; animation: spin 4s linear infinite; }
+    
+
+    #listening-overlay,
+    #jarvis-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Replaces the solid rgba(11, 5, 16, 0.9) with your body's radial-gradient theme */
+        background: radial-gradient(circle at top, rgba(42, 14, 60, 0.95) 0%, rgba(0, 0, 0, 0.95) 100%);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        transition: opacity 0.3s ease;
+    }
+    #jarvis-overlay.voice-hidden { opacity: 0; pointer-events: none; }
+    
+    .jarvis-center { text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .jarvis-orb { position: relative; width: 150px; height: 150px; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
+    .orb-core { width: 60px; height: 60px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 40px #9000ff, 0 0 80px #9000ff, inset 0 0 20px #9000ff; z-index: 10; transition: transform 0.1s; }
+    .orb-ring { position: absolute; border-radius: 50%; border: 2px solid transparent; }
+    .ring-1 { width: 100px; height: 100px; border-top: 2px solid #9000ff; border-bottom: 2px solid #9000ff; animation: spin 3s linear infinite; }
+    .ring-2 { width: 130px; height: 130px; border-left: 2px dashed rgba(144, 0, 255, 0.5); border-right: 2px dashed rgba(0, 210, 255, 0.5); animation: spin-reverse 5s linear infinite; }
+    .ring-3 { width: 160px; height: 160px; border-top: 1px solid rgba(119, 0, 255, 0.3); animation: spin 7s linear infinite; }
+    
+    .tech-text { color: #9000ff; font-family: 'Courier New', monospace; font-size: 1.5rem; letter-spacing: 4px; text-shadow: 0 0 10px rgba(0, 210, 255, 0.5); margin-bottom: 10px; }
+    .tech-text-sub { color: #ffffff; font-family: 'Courier New', monospace; font-size: 1rem; opacity: 0.7; min-height: 20px; }
+    
+    .orb-listening .orb-core { transform: scale(1.2); box-shadow: 0 0 60px #9000ff, 0 0 100px #ffffff; }
+    .orb-processing .ring-1, .orb-processing .ring-2 { border-color: #0000ff; animation-duration: 1s; }
+    
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+`;
+document.head.appendChild(jarvisStyle);
+
+// 2. DICTIONARIES & PRE-COMPILED REGEX
 const MOVIE_TRAINING = {
     "AMARAN": ["AMARAN", "AMARON", "AMARIN"],
-    "தூங்கி எழுந்தாச்சா": ["தூங்கி எழுந்தாச்சா", "தூங்கி எழுந்தாச்சா", "THUNGI EZHUNTHAACHAA"],
-    "DUDE": ["DUDE", "DOOD", "DUD", "DEWD", "DOODLE", "DUDES", "DEW", "DUDDY", "DUNE", "build", "WEIRD", "DEER", "BEARD", "FOOD", "DUE", "VIEW", "VIEWED", "DUDE MOVIE", "DUDE MOVIES"],
+    "தூங்கி எழுந்தாச்சா": ["தூங்கி எழுந்தாச்சா", "THUNGI EZHUNTHAACHAA"],
+    "DUDE": ["DUDE", "DOOD", "DUD", "DEWD", "DOODLE", "DUDES", "DEW"],
     "AVATAR": ["AVATAR", "AVATHAR", "AVATOR", "AWTAR"],
     "DARBAR": ["DARBAR", "DARBAAR", "DARPAR", "DURBAR"],
     "AQUAMAN": ["AQUAMAN", "AQUA MAN", "ACCUA MAN", "AKUAMAN"],
-    "KATASI VIVASAYI": ["KATASI VIVASAYI", "KADAISI VIVASAYI", "KADASI VIVASAYI", "KATAISY VIWASAYI", "KATASI VIVASAYE"],
+    "KATASI VIVASAYI": ["KATASI VIVASAYI", "KADAISI VIVASAYI", "KADASI VIVASAYI"],
     "CAPTAIN AMERICA": ["CAPTAIN AMERICA", "CAPTAN AMERICA", "CAPTAIN AMERICAN"],
     "BISON": ["BISON", "BYSON", "BAYSAN", "POISON"],
-    "AMBULI": ["AMBULI", "AMBERLY", "HUMBLY", "UNBOLI", "AMBULI", "AMPU LEE", "AMBULY", "AMPULI", "AMBLY", "AMBILY", "AMPU", "AMBULLY", "ambully"],
+    "AMBULI": ["AMBULI", "AMBERLY", "HUMBLY", "UNBOLI", "AMPU LEE", "AMPULI"],
     "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "ITLY", "ITLI", "ITALY"],
     "KAANTHA": ["KAANTHA", "KANTHA", "KANTA", "KAANTA"],
     "AARYAN": ["AARYAN", "ARYAN", "ARIAN"],
     "DIESEL": ["DIESEL", "DEESEL", "DEZEL", "DISEL"],
     "RAAYAN": ["RAAYAN", "RAYAN", "RYAN"],
-    "KASETHAN KADAVULATA": ["KASETHAN KADAVULATA", "KASETHAN KADAVULADA", "KASU THAN KADAVULADA", "KASHTHAN KADAVULADA"],
+    "KASETHAN KADAVULATA": ["KASETHAN KADAVULATA", "KASETHAN KADAVULADA", "KASU THAN KADAVULADA"],
     "CAPTAIN MILLER": ["CAPTAIN MILLER", "CAPTAN MILLER"],
     "ASURAN": ["ASURAN", "ASHURAN", "ASURAM"],
-    "SARPATTA PARAMBARAI": ["SARPATTA PARAMBARAI", "SARBATA PARAMBARAI", "SARPATTA PARAMBARI", "SARPATTA"],
+    "SARPATTA PARAMBARAI": ["SARPATTA PARAMBARAI", "SARBATA PARAMBARAI", "SARPATTA"],
     "BAASHSHA": ["BAASHSHA", "BASHA", "BAASHA", "PAASHA"],
     "JAI BHIM": ["JAI BHIM", "JAI BEEM", "JAY BHIM", "JAI BHEEM"],
     "RETRO(2025)": ["RETRO", "RETRO 2025", "RETROW"],
     "VIKRAM": ["VIKRAM", "VICRAM", "VICKRAM"],
     "KUTUMPASTHAN": ["KUTUMPASTHAN", "KUDUMBASTHAN", "KUTUMBASTHAN"],
     "TEYVA MAKAN": ["TEYVA MAKAN", "DEVA MAGAN", "THEVA MAGAN"],
-    "PIREMALU": ["PIREMALU", "PREMALU", "PREM ALU"],
-    "MAIDAAN": ["MAIDAAN", "MAIDAN", "MYDAN", "MYDAAN"],
-    "LIGER": ["LIGER", "LYGER", "LIGGER"],
-    "MY NAME IS KHAN": ["MY NAME IS KHAN", "MY NAME IS KAN"],
-    "ADIPURUSH": ["ADIPURUSH", "AADI PURUSH", "AADIPURUSH"],
-    "ARJUN": ["ARJUN", "ARJUNAN", "ARJUNA"],
-    "COCKTAIL": ["COCKTAIL", "COCK TAIL"],
-    "DEVA": ["DEVA", "THEVA"],
-    "GABBAR": ["GABBAR", "GABAR", "KAPPAR"],
-    "GAME CHANGER": ["GAME CHANGER", "GAMECHANGER"],
-    "HERO": ["HERO", "HIRO"],
-    "LOVE AJEE HAL": ["LOVE AJEE HAL", "LOVE AAJ KAL", "LOVE AJ KAL"],
-    "NAVABZAADE": ["NAVABZAADE", "NAWABZAADE", "NAWABZADE"],
-    "PINK": ["PINK", "BINK"],
-    "RAANJHANA": ["RAANJHANA", "RANJANA", "RANJHANA"],
-    "RAM LEELA": ["RAM LEELA", "RAM LILA", "RAM LELA"],
-    "RASCALES": ["RASCALES", "RASCALS"],
-    "SHUBU MANGAL SAAVDAN": ["SHUBU MANGAL SAAVDAN", "SHUBH MANGAL SAAVDHAN"],
-    "SIMMPA": ["SIMMPA", "SIMMBA", "SIMBA"],
-    "SIRAI": ["SIRAI", "SHIRAI"],
-    "SONU TITU SWEETY": ["SONU TITU SWEETY", "SONU KE TITU KI SWEETY"]
+    "PIREMALU": ["PIREMALU", "PREMALU", "PREM ALU"]
 };
 
-// ==========================================
-// 2. MUSIC/SONG TITLE TRAINING (data-songTitle)
-// ==========================================
 const MUSIC_TRAINING = {
     "JUKEBOX": ["JUKEBOX", "JUKE BOX", "ALL SONGS", "FULL ALBUM", "PLAYLIST"],
     "OORUM BLOOD": ["OORUM BLOOD", "ORUM BLOOD", "OORAM BLOOD", "OUR BLOOD", "ROOM BLOOD"],
@@ -60,54 +86,214 @@ const MUSIC_TRAINING = {
     "KANNUKULLA": ["KANNUKULLA", "KANUKULLA", "KANNUKULA", "KANNU KULLA", "CANNUKULA"],
     "NALLARU PO": ["NALLARU PO", "NALARU PO", "NALLARU PAA", "NALLA RUPU"],
     "YUMABAIBESA": ["YUMABAIBESA", "YUMA", "YAMBAI", "YAMABAI", "YUMMABAI"],
-    "AATHA NEE PETHAAYE": [
-        "AATHA NEE PETHAAYE", "AATHA NEE PETHAYE", "Adan", "HORROR", "ORDER",
-        "AATHAA NEE PETHAYAE", "ATHA NEE PETHAYE", "ATHA NI PETHAYE", "AATHA NI PETHAYA",
-        "AATHANEE PETHAYE", "AATHANI PETHAYE", "ATHANI PETHAYE", "AATA NEE PETHAYE",
-        "AATTA NEE PETHAYE", "AMBULI SONG", "AMBULI AATHA SONG", "AMPULI SONG"
-    ],
-    "YEN PAATTAN SAAMI VARUM": [
-        "YEN PAATTAN SAAMI VARUM", "EN PAATTAN SAAMI VARUM", "YEN PATTAN SAMI VARUM",
-        "EN PATTAN SAMI VARUM", "YEN PATTAN SAAMY VARUM", "EN PATTAN SWAMY VARUM",
-        "EN PATAN SAMI VARUM", "YEN PAATAN SAMI VARUM", "YENPATTAN SAMI VARUM",
-        "ENPATTAN SAAMI VARUM", "YEN PATTANSAMI VARUM", "EN PATTAN SAMIVARUM",
-        "YEN PATTAN SAMI", "EN PATTAN SAMI", "PAATTAN SAAMI VARUM", "PATTAN SAMI",
-        "IDLI KADAI YEN PATTAN", "IDLI KADAI PATTAN SAMI", "IDLI KADAI SONG"
-    ],
+    "Idli_Kadai_-_Full_Album": ["IDLI KADAI FULL ALBUM", "ITALY KADAI FULL ALBUM", "IDLY KADAI FULL ALBUM", "ITLY FULL ALBUM", "ITLI FULL ALBUM", "ITALY FULL ALBUM", "IDLI KADAI SONG", "IDLI KADAI SONGS"],
+    "AATHA NEE PETHAAYE": ["AATHA NEE PETHAAYE", "AATHA NEE PETHAYE", "AATHAA NEE PETHAYAE", "ATHA NEE PETHAYE"],
+    "YEN PAATTAN SAAMI VARUM": ["YEN PAATTAN SAAMI VARUM", "EN PAATTAN SAAMI VARUM", "YEN PATTAN SAMI VARUM"],
     "ENNA SUGAM": ["ENNA SUGAM", "ENA SUGAM"],
     "ETHANA SAAMI": ["ETHANA SAAMI", "ETHANA SAMI", "ETNA SAMI", "ETHANA SAAMY"],
-    "ENJAAMI THANDHAANE": [
-        "ENJAAMI THANDHAANE", "ENJAMI TANDHANE", "ENJAMI", "YENJAAMI THANDHAANE",
-        "YENJAMI THANTHANE", "ENJAAMI THANTHANE", "ENJAMI THANDHANE", "ANJAAMI THANDHAANE",
-        "ANJAMI THANTHANE", "ENJAAMITHANDHAANE", "YENJAMITHANTHANE", "ENJAMITHANDHANE",
-        "ENJAMI TANTANE", "ENJAAMI DHANDHAANE", "ENJAMI TANDANE", "ENJAAMI SONG",
-        "YENJAMI SONG", "IDLI KADAI ENJAAMI"
-    ],
+    "ENJAAMI THANDHAANE": ["ENJAAMI THANDHAANE", "ENJAMI TANDHANE", "ENJAMI", "YENJAAMI THANDHAANE", "ENJAAMI THANTHANE"],
     "MY HEARTU SPINNING": ["MY HEARTU SPINNING", "MY HEART SPINNING", "HEART SPINNING"],
     "KULASAMY KAAVAL KAAKA": ["KULASAMY KAAVAL KAAKA", "KULASAMI KAVAL KAKA", "KULASAMY"]
 };
 
-// ==========================================
-// 3. AI AUTO-LEARNING & FUZZY MATCHING ENGINE
-// ==========================================
-function getLearnedDictionary(baseDict, storageKey) {
-    let merged = JSON.parse(JSON.stringify(baseDict));
-    let learned = JSON.parse(localStorage.getItem(storageKey)) || {};
-    for (let key in learned) {
-        if (merged[key]) {
-            merged[key] = [...new Set([...merged[key], ...learned[key]])];
-        }
+// Replace your old STOP_WORDS_REGEX with this comprehensive multi-language version:
+const STOP_WORDS_REGEX = /\b(CAN|YOU|PLEASE|PLAY|PLAYING|OPEN|SEARCH|FOR|SHOW|ME|I|WANT|TO|WATCH|THE|A|AN|PUT|ON|SONG|SONGS|MUSIC|AUDIO|TRACK|PLAYLIST|MOVIE|MOVIES|FILM|FILMS|PADAM|PATTU|PAATU|POTTU|KAATU|POODU|THEDU|VANDU|VENUM|KAAMI|PANNU|LATEST|NEW|PUDHUSA|PUTHU|PUDHU|OLD|PAZHAYA|HIT|SUPER|TOP|படம்|பாட்டு|தேடு|ப்ளே|போடு|TAMIL|ENGLISH|தமிழ்|ஆங்கிலம்)\b/g;
+
+// 3. ENGINE STATE & DOM CACHING
+window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const State = {
+    recognition: null,
+    isListening: false,
+    jarvisVoice: null,
+    cachedMovies: [],
+    cachedMusicBtns: [],
+    searchInputs: []
+};
+
+// Cache DOM elements instantly on load
+document.addEventListener("DOMContentLoaded", () => {
+    State.cachedMovies = Array.from(document.querySelectorAll('.movies'));
+    State.cachedMusicBtns = document.querySelectorAll('i#music');
+    State.searchInputs = document.querySelectorAll('input[type="search"]');
+});
+
+function loadJarvisVoice() {
+    const synth = window.speechSynthesis;
+    const voices = synth.getVoices();
+    State.jarvisVoice = voices.find(v => v.name.includes("Google UK English Male") || v.name.includes("Great Britain") || v.lang === "en-GB") || voices[0];
+}
+if (speechSynthesis.onvoiceschanged !== undefined) loadJarvisVoice();
+
+function jarvisSpeak(text, callback) {
+    const synth = window.speechSynthesis;
+    updateStatus(text); // Keep the text update instant
+
+    if (synth) {
+        synth.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        if (State.jarvisVoice) utterance.voice = State.jarvisVoice;
+        utterance.pitch = 0.9;
+        utterance.rate = 1.0;
+
+        // 1. Wait until speech is fully complete to trigger the microphone
+        utterance.onend = () => {
+            if (callback) callback();
+        };
+
+        // 2. Failsafe: If speech fails or gets interrupted, open the mic anyway so the UI doesn't freeze
+        utterance.onerror = (e) => {
+            console.warn("Speech synthesis error or interruption", e);
+            if (callback) callback();
+        };
+
+        // 3. Mobile Device Fix: Store a temporary global reference to the utterance.
+        // This prevents aggressive mobile browsers (like Safari) from garbage-collecting 
+        // the utterance before it finishes, ensuring 'onend' actually fires.
+        window._activeJarvisUtterance = utterance;
+
+        synth.speak(utterance);
+    } else {
+        // Fallback if the browser doesn't support speech synthesis at all
+        if (callback) callback();
     }
-    return merged;
 }
 
-let SMART_MOVIE_DICT = getLearnedDictionary(MOVIE_TRAINING, "learned_movies");
-let SMART_MUSIC_DICT = getLearnedDictionary(MUSIC_TRAINING, "learned_music");
 
+
+
+
+// ==========================================
+// MOVIE.JS - MODULAR ADDITIONS
+// ==========================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. SKELETON LOADER LIFECYCLE (Runs parallel to your other load events)
+    setTimeout(() => {
+        const loader = document.getElementById("skeletonLoader");
+        const realContent = document.getElementById("realContent");
+
+        if (loader) loader.style.display = "none";
+        if (realContent) realContent.style.display = "block";
+    }, 1200);
+
+    // 2. BACKGROUND COLOR AUTOMATION
+    // Safely targets the active container without disrupting existing layout scripts
+    const nowPlayingContainer = document.querySelector(".now-playing");
+    if (nowPlayingContainer) {
+        nowPlayingContainer.style.transition = "background-color 0.3s ease-in-out";
+        // Additional dynamic background color logic can safely hook in here
+    }
+
+    // 3. SEARCH ENGINE EVENT LISTENERS (Attaches without overwriting)
+    const searchInput = document.getElementById("movieSearchInput");
+    if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+            if (e.target.value === "") executeModularSearch(""); 
+        });
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") executeModularSearch(searchInput.value);
+        });
+    }
+});
+
+// Scoped search function to prevent naming collisions with your existing logic
+function executeModularSearch(query) {
+    if (!query) query = "";
+    query = query.toLowerCase().trim();
+    
+    const movieCards = document.querySelectorAll(".movies");
+    const scrollerCarts = document.querySelectorAll(".scroller .cart");
+
+    movieCards.forEach(card => {
+        const title = (card.getAttribute("data-title") || "").toLowerCase();
+        card.style.display = title.includes(query) ? "block" : "none";
+    });
+
+    scrollerCarts.forEach(cart => {
+        const cardTitleEl = cart.querySelector("h2");
+        const titleText = cardTitleEl ? cardTitleEl.textContent.toLowerCase() : "";
+        cart.style.display = titleText.includes(query) ? "inline-block" : "none";
+    });
+}
+
+
+
+
+// 4. UI CONTROLS
+function updateStatus(mainText, subText = "") {
+    const status = document.getElementById('jarvis-status');
+    const transcript = document.getElementById('jarvis-transcript');
+    if (status) status.innerText = mainText.toUpperCase();
+    if (transcript) transcript.innerText = subText;
+}
+
+function toggleJarvis() {
+    State.isListening ? closeJarvisUI() : startListening();
+}
+
+function closeJarvisUI() {
+    State.isListening = false;
+    if (State.recognition) State.recognition.abort();
+
+    const overlay = document.getElementById('jarvis-overlay');
+    const orb = document.querySelector('.jarvis-orb');
+    if (overlay) overlay.classList.add('voice-hidden');
+    if (orb) orb.classList.remove('orb-listening', 'orb-processing');
+}
+
+function triggerGoBack() {
+    jarvisSpeak("Returning to the main database.", () => {
+        closeJarvisUI();
+        window.location.href = "movie.html";
+    });
+}
+
+// 5. MAIN RECOGNITION (Manual Trigger Only)
+function startListening() {
+    const overlay = document.getElementById('jarvis-overlay');
+    const orb = document.querySelector('.jarvis-orb');
+
+    if (overlay) overlay.classList.remove('voice-hidden');
+    if (orb) orb.classList.add('orb-listening');
+    updateStatus("ONLINE", "Awaiting directive...");
+
+    jarvisSpeak("Yes, sir?", () => {
+        State.recognition = new window.SpeechRecognition();
+        State.recognition.lang = 'en-IN';
+        State.recognition.continuous = false;
+
+        State.recognition.onstart = () => { State.isListening = true; };
+
+        State.recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript.toUpperCase().trim();
+            if (orb) {
+                orb.classList.remove('orb-listening');
+                orb.classList.add('orb-processing');
+            }
+            updateStatus("SEARCHING...", `"${transcript}"`);
+
+            // Execute instantly
+            processCommand(transcript);
+        };
+
+        State.recognition.onerror = () => jarvisSpeak("I didn't catch that.", closeJarvisUI);
+
+        State.recognition.onend = () => {
+            if (State.isListening && document.getElementById('jarvis-status').innerText !== "SEARCHING...") {
+                closeJarvisUI();
+            }
+        };
+
+        State.recognition.start();
+    });
+}
+
+// 6. DIRECT SUBSTRING & FUZZY EXTRACTOR
 function calculateSimilarity(s1, s2) {
+    if (!s1 || !s2) return 0;
     let longer = s1.length > s2.length ? s1 : s2;
     let shorter = s1.length > s2.length ? s2 : s1;
-    if (longer.length === 0) return 1.0;
     let costs = new Array();
     for (let i = 0; i <= longer.length; i++) {
         let lastValue = i;
@@ -128,658 +314,184 @@ function calculateSimilarity(s1, s2) {
     return (longer.length - costs[shorter.length]) / parseFloat(longer.length);
 }
 
-function saveLearnedSlang(spokenWord, masterKey, storageKey, memoryDict) {
-    let learned = JSON.parse(localStorage.getItem(storageKey)) || {};
-    if (!learned[masterKey]) learned[masterKey] = [];
+function extractEntity(transcript, dictionary) {
+    let bestKey = null;
+    let maxLength = 0;
 
-    if (!learned[masterKey].includes(spokenWord)) {
-        learned[masterKey].push(spokenWord);
-        localStorage.setItem(storageKey, JSON.stringify(learned));
-        memoryDict[masterKey].push(spokenWord);
-    }
-}
-
-// ==========================================
-// 4. CORE VOICE & UI FUNCTIONS
-// ==========================================
-let isVoiceProcessing = false;
-window.keepMicAlive = false;       
-window.keepTypeMicAlive = false;   
-
-// 🔴 TIMER SCRUBBING SYSTEM
-window.voiceTimeouts = [];
-function setVoiceTimeout(callback, delay) {
-    const id = setTimeout(callback, delay);
-    window.voiceTimeouts.push(id);
-    return id;
-}
-function clearVoiceTimeouts() {
-    window.voiceTimeouts.forEach(id => clearTimeout(id));
-    window.voiceTimeouts = [];
-}
-
-function assistantSpeak(text) {
-    const synth = window.speechSynthesis;
-    synth.cancel(); 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-IN'; 
-    utterance.rate = 1.0;
-    synth.speak(utterance);
-}
-
-function toggleVoiceMenu() {
-    const menu = document.getElementById('voice-options-menu');
-    if (menu) {
-        menu.classList.toggle('voice-hidden');
-        assistantSpeak(""); 
-    }
-    showMirrorHint();
-}
-
-function showMirrorHint() {
-    let existing = document.getElementById('mirror-hint-toast');
-    if (existing) existing.remove();
-
-    const toast = document.createElement('div');
-    toast.id = 'mirror-hint-toast';
-    toast.style.cssText = `
-        position: fixed;
-        bottom: 120px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(42, 14, 60, 0.9);
-        color: #fff;
-        padding: 12px 25px;
-        border-radius: 50px;
-        font-family: sans-serif;
-        font-size: 15px;
-        font-weight: bold;
-        letter-spacing: 1px;
-        box-shadow: 0 0 20px rgba(142, 68, 173, 0.6);
-        border: 1px solid rgba(142, 68, 173, 0.8);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        z-index: 10000;
-        transition: opacity 0.4s ease, transform 0.4s ease;
-        backdrop-filter: blur(10px);
-        pointer-events: none;
-    `;
-    toast.innerHTML = `<i class="fas fa-microphone" style="color: #00ff88; text-shadow: 0 0 5px #00ff88;"></i> <span>Say "HEY MIRROR"</span>`;
-    
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translate(-50%, 10px)';
-        setTimeout(() => toast.remove(), 400); 
-    }, 3000);
-}
-
-function resetVoiceState() {
-    const overlay = document.getElementById('listening-overlay');
-    if (overlay) overlay.classList.add('voice-hidden');
-    isVoiceProcessing = false;
-    
-    if (!document.hidden) {
-        startWakeWordListening(); 
-    }
-}
-
-// 🔴 THE X BUTTON CLICK EVENT 
-function stopVoiceRecognition() {
-    window.keepMicAlive = false; 
-    window.keepTypeMicAlive = false;
-    isVoiceProcessing = false; 
-    
-    clearVoiceTimeouts(); 
-
-    if (window.recognition) { try { window.recognition.abort(); } catch(e){} }
-    if (window.typeRecognizer) { try { window.typeRecognizer.abort(); } catch(e){} }
-    
-    window.speechSynthesis.cancel();
-    
-    const overlay = document.getElementById('listening-overlay');
-    if (overlay) overlay.classList.add('voice-hidden');
-
-    if (!document.hidden) {
-        startWakeWordListening();
-    }
-}
-
-// ==========================================
-// 5. MAIN SEARCH LOGIC (MOVIE / MUSIC)
-// ==========================================
-function startVoiceRecognition(searchType = 'movie') {
-    if (isVoiceProcessing) return;
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-        console.warn("Speech Recognition API is not supported in this browser.");
-        return;
-    }
-
-    const menu = document.getElementById('voice-options-menu');
-    if (menu) menu.classList.add('voice-hidden');
-
-    window.recognition = new SpeechRecognition();
-    const overlay = document.getElementById('listening-overlay');
-    const statusText = document.getElementById('voice-status');
-
-    window.recognition.lang = 'en-IN';
-    // 🔴 RESTORED CONTINUOUS FALSE: This guarantees perfect live text word-by-word
-    window.recognition.continuous = false; 
-    window.recognition.interimResults = true; 
-
-    let matchFound = false;
-
-    window.recognition.onstart = () => {
-        if (!matchFound) {
-            statusText.innerText = "Listening...";
-        }
-    };
-
-    statusText.innerText = 'Starting Mic...';
-    overlay.classList.remove('voice-hidden');
-    
-    stopWakeWordListening(); 
-    isVoiceProcessing = true;
-    window.keepMicAlive = true; 
-
-    window.recognition.onresult = (event) => {
-        if (matchFound) return; 
-
-        // Live text perfectly displayed
-        const transcript = event.results[0][0].transcript;
-        statusText.innerText = `"${transcript}"`;
-
-        if (event.results[0].isFinal) {
-            let spokenName = transcript.toUpperCase().replace(/\b(PLAYING|PLAY|OPEN|SEARCH FOR|SEARCH|SHOW ME|I WANT TO WATCH|START)\b/g, '').trim();
-
-            if (spokenName.length > 0) {
-                matchFound = true; 
-                window.keepMicAlive = false; 
-                try { window.recognition.abort(); } catch(e){}
-
-                if (searchType === 'movie') {
-                    // 🔴 Professional "Searching" Loading State
-                    statusText.innerHTML = `<i class="fas fa-circle-notch fa-spin" style="margin-right:8px;"></i> Searching for "${spokenName}"...`;
-                    
-                    setVoiceTimeout(() => {
-                        let bestMatch = null;
-                        let highestScore = 0;
-
-                        for (const [correctName, variants] of Object.entries(SMART_MOVIE_DICT)) {
-                            if (variants.some(variant => spokenName.includes(variant.toUpperCase()))) {
-                                bestMatch = correctName;
-                                highestScore = 1.0;
-                                break;
-                            }
-                            variants.forEach(variant => {
-                                let score = calculateSimilarity(spokenName, variant.toUpperCase());
-                                if (score > highestScore) {
-                                    highestScore = score;
-                                    bestMatch = correctName;
-                                }
-                            });
-                        }
-
-                        if (bestMatch && highestScore >= 0.70) {
-                            if (highestScore < 1.0) saveLearnedSlang(spokenName, bestMatch, "learned_movies", SMART_MOVIE_DICT);
-                            spokenName = bestMatch;
-                        }
-
-                        const searchInput = document.getElementById("movieSearchInput");
-                        if (searchInput) {
-                            searchInput.value = spokenName;
-                            const movieCards = Array.from(document.querySelectorAll('.movies'));
-                            const foundCard = movieCards.find(card => card.dataset.title.toUpperCase() === spokenName && card.style.display !== 'none');
-
-                            if (foundCard) {
-                                assistantSpeak(`Now playing ${spokenName.toLowerCase()} movie`);
-                                statusText.innerText = `Found ${spokenName}! Playing...`;
-                                setVoiceTimeout(() => {
-                                    if (typeof movieView === "function") movieView(foundCard);
-                                    resetVoiceState(); 
-                                }, 1500);
-                            } else {
-                                assistantSpeak(`Sorry, I couldn't find ${spokenName.toLowerCase()}`);
-                                statusText.innerText = `Couldn't find "${spokenName}"`;
-                                
-                                setVoiceTimeout(() => {
-                                    if (isVoiceProcessing) { 
-                                        matchFound = false;
-                                        window.keepMicAlive = true;
-                                        statusText.innerText = 'Listening...';
-                                        try { window.recognition.start(); } catch(e){}
-                                    }
-                                }, 2500);
-                            }
-                        } else {
-                            assistantSpeak(`Now playing ${spokenName.toLowerCase()}`);
-                            statusText.innerText = `Playing ${spokenName}...`;
-                            setVoiceTimeout(() => {
-                                window.location.href = `movie.html?autoPlay=${encodeURIComponent(spokenName)}`;
-                            }, 1500);
-                        }
-                    }, 1000); // 1-second browsing visual delay
-
-                }
-                else if (searchType === 'music') {
-                    // MUSIC SEARCH LOGIC
-                    let cleanedSongName = spokenName.replace(/\b(SONG|SONGS|MUSIC|AUDIO|TRACK|PLAYLIST|ALBUM)\b/g, '').replace(/\s+/g, ' ').trim();
-                    
-                    if (cleanedSongName === "") {
-                        assistantSpeak("Please tell me the specific song name.");
-                        statusText.innerText = "Waiting for song name...";
-                        setVoiceTimeout(() => {
-                            matchFound = false;
-                            window.keepMicAlive = true;
-                            statusText.innerText = 'Listening...';
-                            try { window.recognition.start(); } catch(e){}
-                        }, 2000);
-                        return;
-                    }
-
-                    statusText.innerHTML = `<i class="fas fa-circle-notch fa-spin" style="margin-right:8px;"></i> Searching for "${cleanedSongName}"...`;
-                    
-                    setVoiceTimeout(() => {
-                        let bestMatch = null;
-                        let highestScore = 0;
-
-                        for (const [correctName, variants] of Object.entries(SMART_MUSIC_DICT)) {
-                            if (variants.some(variant => cleanedSongName.includes(variant.toUpperCase()))) {
-                                bestMatch = correctName;
-                                highestScore = 1.0;
-                                break;
-                            }
-                            variants.forEach(variant => {
-                                let score = calculateSimilarity(cleanedSongName, variant.toUpperCase());
-                                if (score > highestScore) {
-                                    highestScore = score;
-                                    bestMatch = correctName;
-                                }
-                            });
-                        }
-
-                        if (bestMatch && highestScore >= 0.70) {
-                            if (highestScore < 1.0) saveLearnedSlang(cleanedSongName, bestMatch, "learned_music", SMART_MUSIC_DICT);
-                            cleanedSongName = bestMatch;
-                        }
-
-                        handleMusicSearch(cleanedSongName, () => { matchFound = false; }); 
-                    }, 1000); // 1-second browsing visual delay
-                }
-            } else {
-                statusText.innerText = 'Listening...';
+    // A. Direct Substring Match
+    for (const [key, variants] of Object.entries(dictionary)) {
+        for (const variant of variants) {
+            if (transcript.includes(variant) && variant.length > maxLength) {
+                maxLength = variant.length;
+                bestKey = key;
             }
         }
-    };
+    }
+    if (bestKey) return bestKey;
 
-    window.recognition.onerror = (event) => {
-        if (matchFound) return; 
+    // B. Fuzzy Match Fallback
+    let cleanTranscript = transcript.replace(STOP_WORDS_REGEX, '').replace(/\s+/g, ' ').trim();
+    if (!cleanTranscript) return null;
+    let ultraCleanTranscript = cleanTranscript.replace(/[^A-Z0-9]/g, "");
 
-        const statusText = document.getElementById('voice-status');
+    let highestScore = 0;
+    for (const [key, variants] of Object.entries(dictionary)) {
+        for (const variant of variants) {
+            let score1 = calculateSimilarity(cleanTranscript, variant);
+            let score2 = calculateSimilarity(ultraCleanTranscript, variant.replace(/[^A-Z0-9]/g, ""));
+            let bestScore = Math.max(score1, score2);
 
-        switch (event.error) {
-            case 'not-allowed':
-                window.keepMicAlive = false;
-                assistantSpeak("Microphone permission denied.");
-                if (statusText) statusText.innerText = "Mic Permission Denied!";
-                setVoiceTimeout(resetVoiceState, 3500);
-                break;
-            case 'audio-capture':
-                window.keepMicAlive = false;
-                assistantSpeak("No microphone found.");
-                if (statusText) statusText.innerText = "No Microphone Found!";
-                setVoiceTimeout(resetVoiceState, 3500);
-                break;
-            case 'no-speech':
-                if (statusText) statusText.innerText = "Listening... (Speak louder)";
-                break;
-            case 'aborted':
-                break;
-            default:
-                assistantSpeak("A voice error occurred, please try again.");
-                if (statusText) statusText.innerText = "Voice Error!";
-                setVoiceTimeout(() => {
-                    if (isVoiceProcessing) {
-                        statusText.innerText = 'Listening...';
-                        try { window.recognition.start(); } catch(e){}
-                    }
-                }, 2500);
-        }
-    };
-
-    window.recognition.onend = () => {
-        if (window.keepMicAlive && !document.hidden && !matchFound) {
-            try { window.recognition.start(); } catch(e){}
-        }
-    };
-
-    window.recognition.start();
-}
-
-function handleMusicSearch(songName, unlockCallback) {
-    let found = false;
-    const musicButtons = document.querySelectorAll('i#music');
-    const searchQuery = songName.toUpperCase().replace(/[^A-Z0-9]/g, "");
-    const statusText = document.getElementById('voice-status');
-
-    for (let btn of musicButtons) {
-        const data = btn.dataset;
-        const movieContainer = btn.closest('.movies');
-
-        if (movieContainer) {
-            const movieTitle = movieContainer.dataset.title || "";
-            const cleanMovieTitle = movieTitle.toUpperCase().replace(/[^A-Z0-9]/g, "");
-
-            if (cleanMovieTitle === searchQuery || cleanMovieTitle.includes(searchQuery)) {
-                assistantSpeak(`Now playing ${movieTitle.toLowerCase()} playlist`);
-                if (statusText) statusText.innerText = `Found ${movieTitle} Playlist! Playing...`;
-                localStorage.setItem('targetSongIndex', 0);
-                setVoiceTimeout(() => { btn.click(); resetVoiceState(); }, 1500);
-                found = true;
-                break;
+            if (bestScore > highestScore && bestScore >= 0.75) {
+                highestScore = bestScore;
+                bestKey = key;
             }
         }
+    }
+    return bestKey;
+}
 
-        for (let i = 1; i <= 20; i++) {
-            const titleVal = data[`songtitle${i}`] || data[`songTitle${i}`];
-            if (titleVal) {
-                const cleanTitle = titleVal.toUpperCase().replace(/[^A-Z0-9]/g, "");
-                if (cleanTitle.includes(searchQuery) || searchQuery.includes(cleanTitle)) {
-                    assistantSpeak(`Now playing ${songName.toLowerCase()} song`);
-                    if (statusText) statusText.innerText = `Found ${songName}! Playing...`;
-                    localStorage.setItem('targetSongIndex', i - 1);
-                    setVoiceTimeout(() => { btn.click(); resetVoiceState(); }, 1500);
-                    found = true;
-                    break;
-                }
-            }
-        }
-        if (found) break;
+// 7. INTENT ROUTER & NAVIGATION
+function processCommand(transcript) {
+    let rawText = transcript.toUpperCase();
+
+    if (rawText.includes("GO BACK") || rawText.includes("BACK TO HOME") || rawText.includes("MAIN MENU") || rawText.includes("HOME PAGE")) {
+        return triggerGoBack();
     }
 
-    if (!found) {
-        assistantSpeak(`I couldn't find the song ${songName.toLowerCase()}`);
-        if (statusText) statusText.innerText = `Couldn't find "${songName}"`;
-        
-        setVoiceTimeout(() => {
-            if (isVoiceProcessing) { 
-                if(unlockCallback) unlockCallback(); 
-                window.keepMicAlive = true;
-                statusText.innerText = 'Listening...';
-                try { window.recognition.start(); } catch(e){}
-            }
-        }, 2500);
+    // A. FAST LOCAL ANALYSIS: Instantly strip tail-end speech filler/action verbs common in Tamil syntax
+    rawText = rawText.replace(/\b(POTTU KAATU|PANNU|KAAMI|THEDU|தேடு|போடு|காட்டு|ப்ளே)\b/g, "").trim();
+
+    // B. DUAL-LANGUAGE INTENT DETECTION: Parse English, Tamil script, and spoken Tanglish keywords
+    const isSongIntent = /\b(SONG|SONGS|MUSIC|AUDIO|TRACK|PLAYLIST|PATTU|PAATU|பாட்டு|பாடல்)\b/.test(rawText);
+    const isMovieIntent = /\b(MOVIE|MOVIES|FILM|FILMS|WATCH|PADAM|படம்)\b/.test(rawText);
+
+    let movieMatch = extractEntity(rawText, MOVIE_TRAINING);
+    let musicMatch = extractEntity(rawText, MUSIC_TRAINING);
+
+    let fallbackQuery = rawText.replace(STOP_WORDS_REGEX, '').replace(/\s+/g, ' ').trim();
+
+    if (!movieMatch && !musicMatch && !fallbackQuery) {
+        return jarvisSpeak("I couldn't identify a title from that command.", closeJarvisUI);
     }
-}
 
-
-// ==========================================
-// 6. "HEY MIRROR" WAKE-WORD ASSISTANT
-// ==========================================
-let wakeWordRecognizer = null;
-let isWakeWordListening = false;
-
-function initMirrorAssistant() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
-
-    wakeWordRecognizer = new SpeechRecognition();
-    wakeWordRecognizer.lang = 'en-IN';
-    wakeWordRecognizer.continuous = true; 
-    wakeWordRecognizer.interimResults = true; 
-
-    wakeWordRecognizer.onresult = (event) => {
-        if (isVoiceProcessing) return;
-
-        let transcript = "";
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-            transcript += event.results[i][0].transcript;
-        }
-        transcript = transcript.toLowerCase().trim();
-
-        if (transcript.includes("hey mirror") || transcript.includes("mirror")) {
-            console.log("Wake word detected!");
-
-            stopWakeWordListening();
-            isVoiceProcessing = true; 
-
-            const overlay = document.getElementById('listening-overlay');
-            const statusText = document.getElementById('voice-status');
-            overlay.classList.remove('voice-hidden');
-            statusText.innerText = "Hey Mirror activated...";
-
-            askForSearchType();
-        }
-    };
-
-    wakeWordRecognizer.onend = () => {
-        if (!isVoiceProcessing && isWakeWordListening && !document.hidden) {
-            try { wakeWordRecognizer.start(); } catch (e) { }
-        }
-    };
-    
-    wakeWordRecognizer.onerror = (e) => {
-        if (e.error === 'not-allowed' || e.error === 'audio-capture') {
-            isWakeWordListening = false;
-        }
-    };
-    
-    startWakeWordListening();
-}
-
-function startWakeWordListening() {
-    if (wakeWordRecognizer && !isWakeWordListening && !isVoiceProcessing) {
-        isWakeWordListening = true;
-        try { wakeWordRecognizer.start(); } catch (e) { }
-    }
-}
-
-function stopWakeWordListening() {
-    if (wakeWordRecognizer) {
-        isWakeWordListening = false;
-        try { wakeWordRecognizer.stop(); } catch (e) { }
-    }
-}
-
-function askForSearchType() {
-    const synth = window.speechSynthesis;
-    synth.cancel();
-
-    const utterance = new SpeechSynthesisUtterance("What is your search? Say Movie or Song.");
-    utterance.lang = 'en-IN';
-    utterance.rate = 1.0;
-
-    const statusText = document.getElementById('voice-status');
-    statusText.innerText = 'Say "Movie" or "Song"';
-
-    utterance.onend = () => {
-        listenForSearchType();
-    };
-
-    synth.speak(utterance);
-}
-
-function handoffToSearch(type, spokenText) {
-    const synth = window.speechSynthesis;
-    synth.cancel(); 
-    
-    const statusText = document.getElementById('voice-status');
-    // 🔴 Professional "Processing" State during handoff
-    statusText.innerHTML = `<i class="fas fa-circle-notch fa-spin" style="margin-right:8px;"></i> Processing...`; 
-
-    const utterance = new SpeechSynthesisUtterance(spokenText);
-    utterance.lang = 'en-IN';
-    utterance.rate = 1.0;
-    
-    let handoffComplete = false;
-
-    const triggerNext = () => {
-        if (handoffComplete || !isVoiceProcessing) return; 
-        handoffComplete = true;
-        
-        // 🔴 FIX: 400ms Audio Hardware Release Delay
-        // Prevents the browser's echo cancellation from creating a "Deaf Microphone"
-        setVoiceTimeout(() => {
-            isVoiceProcessing = false; 
-            startVoiceRecognition(type); 
-        }, 400); 
-    };
-
-    utterance.onend = triggerNext;
-    utterance.onerror = triggerNext;
-
-    synth.speak(utterance);
-    setVoiceTimeout(triggerNext, 2000); 
-}
-
-function listenForSearchType() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const typeRecognizer = new SpeechRecognition();
-    window.typeRecognizer = typeRecognizer; 
-
-    typeRecognizer.lang = 'en-IN';
-    // 🔴 RESTORED CONTINUOUS FALSE: Guarantees perfect live text for the prompt
-    typeRecognizer.continuous = false; 
-    typeRecognizer.interimResults = true;
-
-    const statusText = document.getElementById('voice-status');
-    let choiceMade = false;
-    window.keepTypeMicAlive = true; 
-
-    typeRecognizer.onstart = () => {
-        if (!choiceMade) {
-            statusText.innerText = "Listening...";
-        }
-    };
-
-    typeRecognizer.onresult = (event) => {
-        if (choiceMade) return; 
-
-        // Grabs the exact syllable the user is saying in real-time
-        const transcript = event.results[0][0].transcript;
-        statusText.innerText = `"${transcript}"`;
-
-        if (event.results[0].isFinal) {
-            const finalTranscript = transcript.toLowerCase();
-
-            if (finalTranscript.includes("movie")) {
-                choiceMade = true;
-                window.keepTypeMicAlive = false; 
-                try { typeRecognizer.abort(); } catch(e){}
-                handoffToSearch('movie', "Opening Movie Search");
-
-            } else if (finalTranscript.includes("song") || finalTranscript.includes("music")) {
-                choiceMade = true;
-                window.keepTypeMicAlive = false; 
-                try { typeRecognizer.abort(); } catch(e){}
-                handoffToSearch('music', "Opening Song Search");
-
-            } else {
-                assistantSpeak("Sorry, I didn't catch that.");
-                statusText.innerText = "Command not recognized.";
-                
-                window.keepTypeMicAlive = false; 
-                try { typeRecognizer.abort(); } catch(e){}
-
-                setVoiceTimeout(() => {
-                    if (isVoiceProcessing) { 
-                        window.keepTypeMicAlive = true;
-                        statusText.innerText = 'Listening...';
-                        try { typeRecognizer.start(); } catch(e){}
-                    }
-                }, 2000);
-            }
-        }
-    };
-
-    typeRecognizer.onerror = (event) => {
-        if (choiceMade) return; 
-
-        if (event.error === 'not-allowed') {
-            window.keepTypeMicAlive = false;
-            assistantSpeak("Microphone permission denied.");
-            if (statusText) statusText.innerText = "Mic Permission Denied!";
-            setVoiceTimeout(resetVoiceState, 3500);
-        } else if (event.error === 'audio-capture') {
-            window.keepTypeMicAlive = false;
-            assistantSpeak("No microphone found.");
-            if (statusText) statusText.innerText = "No Microphone Found!";
-            setVoiceTimeout(resetVoiceState, 3500);
-        } else if (event.error === 'no-speech') {
-            window.keepTypeMicAlive = false;
-            assistantSpeak("I didn't hear a response. Please say Hey Mirror to try again.");
-            if (statusText) statusText.innerText = "No response detected. Canceling...";
-            setVoiceTimeout(resetVoiceState, 3000); 
-        } else if (event.error !== 'aborted') {
-            window.keepTypeMicAlive = false;
-            resetVoiceState();
-        }
-    };
-
-    typeRecognizer.onend = () => {
-        if (window.keepTypeMicAlive && !document.hidden && !choiceMade) {
-            try { typeRecognizer.start(); } catch(e){}
-        }
-    };
-
-    typeRecognizer.start();
-}
-
-
-// ==========================================
-// 7. HARDWARE & BROWSER TAB INTEGRATION
-// ==========================================
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-        window.keepMicAlive = false;
-        window.keepTypeMicAlive = false;
-        if (window.recognition) { try { window.recognition.abort(); } catch(e){} }
-        if (window.typeRecognizer) { try { window.typeRecognizer.abort(); } catch(e){} }
-        stopWakeWordListening();
+    if (isSongIntent) {
+        triggerMedia(musicMatch || movieMatch || fallbackQuery, true);
+    } else if (isMovieIntent) {
+        triggerMedia(movieMatch || musicMatch || fallbackQuery, false);
     } else {
-        if (mirrorInitialized && !isVoiceProcessing) {
-            startWakeWordListening();
+        if (musicMatch && movieMatch) triggerMedia(movieMatch, false);
+        else if (musicMatch) triggerMedia(musicMatch, true);
+        else if (movieMatch) triggerMedia(movieMatch, false);
+        else triggerMedia(fallbackQuery, false);
+    }
+}
+
+// 8. DIRECT DOM EXECUTION 
+function triggerMedia(query, isMusic) {
+    const typeLabel = isMusic ? "track" : "movie";
+
+    jarvisSpeak(`Accessing ${query} ${typeLabel}.`, () => {
+        closeJarvisUI();
+
+        const normalizedQuery = query.toUpperCase().replace(/[^A-Z0-9]/g, "");
+        let executionSuccess = false;
+
+        // Use cached DOM elements for blazing fast lookup
+        if (isMusic) {
+            const musicButtons = State.cachedMusicBtns.length ? State.cachedMusicBtns : document.querySelectorAll('i#music');
+            for (let btn of musicButtons) {
+                const data = btn.dataset;
+                const container = btn.closest('.movies');
+
+                if (container && container.dataset.title && container.dataset.title.toUpperCase().replace(/[^A-Z0-9]/g, "") === normalizedQuery) {
+                    localStorage.setItem('targetSongIndex', 0);
+                    btn.click();
+                    executionSuccess = true; break;
+                }
+
+                for (let i = 1; i <= 20; i++) {
+                    const songName = data[`songtitle${i}`] || data[`songTitle${i}`];
+                    if (songName) {
+                        const cleanSong = songName.toUpperCase().replace(/[^A-Z0-9]/g, "");
+                        if (cleanSong.includes(normalizedQuery) || normalizedQuery.includes(cleanSong)) {
+                            localStorage.setItem('targetSongIndex', i - 1);
+                            btn.click();
+                            executionSuccess = true; break;
+                        }
+                    }
+                }
+                if (executionSuccess) break;
+            }
+        } else {
+            const movieCards = State.cachedMovies.length ? State.cachedMovies : Array.from(document.querySelectorAll('.movies'));
+            for (let card of movieCards) {
+                if (card.dataset.title && card.dataset.title.toUpperCase().replace(/[^A-Z0-9]/g, "") === normalizedQuery) {
+                    if (typeof movieView === "function") {
+                        movieView(card);
+                        executionSuccess = true; break;
+                    }
+                }
+            }
         }
-    }
-});
 
-document.addEventListener('keydown', function (e) {
-    const KEY_SEARCH = 10225, KEY_RED = 403, KEY_GREEN = 404, KEY_RETURN = 10009;
-    switch (e.keyCode) {
-        case KEY_SEARCH: if (typeof toggleVoiceMenu === "function") toggleVoiceMenu(); break;
-        case KEY_RED: if (typeof startVoiceRecognition === "function") startVoiceRecognition('movie'); break;
-        case KEY_GREEN: if (typeof startVoiceRecognition === "function") startVoiceRecognition('music'); break;
-        case KEY_RETURN: 
-            const menu = document.getElementById('voice-options-menu');
-            if (menu && !menu.classList.contains('voice-hidden')) menu.classList.add('voice-hidden');
-            break;
-    }
-});
-
-document.addEventListener('keydown', function (e) {
-    const activeTag = document.activeElement.tagName;
-    if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || e.ctrlKey || e.altKey || e.metaKey) return;
-
-    switch (e.key.toLowerCase()) {
-        case 'v': e.preventDefault(); document.getElementById('voice-assistant-btn')?.click() || toggleVoiceMenu?.(); break;
-        case 'm': e.preventDefault(); startVoiceRecognition?.('movie'); break;
-        case 's': e.preventDefault(); startVoiceRecognition?.('music'); break;
-    }
-});
-
-let mirrorInitialized = false;
-
-const voiceBtnElement = document.getElementById('voice-assistant-btn');
-if (voiceBtnElement) {
-    voiceBtnElement.addEventListener('click', () => {
-        if (!mirrorInitialized) {
-            initMirrorAssistant();
-            mirrorInitialized = true;
-            console.log("Hey Mirror background listener is active!");
+        // Cross-Page Routing
+        if (!executionSuccess) {
+            const searchBars = State.searchInputs.length ? State.searchInputs : document.querySelectorAll('input[type="search"]');
+            if (searchBars.length > 0) {
+                searchBars.forEach(input => {
+                    input.value = query;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                });
+                if (typeof executeSearch === 'function') executeSearch();
+            } else {
+                const param = isMusic ? 'autoPlaySong' : 'autoPlay';
+                window.location.href = `movie.html?${param}=${encodeURIComponent(query)}`;
+            }
         }
     });
+}
+
+// 9. VISIBILITY & SHORTCUTS
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) closeJarvisUI();
+});
+
+window.addEventListener('beforeunload', () => {
+    if (State.recognition) State.recognition.abort();
+});
+
+document.addEventListener('keydown', (e) => {
+    const activeTag = document.activeElement ? document.activeElement.tagName : '';
+    if (['INPUT', 'TEXTAREA'].includes(activeTag) || e.ctrlKey || e.altKey || e.metaKey) return;
+
+    if (e.key.toLowerCase() === 'v') {
+        e.preventDefault();
+        toggleJarvis();
+    }
+    if (e.key === 'Escape') {
+        e.preventDefault();
+        triggerGoBack();
+    }
+});
+
+
+// Run this function after your app fetches its main media list from the database
+function autoTrainVoiceAssistant(allMoviesList, allSongsList) {
+    if (allMoviesList && Array.isArray(allMoviesList)) {
+        allMoviesList.forEach(item => {
+            if (item.title) MOVIE_TRAINING.push(item.title.toUpperCase());
+            if (item.tamil_title) MOVIE_TRAINING.push(item.tamil_title.toUpperCase());
+        });
+    }
+
+    if (allSongsList && Array.isArray(allSongsList)) {
+        allSongsList.forEach(item => {
+            if (item.title) MUSIC_TRAINING.push(item.title.toUpperCase());
+            if (item.artist) MUSIC_TRAINING.push(item.artist.toUpperCase());
+        });
+    }
+    
+    // De-duplicate arrays instantly using a Set for faster runtime lookup performance
+    window.MOVIE_TRAINING = [...new Set(MOVIE_TRAINING)];
+    window.MUSIC_TRAINING = [...new Set(MUSIC_TRAINING)];
 }

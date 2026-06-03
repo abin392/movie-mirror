@@ -1,0 +1,29 @@
+ <div class="voice-assistant-wrapper">
+        <div id="jarvis-btn" onclick="toggleJarvis()" data-tooltip="Activate J.A.R.V.I.S. (V)">
+            <div class="arc-core"></div>
+            <div class="arc-ring"></div>
+        </div>
+    </div>
+
+    <div id="jarvis-overlay" class="voice-hidden">
+        <i class="fas fa-times" onclick="closeJarvisUI()"
+            style="position: absolute; top: 25px; right: 25px; font-size: 2rem; color: #00d2ff; cursor: pointer; z-index: 10001; text-shadow: 0 0 10px #00d2ff;"></i>
+
+        <div class="jarvis-center">
+            <div class="jarvis-orb">
+                <div class="orb-core"></div>
+                <div class="orb-ring ring-1"></div>
+                <div class="orb-ring ring-2"></div>
+                <div class="orb-ring ring-3"></div>
+            </div>
+            <p id="jarvis-status" class="tech-text">SYSTEM STANDBY</p>
+            <p id="jarvis-transcript" class="tech-text-sub"></p>
+        </div>
+    </div>
+
+    <div id="download-toast" class="toast-hidden">
+        <div class="toast-content" style="background: rgba(0, 20, 40, 0.9); border-left: 4px solid #00d2ff;">
+            <i class="fas fa-check-circle" style="color: #00d2ff;"></i>
+            <span id="toast-message">Asset secured in Downloads</span>
+        </div>
+    </div>

@@ -18,18 +18,32 @@
 
 
     <div class="voice-assistant-wrapper">
-        <div id="voice-options-menu" class="voice-hidden">
-            <button onclick="startVoiceRecognition('movie')" data-tooltip="Search Movie (M)">
-                <i class="fas fa-film"></i> Search Movie
-            </button>
-            <button onclick="startVoiceRecognition('music')" data-tooltip="Search Music (S)">
-                <i class="fas fa-music"></i> Search Music
-            </button>
+        <div id="jarvis-btn" onclick="toggleJarvis()" data-tooltip="Activate J.A.R.V.I.S. (V)">
+            <div class="arc-core"><i class="fab fas fa-microphone"></i></div>
+            <div class="arc-ring"></div>
         </div>
+    </div>
 
-        <div id="voice-assistant-btn" onclick="toggleVoiceMenu()" data-tooltip="Voice Assistant (V)">
-            <i class="fas fa-microphone"></i>
-            <div class="pulse-ring"></div>
+    <div id="jarvis-overlay" class="voice-hidden">
+        <i class="fas fa-times" onclick="closeJarvisUI()"
+            style="position: absolute; top: 25px; right: 25px; font-size: 2rem; color: #9000ff; cursor: pointer; z-index: 10001; text-shadow: 0 0 10px #9000ff;"></i>
+
+        <div class="jarvis-center">
+            <div class="jarvis-orb">
+                <div class="orb-core"></div>
+                <div class="orb-ring ring-1"></div>
+                <div class="orb-ring ring-2"></div>
+                <div class="orb-ring ring-3"></div>
+            </div>
+            <p id="jarvis-status" class="tech-text">SYSTEM STANDBY</p>
+            <p id="jarvis-transcript" class="tech-text-sub"></p>
+        </div>
+    </div>
+
+    <div id="download-toast" class="toast-hidden">
+        <div class="toast-content" style="background: rgba(0, 20, 40, 0.9); border-left: 4px solid #00d2ff;">
+            <i class="fas fa-check-circle" style="color: #00d2ff;"></i>
+            <span id="toast-message">Asset secured in Downloads</span>
         </div>
     </div>
 
@@ -189,16 +203,7 @@
                 <h3 id="userName">Loading...</h3>
             </div>
 
-            <div class="search-box">
-            <div class="search-order">
-                <input type="search" id="movieSearchInput" list="search-option" placeholder="Search Any Movie & Songs" required>
-                <datalist id="search-option">
-                    <option value="DUDE"></option>
-                    <option value="AMPULI"></option>
-                </datalist>
-                <button onclick="executeSearch()"><i class="fas fa-search"></i></button>
-            </div>
-        </div>
+
 
 
             <div class="nav-right">
@@ -211,7 +216,8 @@
 
         <div class="search-box">
             <div class="search-order">
-                <input type="search" id="movieSearchInput" list="search-option" placeholder="Search Any Movie & Songs" required>
+                <input type="search" id="movieSearchInput" list="search-option" placeholder="Search Any Movie & Songs"
+                    required>
                 <datalist id="search-option">
                     <option value="DUDE"></option>
                     <option value="AMPULI"></option>
@@ -310,7 +316,7 @@
             <div class="cart">
                 <div class="media-box">
                     <img src="img/captan america.jpeg" onclick="movieView(this)" alt="" loading="lazy">
-                    <video src="trailers/amaran.mp4" loop preload="metadata"></video>
+                    <video src="" loop preload="metadata"></video>
                 </div>
                 <div class="movie-description">
                     <h2>CAPTAN AMERICA</h2>
@@ -323,7 +329,7 @@
             <div class="cart">
                 <div class="media-box">
                     <img src="img/bison.jpeg" onclick="movieView(this)" alt="" loading="lazy">
-                    <video src="trailers/vip.mp4" loop preload="metadata"></video>
+                    <video src="" loop preload="metadata"></video>
                 </div>
                 <div class="movie-description">
                     <h2>BISON</h2>
@@ -403,9 +409,10 @@
                 </div>
 
                 <!--my youtube channel video-->
-                <div class="movies" data-title="தூங்கி எழுந்தாச்சா" data-img="img/my channel/channel img.jpeg" data-name="ARJUN" data-year="2026"
-                    data-language="Tamil" data-link1="https://www.youtube.com/watch?v=WHttggtS42Y"
-                    data-episode1="Episode 1: My First Video" data-time="10m">
+                <div class="movies" data-title="தூங்கி எழுந்தாச்சா" data-img="img/my channel/channel img.jpeg"
+                    data-name="ARJUN" data-year="2026" data-language="Tamil"
+                    data-link1="https://www.youtube.com/watch?v=WHttggtS42Y" data-episode1="Episode 1: My First Video"
+                    data-time="10m">
 
                     <img src="img/my channel/thungi.jpeg" onclick="movieView(this)">
                     <h4></h4>எழுந்தாச்சா</h4>
@@ -462,8 +469,8 @@
 
                 <!--idli kadai movie episodes-->
                 <div class="movies" data-title="IDLI KADAI" data-img="img/idli kadai.jpeg" data-link=""
-                    data-link1="https://www.youtube.com/watch?v=zdu0YzzJ10o&t=20s"
-                    data-name="DHANUSH" data-year="2025" data-language="Tamil"
+                    data-link1="https://www.youtube.com/watch?v=zdu0YzzJ10o&t=20s" data-name="DHANUSH" data-year="2025"
+                    data-language="Tamil"
                     data-link2="https://res.cloudinary.com/draqsnyyu/video/upload/v1774495411/1.Movie_intro_g4z5o7.mp4"
                     data-episode1="Episode 1: Movie_intro" data-time="09:49m"
                     data-link3="https://res.cloudinary.com/draqsnyyu/video/upload/v1774495427/2.Marriage_arrangement_bjtbbt.mp4"
@@ -932,7 +939,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/tirucitrapalam.jpeg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -959,7 +966,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -968,7 +975,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -977,7 +984,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -986,7 +993,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -995,7 +1002,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1004,7 +1011,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1013,7 +1020,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1022,7 +1029,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1031,7 +1038,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1040,7 +1047,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1049,7 +1056,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1058,7 +1065,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1067,7 +1074,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1076,7 +1083,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1085,7 +1092,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1094,7 +1101,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1147,7 +1154,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1156,7 +1163,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1165,7 +1172,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1174,7 +1181,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1183,7 +1190,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1192,7 +1199,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1201,7 +1208,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1210,7 +1217,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1219,7 +1226,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1228,7 +1235,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1237,7 +1244,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1246,7 +1253,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1255,7 +1262,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1264,7 +1271,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1273,7 +1280,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1282,7 +1289,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1335,7 +1342,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1344,7 +1351,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1353,7 +1360,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1362,7 +1369,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1371,7 +1378,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1380,7 +1387,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1389,7 +1396,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1398,7 +1405,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1407,7 +1414,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1416,7 +1423,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1425,7 +1432,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1434,7 +1441,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1443,7 +1450,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1452,7 +1459,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1461,7 +1468,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1470,7 +1477,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1523,7 +1530,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1532,7 +1539,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1541,7 +1548,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1550,7 +1557,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1559,7 +1566,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1568,7 +1575,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1577,7 +1584,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1586,7 +1593,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1595,7 +1602,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1604,7 +1611,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1613,7 +1620,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1622,7 +1629,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1631,7 +1638,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 1.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1640,7 +1647,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 2.jpg" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1649,7 +1656,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus 3.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1658,7 +1665,7 @@
 
                     <i class="fas fa-download" id="movie-dots" onclick="addToDownloads(this)"></i>
                     <i class="fas fas fa-music" id="music" onclick="openMusicPlayer(this)" data-img="img/dude.jpeg"></i>
-                    <img src="img/bus.png" onclick="movieView(this)" alt="" loading="lazy">
+                    <img src="" onclick="movieView(this)" alt="" loading="lazy">
                     <h4>Movie-Title</h4>
                     <button onclick="movieView(this)">Watch</button>
                 </div>
@@ -1703,10 +1710,9 @@
         </div>
     </div>
 
+    <script src="voice-assistant.js"></script>
+    <script src="movie.js"></script>
+    <script src="music-push.js"></script>
 </body>
-<script src="voice-assistant.js"></script>
-<script src="movie.js"></script>
-<script src="music-push.js"></script>
-<script src="security.js"></script>
 
 </html>
