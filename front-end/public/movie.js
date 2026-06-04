@@ -23,13 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeRevealLogic();
     startAutoScroll();
     setupEventListeners();
+    setupSmartTVNavigation(); // <--- TV Navigation Initialized
 
     // Safely trigger the Custom Search Dropdown
     if (typeof populateSearchOptions === "function") {
         populateSearchOptions();
     }
 
-    // ADD THIS LINE HERE: Auto-train your voice engine instantly on load
+    // Auto-train your voice engine instantly on load
     initializeVoiceTraining();
 
     // Login check to view the music page
@@ -46,29 +47,26 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Wait a brief moment to ensure any dynamic content/fetch calls have rendered the items
     setTimeout(() => {
         trainAssistantFromPage();
     }, 800);
 });
 
 function trainAssistantFromPage() {
-    // Ensure the voice training arrays are globally accessible
     window.MOVIE_TRAINING = window.MOVIE_TRAINING || [];
     window.MUSIC_TRAINING = window.MUSIC_TRAINING || [];
 
-    // 1. EXTRACT MOVIES (Adjust the selector '.movie-card' or '.movie-title' to match your HTML)
+    // 1. EXTRACT MOVIES
     const movieElements = document.querySelectorAll(".movie-card, .movie-item, [data-type='movie']");
     movieElements.forEach(element => {
-        // Grabs text from the element or from specific title classes inside it
         const titleText = element.querySelector(".movie-title") ? element.querySelector(".movie-title").innerText : element.innerText;
-        const dataTitle = element.getAttribute("data-title"); // Fallback if you use data attributes
+        const dataTitle = element.getAttribute("data-title");
 
         processAndPushToken(titleText, window.MOVIE_TRAINING);
         if (dataTitle) processAndPushToken(dataTitle, window.MOVIE_TRAINING);
     });
 
-    // 2. EXTRACT SONGS (Adjust the selector '.song-item' or '.music-title' to match your HTML)
+    // 2. EXTRACT SONGS
     const songElements = document.querySelectorAll(".song-item, .audio-track, [data-type='song']");
     songElements.forEach(element => {
         const songText = element.querySelector(".song-title") ? element.querySelector(".song-title").innerText : element.innerText;
@@ -77,31 +75,19 @@ function trainAssistantFromPage() {
 
         processAndPushToken(songText, window.MUSIC_TRAINING);
         if (dataSong) processAndPushToken(dataSong, window.MUSIC_TRAINING);
-        if (artistText) processAndPushToken(artistText, window.MUSIC_TRAINING); // Trains voice to recognize singer names too
+        if (artistText) processAndPushToken(artistText, window.MUSIC_TRAINING);
     });
 
-    // 3. Clean up duplicates instantly for high-speed local processing
     window.MOVIE_TRAINING = [...new Set(window.MOVIE_TRAINING)];
     window.MUSIC_TRAINING = [...new Set(window.MUSIC_TRAINING)];
-
-    console.log("Voice Assistant Trained Successfully!");
-    console.log("Loaded Movies:", window.MOVIE_TRAINING.length);
-    console.log("Loaded Songs:", window.MUSIC_TRAINING.length);
 }
 
-// Helper function to clean text, handle combined languages, and isolate items
 function processAndPushToken(rawText, targetArray) {
     if (!rawText) return;
-
-    // Clean up extra spaces, line breaks, and convert to uppercase
     let cleanText = rawText.replace(/\s+/g, ' ').trim().toUpperCase();
-
     if (cleanText) {
         targetArray.push(cleanText);
-
-        // If a title contains both Tamil and English (e.g., "Amaran அமரன்"), split and train both individually
         if (/[\u0b80-\u0bff]/.test(cleanText) && /[A-Z]/.test(cleanText)) {
-            // Split by dashes, parentheses, or spaces between language boundaries
             const fragments = cleanText.split(/[-()]/);
             fragments.forEach(frag => {
                 const trimmedFrag = frag.trim();
@@ -112,8 +98,6 @@ function processAndPushToken(rawText, targetArray) {
         }
     }
 }
-
-
 
 /* ==========================================
    2. SEARCH LOGIC (MOVIES & MUSIC)
@@ -128,8 +112,7 @@ function executeSearch() {
     let query = rawQuery.toUpperCase().trim();
     if (!query) return;
 
-    // Case-Insensitive Movie Auto-Correct
-    if (typeof MOVIE_TRAINING !== 'undefined') {
+    if (typeof MOVIE_TRAINING !== 'undefined' && !Array.isArray(MOVIE_TRAINING)) {
         for (const [correctName, variants] of Object.entries(MOVIE_TRAINING)) {
             if (variants.some(variant => variant.toUpperCase() === query)) {
                 query = correctName;
@@ -138,7 +121,6 @@ function executeSearch() {
         }
     }
 
-    // Check for MOVIE
     const allMovies = Array.from(document.querySelectorAll('.movies'));
     const foundMovie = allMovies.find(movie => movie.dataset.title === query);
 
@@ -147,11 +129,10 @@ function executeSearch() {
         return;
     }
 
-    // Check for MUSIC/SONG
     let foundMusic = false;
     let musicQuery = query.replace(/\b(SONG|SONGS|MUSIC|AUDIO|PLAY)\b/g, '').replace(/\s+/g, ' ').trim();
 
-    if (typeof MUSIC_TRAINING !== 'undefined') {
+    if (typeof MUSIC_TRAINING !== 'undefined' && !Array.isArray(MUSIC_TRAINING)) {
         for (const [correctName, variants] of Object.entries(MUSIC_TRAINING)) {
             if (variants.some(variant => variant.toUpperCase() === musicQuery)) {
                 musicQuery = correctName;
@@ -167,7 +148,6 @@ function executeSearch() {
         const data = btn.dataset;
         const movieContainer = btn.closest('.movies');
 
-        // Check full Album
         if (movieContainer) {
             const movieTitle = (movieContainer.dataset.title || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
             if (cleanSearchStr && (movieTitle === cleanSearchStr || movieTitle.includes(cleanSearchStr))) {
@@ -178,7 +158,6 @@ function executeSearch() {
             }
         }
 
-        // Check Specific Song Track
         for (let i = 1; i <= 20; i++) {
             const titleVal = data[`songtitle${i}`] || data[`songTitle${i}`];
             if (titleVal) {
@@ -200,7 +179,7 @@ function executeSearch() {
 }
 
 /* ==========================================
-   3. CONTENT REVEAL (SKELETON TO REAL)
+   3. CONTENT REVEAL
    ========================================== */
 function initializeRevealLogic() {
     const skeleton = document.getElementById("skeletonLoader");
@@ -239,7 +218,6 @@ function startAutoScroll() {
     const carts = Array.from(document.querySelectorAll('.scroller .cart'));
     if (!scroller || carts.length === 0) return;
 
-    // Optional: Keep track of manual scrolling so auto-scroll doesn't jerk backwards
     scroller.addEventListener('scroll', () => {
         if (!isHoveringCart) {
             scrollIndex = Math.round(scroller.scrollLeft / scroller.clientWidth);
@@ -253,11 +231,9 @@ function startAutoScroll() {
         scrollIndex++;
         if (scrollIndex >= carts.length) scrollIndex = 0;
 
-        // Since each cart is 100vw, we just multiply the index by the container's width
         const targetLeft = scroller.clientWidth * scrollIndex;
-
         scroller.scrollTo({ left: targetLeft, behavior: 'smooth' });
-    }, 5000); // 5 seconds per slide
+    }, 5000); 
 }
 
 /* ==========================================
@@ -275,21 +251,63 @@ function setupEventListeners() {
         });
     });
 
-    document.querySelectorAll(".cart").forEach(card => {
+    document.querySelectorAll(".cart, .movies").forEach(card => {
         const video = card.querySelector("video");
+        const img = card.querySelector("img"); 
+        
         if (!video) return;
 
-        card.addEventListener("mouseenter", () => {
-            isHoveringCart = true;
-            video.currentTime = 0;
-            video.play().catch(() => { });
-        });
+        video.style.position = "absolute";
+        video.style.top = "0";
+        video.style.left = "0";
+        video.style.width = "100%";
+        video.style.height = "100%";
+        video.style.objectFit = "cover"; 
+        video.style.opacity = "0";
+        video.style.pointerEvents = "none"; 
 
-        card.addEventListener("mouseleave", () => {
+        if (img) {
+            img.style.position = "absolute";
+            img.style.top = "0";
+            img.style.left = "0";
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "cover";
+            img.style.opacity = "1";
+        }
+
+        const startPreview = () => {
+            isHoveringCart = true;
+            const videoSrc = video.getAttribute("src");
+            if (videoSrc && videoSrc.trim() !== "") {
+                if (img) img.style.opacity = "0"; 
+                video.style.opacity = "1";        
+                
+                video.currentTime = 0;
+                const playPromise = video.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        if (img) img.style.opacity = "1";
+                        video.style.opacity = "0";
+                    });
+                }
+            }
+        };
+
+        const stopPreview = () => {
             isHoveringCart = false;
+            if (img) img.style.opacity = "1"; 
+            video.style.opacity = "0";        
             video.pause();
             video.currentTime = 0;
-        });
+        };
+
+        card.addEventListener("mouseenter", startPreview);
+        card.addEventListener("mouseleave", stopPreview);
+        card.addEventListener("touchstart", startPreview, { passive: true });
+        card.addEventListener("touchend", stopPreview, { passive: true });
+        card.addEventListener("touchcancel", stopPreview, { passive: true });
     });
 }
 
@@ -299,20 +317,45 @@ function movieView(element) {
         return;
     }
 
-    const movie = element.closest('.movies');
+    let movie = element.closest('.movies') || element.closest('.cart');
+    if (!movie) return;
+
+    // --- NEW: SMART MATCHING LOGIC FOR HERO SCROLLER CARTS ---
+    // If the clicked element is from the top scroller, it lacks the raw data attributes.
+    if (movie.classList.contains('cart')) {
+        // Extract the title from the Hero cart's H2 tag safely
+        const heroTitle = movie.querySelector('h2')?.innerText.trim().toUpperCase();
+        
+        // Scan the entire database of lower cards for the exact matching title
+        const actualDataCard = Array.from(document.querySelectorAll('.movies')).find(card => 
+            card.dataset.title && card.dataset.title.toUpperCase().trim() === heroTitle
+        );
+
+        if (actualDataCard) {
+            // Swap the active element so the engine seamlessly pulls all 15+ episodes and links!
+            movie = actualDataCard; 
+        } else {
+            // Failsafe in case the movie hasn't been mapped in the lower grid yet
+            showStyledError("Full movie data not found for: " + (heroTitle || "Unknown"));
+            return;
+        }
+    }
+    // ---------------------------------------------------------
+
     const movieData = {
-        title: movie.dataset.title,
-        video: movie.dataset.link1,
-        hero: movie.dataset.name,
-        year: movie.dataset.year,
-        language: movie.dataset.language,
-        image: movie.dataset.img,
+        title: movie.dataset.title || movie.querySelector('h2')?.innerText || "Unknown",
+        video: movie.dataset.link1 || "",
+        hero: movie.dataset.name || "",
+        year: movie.dataset.year || "",
+        language: movie.dataset.language || "",
+        image: movie.dataset.img || movie.querySelector('img')?.src || "",
         episodes: Array.from({ length: 16 }, (_, i) => ({
             link: movie.dataset[`link${i + 2}`],
             title: movie.dataset[`episode${i + 1}`],
             time: movie.dataset[`time${i === 0 ? '' : i + 1}`]
         }))
     };
+    
     localStorage.setItem('selectedMovie', JSON.stringify(movieData));
     window.location.href = 'movie-view.html';
 }
@@ -338,9 +381,6 @@ function showStyledError(message) {
     }, 3000);
 }
 
-/* ==========================================
-   6. PAGE NAVIGATION RESETS
-   ========================================== */
 window.addEventListener('pageshow', (event) => {
     const searchInputs = document.querySelectorAll('input[type="search"]');
     searchInputs.forEach(input => {
@@ -360,7 +400,6 @@ function escapeRegExp(string) {
 function populateSearchOptions() {
     try {
         const uniqueTitles = new Set();
-
         const movieCards = document.querySelectorAll('.movies');
         movieCards.forEach(card => {
             const title = card.dataset.title;
@@ -379,7 +418,6 @@ function populateSearchOptions() {
         });
 
         availableSearchTerms = Array.from(uniqueTitles).sort();
-
         const searchInputs = document.querySelectorAll('input[type="search"]');
 
         searchInputs.forEach(input => {
@@ -408,19 +446,16 @@ function populateSearchOptions() {
                     matches.forEach(match => {
                         const option = document.createElement('div');
                         option.className = 'custom-option';
-
                         const safeVal = escapeRegExp(val);
                         const regex = new RegExp(`(${safeVal})`, "gi");
                         const highlightedMatch = match.replace(regex, "<span style='color: #00ff88; font-weight: bold;'>$1</span>");
 
                         option.innerHTML = `<i class="fas fa-search"></i> ${highlightedMatch}`;
-
                         option.addEventListener('click', () => {
                             input.value = match;
                             dropdown.style.display = 'none';
                             executeSearch();
                         });
-
                         dropdown.appendChild(option);
                     });
                     dropdown.style.display = 'block';
@@ -453,7 +488,6 @@ function populateSearchOptions() {
                 removeActive(options);
                 if (currentFocus >= options.length) currentFocus = 0;
                 if (currentFocus < 0) currentFocus = (options.length - 1);
-
                 const activeOption = options[currentFocus];
                 activeOption.classList.add("active");
                 activeOption.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -470,168 +504,269 @@ function populateSearchOptions() {
             });
         });
     } catch (error) {
-        console.error("Autocomplete initialized safely with bypass.", error);
+        console.error("Autocomplete init bypassed.", error);
     }
 }
-
 
 /* ==========================================
    8. AUTOMATED VOICE ENGINE SYNCHRONIZATION
 ========================================== */
 function initializeVoiceTraining() {
-    // Setup global training dictionaries if not initialized yet
+    // Retained from your original logic
     window.MOVIE_TRAINING = window.MOVIE_TRAINING || {};
     window.MUSIC_TRAINING = window.MUSIC_TRAINING || {};
+}
 
-    // 1. Core Language Dictionary (Tamil Script + Slang mapping to match your elements)
-    const baselineMovies = {
-        "AMARAN": ["AMARAN", "அமரன்", "AMARAN MOVIE", "AMARAN PADAM", "SIVAKARTHIKEYAN AMARAN"],
-        "DUDE": ["DUDE", "டூட்", "DUDE MOVIE", "DUDE PADAM", "PRADEEP DUDE"],
-        "AVATAR": ["AVATAR", "அவதார்", "AVATAR MOVIE", "AVATAR 2"],
-        "DARBAR": ["DARBAR", "தர்பார்", "DARBAR MOVIE", "THALAIVAR DARBAR"],
-        "AQUAMAN": ["AQUAMAN", "அக்வாமேன்", "AQUAMAN MOVIE"],
-        "KATASI VIVASAYE": ["KATASI VIVASAYE", "KATAISY VIWASAYI", "கடைசி விவசாயி"],
-        "AMPULI": ["AMPULI", "AMPULI(2012)", "அம்புலி", "AMBLY", "AMPU LEE"],
-        "CAPTAIN AMERICA": ["CAPTAIN AMERICA", "CAPTAN AMERICA", "CAPTAIN AMERICAN"],
-        "BISON": ["BISON", "BYSON", "BAYSAN", "POISON"],
-        "IDLI KADAI": ["IDLI KADAI", "ITALY KADAI", "IDLY KADAI", "ITLY", "ITLI", "ITALY"],
-        "KAANTHA": ["KAANTHA", "KANTHA", "KANTA", "KAANTA"],
-        "AARYAN": ["AARYAN", "ARYAN", "ARIAN"],
-        "DIESEL": ["DIESEL", "DEESEL", "DEZEL", "DISEL"],
-        "RAAYAN": ["RAAYAN", "RAYAN", "RYAN"],
-        "KASETHAN KADAVULATA": ["KASETHAN KADAVULATA", "KASETHAN KADAVULADA", "KASU THAN KADAVULADA"],
-        "CAPTAIN MILLER": ["CAPTAIN MILLER", "CAPTAN MILLER"],
-        "ASURAN": ["ASURAN", "ASHURAN", "ASURAM"],
-        "SARPATTA PARAMBARAI": ["SARPATTA PARAMBARAI", "SARBATA PARAMBARAI", "SARPATTA"],
-        "BAASHSHA": ["BAASHSHA", "BASHA", "BAASHA", "PAASHA"],
-        "JAI BHIM": ["JAI BHIM", "JAI BEEM", "JAY BHIM", "JAI BHEEM"],
-        "RETRO(2025)": ["RETRO", "RETRO 2025", "RETROW"],
-        "VIKRAM": ["VIKRAM", "VICRAM", "VICKRAM"],
-        "KUTUMPASTHAN": ["KUTUMPASTHAN", "KUDUMBASTHAN", "KUTUMBASTHAN"],
-        "TEYVA MAKAN": ["TEYVA MAKAN", "DEVA MAGAN", "THEVA MAGAN"],
-        "PIREMALU": ["PIREMALU", "PREMALU", "PREM ALU"]
-    };
 
-    const baselineMusic = {
-        "JUKEBOX": ["JUKEBOX", "JUKE BOX", "ALL SONGS", "FULL ALBUM", "PLAYLIST"],
-        "OORUM BLOOD": ["OORUM BLOOD", "ORUM BLOOD", "OORAM BLOOD", "OUR BLOOD", "ROOM BLOOD"],
-        "SINGARI": ["SINGARI", "SINGARY", "SHINGARI", "CHINGARI"],
-        "KANNUKULLA": ["KANNUKULLA", "KANUKULLA", "KANNUKULA", "KANNU KULLA", "CANNUKULA"],
-        "NALLARU PO": ["NALLARU PO", "NALARU PO", "NALLARU PAA", "NALLA RUPU"],
-        "YUMABAIBESA": ["YUMABAIBESA", "YUMA", "YAMBAI", "YAMABAI", "YUMMABAI"],
-        "Idli_Kadai_-_Full_Album": ["IDLI KADAI FULL ALBUM", "ITALY KADAI FULL ALBUM", "IDLY KADAI FULL ALBUM", "ITLY FULL ALBUM", "ITLI FULL ALBUM", "ITALY FULL ALBUM", "IDLI KADAI SONG", "IDLI KADAI SONGS"],
-        "AATHA NEE PETHAAYE": ["AATHA NEE PETHAAYE", "AATHA NEE PETHAYE", "AATHAA NEE PETHAYAE", "ATHA NEE PETHAYE"],
-        "YEN PAATTAN SAAMI VARUM": ["YEN PAATTAN SAAMI VARUM", "EN PAATTAN SAAMI VARUM", "YEN PATTAN SAMI VARUM"],
-        "ENNA SUGAM": ["ENNA SUGAM", "ENA SUGAM"],
-        "ETHANA SAAMI": ["ETHANA SAAMI", "ETHANA SAMI", "ETNA SAMI", "ETHANA SAAMY"],
-        "ENJAAMI THANDHAANE": ["ENJAAMI THANDHAANE", "ENJAMI TANDHANE", "ENJAMI", "YENJAAMI THANDHAANE", "ENJAAMI THANTHANE"],
-        "MY HEARTU SPINNING": ["MY HEARTU SPINNING", "MY HEART SPINNING", "HEART SPINNING"],
-        "KULASAMY KAAVAL KAAKA": ["KULASAMY KAAVAL KAAKA", "KULASAMI KAVAL KAKA", "KULASAMY"]
-    };
 
-    // Apply native localized mappings safely
-    Object.assign(window.MOVIE_TRAINING, baselineMovies);
-    Object.assign(window.MUSIC_TRAINING, baselineMusic);
 
-    // 2. Dynamic DOM Scraper for Movies
-    // Automatically extracts data-title items from your catalog elements
-    const movieCards = document.querySelectorAll('.movies');
-    movieCards.forEach(card => {
-        const title = card.dataset.title;
-        if (title && title.trim() !== "") {
-            const upperTitle = title.toUpperCase().trim();
-            // If movie isn't in baseline dictionary, generate its standard voice lookup formats
-            if (!window.MOVIE_TRAINING[upperTitle]) {
-                window.MOVIE_TRAINING[upperTitle] = [
-                    upperTitle,
-                    `${upperTitle} MOVIE`,
-                    `${upperTitle} PADAM`,
-                    `${upperTitle} FILM`
-                ];
+/* ==========================================
+   9. FULLY DEBUGGED SMART TV / PC CONTROLS
+========================================== */
+function setupSmartTVNavigation() {
+    if (!document.getElementById('tv-focus-styles')) {
+        const style = document.createElement('style');
+        style.id = 'tv-focus-styles';
+        style.innerHTML = `
+            .tv-focus {
+                outline: 2px solid #ffffff !important;
+                outline-offset: 4px !important;
+                transform: scale(1) !important;
+                box-shadow: 0 5px 5px rgba(255, 255, 255, 0.6) !important;
+                z-index: 50 !important;
+                transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            }
+            *:focus { outline: none !important; }
+        `;
+        document.head.appendChild(style);
+    }
+
+    const isSmartTV = /(tv|smarttv|tizen|webos|appletv|roku|bravia|netcast|viera)/i.test(navigator.userAgent.toLowerCase());
+    
+    if (isSmartTV) {
+        const tvTooltip = document.createElement('div');
+        tvTooltip.innerHTML = `<i class="fas fa-microphone" style="margin-right:8px; color:#ffffff;"></i> Long Press 'OK' for Voice Assistant`;
+        tvTooltip.style.cssText = `
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+            background: rgba(0, 20, 40, 0.85); border: 1px solid #ffffff; color: #fff;
+            padding: 12px 24px; border-radius: 30px; font-size: 15px; font-weight: 500;
+            z-index: 10000; backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            transition: opacity 0.8s ease; pointer-events: none; display: flex; align-items: center;
+        `;
+        document.body.appendChild(tvTooltip);
+        setTimeout(() => { tvTooltip.style.opacity = '0'; setTimeout(() => tvTooltip.remove(), 800); }, 7000);
+    }
+
+    let navGrid = [];
+    let currentRow = -1;
+    let currentCol = -1;
+    let currentInner = 'main'; // Tracks nested focus: 'main', 'btn', 'icon-music', 'icon-dl'
+    let isTVModeActive = false;
+
+    let enterPressTimer;
+    let isLongPress = false;
+    let enterKeyDown = false;
+
+    // 1. Grid Definition (Unified layout)
+    function refreshGrid() {
+        navGrid = [];
+        const searchBox = document.querySelector('#movieSearchInput');
+        const searchBtn = document.querySelector('.search-order button');
+        let searchRow = [];
+        if (searchBox) searchRow.push(searchBox);
+        if (searchBtn) searchRow.push(searchBtn);
+        if (searchRow.length > 0) navGrid.push(searchRow);
+
+        const heroCarts = Array.from(document.querySelectorAll('.scroller .cart'));
+        if (heroCarts.length > 0) navGrid.push(heroCarts);
+
+        const collections = document.querySelectorAll('.movie-collection .movie-container');
+        collections.forEach(container => {
+            const movies = Array.from(container.querySelectorAll('.movies'));
+            if (movies.length > 0) navGrid.push(movies);
+        });
+    }
+
+    // 2. Process Nested Focus
+    function updateFocus(row, col) {
+        let oldContainer = null;
+        const currentlyFocused = document.querySelector('.tv-focus');
+        if (currentlyFocused) {
+            currentlyFocused.classList.remove('tv-focus');
+            oldContainer = currentlyFocused.closest('.cart, .movies');
+        }
+
+        currentRow = Math.max(0, Math.min(row, navGrid.length - 1));
+        currentCol = Math.max(0, Math.min(col, navGrid[currentRow].length - 1));
+        
+        const cell = navGrid[currentRow][currentCol];
+        let newEl = cell;
+
+        // Route inner-focus to specific elements inside the card
+        if (currentInner === 'btn') newEl = cell.querySelector('button') || cell;
+        else if (currentInner === 'icon-music') newEl = cell.querySelector('#music') || cell;
+        else if (currentInner === 'icon-dl') newEl = cell.querySelector('#movie-dots') || cell;
+        
+        // Self-heal logic if the card doesn't have the requested button/icon
+        if (newEl === cell) currentInner = 'main'; 
+
+        const newContainer = newEl.closest('.cart, .movies');
+
+        // Stop Trailer ONLY if moving to a completely different movie card
+        if (oldContainer && oldContainer !== newContainer) {
+            oldContainer.dispatchEvent(new Event('mouseleave')); 
+        }
+
+        newEl.classList.add('tv-focus');
+
+        const scrollContainer = newEl.closest('.scroller, .movie-container');
+        if (scrollContainer) {
+            const targetScrollEl = newContainer || newEl;
+            const itemLeft = targetScrollEl.offsetLeft;
+            const containerCenter = scrollContainer.clientWidth / 2;
+            const itemCenter = targetScrollEl.clientWidth / 2;
+            scrollContainer.scrollTo({ left: itemLeft - containerCenter + itemCenter, behavior: 'smooth' });
+            scrollContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            newEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        if (newEl.tagName === 'INPUT') {
+            newEl.focus(); 
+        } else {
+            if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+                document.activeElement.blur(); 
+            }
+            if (newContainer && oldContainer !== newContainer) {
+                newContainer.dispatchEvent(new Event('mouseenter')); 
             }
         }
+    }
+
+    // 3. Remote Keydown Event & Internal Routing Math
+    document.addEventListener('keydown', (e) => {
+        const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'];
+        if (!keys.includes(e.key)) return;
+        if (document.activeElement && document.activeElement.id === 'movieSearchInput' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return; 
+
+        if (e.key === 'Enter') {
+            e.preventDefault(); 
+            if (!enterKeyDown) {
+                enterKeyDown = true;
+                isLongPress = false;
+                enterPressTimer = setTimeout(() => {
+                    isLongPress = true;
+                    if (typeof toggleJarvis === 'function') toggleJarvis();
+                }, 800); 
+            }
+            return; 
+        }
+
+        e.preventDefault(); 
+        refreshGrid();
+        if (navGrid.length === 0) return;
+
+        if (!isTVModeActive) {
+            isTVModeActive = true;
+            currentRow = 1; currentCol = 0; currentInner = 'main';
+            updateFocus(currentRow, currentCol);
+            return;
+        }
+
+        let nextRow = currentRow;
+        let nextCol = currentCol;
+        const cell = navGrid[currentRow][currentCol];
+
+        // MAGIC D-PAD LOGIC
+        if (e.key === 'ArrowDown') {
+            if (currentInner === 'icon-music' || currentInner === 'icon-dl') {
+                currentInner = 'main';
+            } else if (currentInner === 'main' && cell.querySelector('button')) {
+                currentInner = 'btn';
+            } else {
+                if (currentRow < navGrid.length - 1) {
+                    nextRow++; currentInner = 'main';
+                    nextCol = Math.floor((currentCol / navGrid[currentRow].length) * navGrid[nextRow].length);
+                    nextCol = Math.min(nextCol, navGrid[nextRow].length - 1);
+                }
+            }
+        } else if (e.key === 'ArrowUp') {
+            if (currentInner === 'btn') {
+                currentInner = 'main';
+            } else if (currentInner === 'main' && (cell.querySelector('#music') || cell.querySelector('#movie-dots'))) {
+                currentInner = cell.querySelector('#movie-dots') ? 'icon-dl' : 'icon-music';
+            } else {
+                if (currentRow > 0) {
+                    nextRow--; currentInner = 'main';
+                    nextCol = Math.floor((currentCol / navGrid[currentRow].length) * navGrid[nextRow].length);
+                    nextCol = Math.min(nextCol, navGrid[nextRow].length - 1);
+                }
+            }
+        } else if (e.key === 'ArrowLeft') {
+            if (currentInner === 'icon-dl' && cell.querySelector('#music')) {
+                currentInner = 'icon-music';
+            } else if (currentCol > 0) {
+                nextCol--; currentInner = 'main';
+            }
+        } else if (e.key === 'ArrowRight') {
+            if (currentInner === 'icon-music' && cell.querySelector('#movie-dots')) {
+                currentInner = 'icon-dl';
+            } else if (currentCol < navGrid[currentRow].length - 1) {
+                nextCol++; currentInner = 'main';
+            }
+        }
+
+        updateFocus(nextRow, nextCol);
     });
 
+    // 4. Remote Keyup Event (Executes specific Inner Item)
+    document.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            enterKeyDown = false;
+            clearTimeout(enterPressTimer); 
 
-    // Inside your movie.js -> executeSearch(text, isMusic) function:
-    if (isMusic) {
-        const cleanQuery = text.toUpperCase().trim();
-        console.log("Voice searching music for query:", cleanQuery);
+            if (!isLongPress) {
+                refreshGrid();
+                if (navGrid.length === 0) return;
+                if (!isTVModeActive) {
+                    isTVModeActive = true; currentRow = 1; currentCol = 0; currentInner = 'main'; updateFocus(currentRow, currentCol); return;
+                }
 
-        /* =================================================================
-           SAFE FALLBACK: CHECK IF USER SAID A MOVIE NAME TO PLAY ITS SONGS
-           ================================================================= */
-        let movieSongMatches = [];
-        const musicPlayerButtons = document.querySelectorAll('i#music');
-
-        musicPlayerButtons.forEach(btn => {
-            // Scan all 20 possible song slots embedded in your player markup
-            for (let i = 1; i <= 20; i++) {
-                const trackName = btn.dataset[`songtitle${i}`] || btn.dataset[`songTitle${i}`];
-                if (trackName) {
-                    const cleanTrack = trackName.toUpperCase();
-
-                    // Matches standard names or tracks split with file formatting (e.g., "HUKUM__JAILER")
-                    if (cleanTrack.includes(cleanQuery) || cleanTrack.includes(cleanQuery.replace(/\s+/g, '_'))) {
-                        movieSongMatches.push({ element: btn, trackIndex: i, name: trackName });
+                const focusedEl = document.querySelector('.tv-focus');
+                if (focusedEl) {
+                    if (focusedEl.tagName === 'INPUT') {
+                        focusedEl.focus(); 
+                    } else if (focusedEl.tagName === 'BUTTON' && focusedEl.closest('.search-order')) {
+                        executeSearch();
+                    } else if (focusedEl.tagName === 'I' || focusedEl.tagName === 'BUTTON') {
+                        // Natively triggers openMusicPlayer(this), addToDownloads(this), or button-click
+                        focusedEl.click(); 
+                    } else {
+                        // Executes the main movieView for the card body
+                        movieView(focusedEl); 
                     }
                 }
             }
-        });
-
-        // If tracks associated with that movie are found, play the first one instantly
-        if (movieSongMatches.length > 0) {
-            const targetSong = movieSongMatches[0];
-            console.log(`Voice Match Success! Playing track: ${targetSong.name} from movie context.`);
-
-            // 1. Open the music player interface safely if it's closed
-            if (typeof openMusicPlayer === "function") {
-                openMusicPlayer(targetSong.element);
-            } else {
-                targetSong.element.click(); // Trigger native click click fallback
-            }
-
-            // 2. Fire your player's index selection if available
-            if (typeof playTrackByIndex === "function") {
-                playTrackByIndex(targetSong.trackIndex);
-            } else if (typeof setTrack === "function") {
-                setTrack(targetSong.trackIndex);
-            }
-
-            return; // EXIT EARLY - Successfully handled without touching remaining search code!
-        }
-
-        /* =================================================================
-           YOUR EXISTING EXACT SONG MATCHING LOGIC CONTINUES BELOW...
-           ================================================================= */
-    }
-
-    // 3. Dynamic DOM Scraper for Song/Audio Assets
-    // Loops through the song titles hidden inside your music player triggers
-    const musicButtons = document.querySelectorAll('i#music');
-    musicButtons.forEach(btn => {
-        for (let i = 1; i <= 20; i++) {
-            const songTitle = btn.dataset[`songtitle${i}`] || btn.dataset[`songTitle${i}`];
-            if (songTitle) {
-                // Convert underscores to cleaner conversational phrase lookups
-                const cleanTitle = songTitle.replace(/_+/g, ' ').toUpperCase().trim();
-                if (!window.MUSIC_TRAINING[cleanTitle]) {
-                    // Extract track segment before album identifier tags (e.g. "__Ambuli")
-                    const simpleName = cleanTitle.split(/__/)[0].trim();
-
-                    window.MUSIC_TRAINING[cleanTitle] = [
-                        cleanTitle,
-                        simpleName,
-                        `${simpleName} SONG`,
-                        `${cleanTitle} AUDIO`
-                    ];
-                }
-            }
         }
     });
 
-    console.log("Voice Control Engine Successfully Synced With Page Elements:", {
-        totalMoviesLoaded: Object.keys(window.MOVIE_TRAINING).length,
-        totalSongsLoaded: Object.keys(window.MUSIC_TRAINING).length
-    });
+    // 5. Instantly disable TV mode on Mobile Touch or Mouse
+    const disableTVMode = (e) => {
+        if (e.type === 'mousemove' && Math.abs(e.clientX - lastMouseX) <= 10 && Math.abs(e.clientY - lastMouseY) <= 10) return;
+        if (e.type === 'mousemove') { lastMouseX = e.clientX; lastMouseY = e.clientY; }
+
+        if (isTVModeActive) {
+            isTVModeActive = false;
+            const el = document.querySelector('.tv-focus');
+            if (el) {
+                el.classList.remove('tv-focus');
+                const container = el.closest('.cart, .movies');
+                if (container && el.tagName !== 'INPUT') container.dispatchEvent(new Event('mouseleave'));
+            }
+        }
+    };
+
+    let lastMouseX = 0, lastMouseY = 0;
+    document.addEventListener('mousemove', disableTVMode);
+    document.addEventListener('touchstart', disableTVMode, { passive: true });
 }

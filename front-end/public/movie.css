@@ -265,7 +265,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(26, 9, 38, 0.8);
+    background: transparent;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: 10px 20px;
@@ -432,99 +432,105 @@ nav .profile-img h3 {
     border-left: 3px solid #00ff88; 
 }
 
-/* =============================
-   HERO SCROLLER (FULL WIDTH)
-============================= */
+/* ==============================================================
+   HERO SCROLLER & CAROUSEL LAYOUT (DEFAULT FOR MOBILE & TABLET)
+================================================================= */
 .scroller {
     display: flex;
-    gap: 0; /* Remove gap for seamless full-width */
+    gap: 30px;                   /* Restored original slider panel layouts */
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 0; /* Remove padding to touch the edges */
+    padding: 10px 0;
+    margin: 30px 10px;
+    width: 100%;
+    height: auto;                /* Wraps container card content securely */
     scroll-behavior: smooth;
-    scroll-snap-type: x mandatory; /* Native swipe snapping */
     scrollbar-width: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(0, 0, 0, 0.2);
     position: relative; 
-    z-index: 1;
-    width: 100vw; /* Force full screen width */
-    margin-left: calc(-50vw + 50%); /* Break out of any parent padding */
+    z-index: 1;                  /* Keeps it under the search dropdown */
 }
 
-.scroller::-webkit-scrollbar { display: none; }
+.scroller::-webkit-scrollbar { 
+    display: none; 
+}
 
 .cart {
     position: relative;
-    flex: 0 0 100vw; /* Take exactly 100% of the viewport width */
-    height: 60vh; /* Make it taller for a cinematic hero look (adjustable) */
-    min-height: 400px;
-    border-radius: 0; /* Remove border-radius for edge-to-edge look */
+    min-width: 320px;            /* Original default style dimension bounds */
+    height: 480px; 
+    border-radius: 20px;         /* Restored explicit presentation framing */
     overflow: hidden;
     background: #111;
     cursor: pointer;
-    scroll-snap-align: start; /* Snap each movie perfectly into view */
+    scroll-snap-align: start; 
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
     z-index: 2;
 }
 
-/* Redesign hover effects for full width (avoid transforming the whole cart) */
-.cart:hover {
-    z-index: 5;
-}
-
-.media-box { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
-.media-box img { 
+/* Ensure background assets always fill container blocks smoothly without distortion */
+.media-box { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
     width: 100%; 
     height: 100%; 
-    object-fit: cover; /* Keeps aspect ratio clean */
-    object-position: center; 
-    transition: opacity 0.5s ease; 
 }
 
-.media-box video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.media-box img,
+.media-box video { 
+    width: 100%; 
+    height: 100%; 
     object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.5s ease, transform 6s linear; /* Slow cinematic zoom */
+    object-position: center;     /* Standardized cross-device compatibility rules */
+    transition: opacity 0.5s ease, transform 0.5s ease; 
 }
 
-.cart:hover .media-box video { opacity: 1; transform: scale(1.05); }
+.cart:hover .media-box video { opacity: 1; transform: scale(1.02); }
 .cart:hover .media-box img { opacity: 0; }
 
+/* Description layer structured for standalone carousel tracking cards */
 .movie-description {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 60px 40px 30px; /* More breathing room */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 40%, transparent 100%);
-    z-index: 2;
+    padding: 30px 20px 20px;     /* Balanced spacing matching card grids */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+    z-index: 3;
     color: white;
-    /* Remove the hover-to-reveal so info is always visible on full-width banners */
-    transform: translateY(0); 
-    opacity: 1; 
+    transition: all 0.4s ease;
 }
 
-.movie-description h2 { margin: 0 0 10px 0; font-size: 2.5rem; font-weight: 700; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); }
-.movie-description h4 { margin: 0 0 20px 0; font-size: 1.1rem; font-weight: 300; color: #ddd; line-height: 1.4; max-width: 600px; }
+.movie-description h2 { 
+    margin: 0 0 8px 0; 
+    font-size: 1.4rem;           /* Optimized down scaling for structured components */
+    font-weight: 700; 
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8); 
+}
+
+.movie-description h4 { 
+    margin: 0 0 15px 0; 
+    font-size: 0.9rem; 
+    font-weight: 300; 
+    color: #ddd; 
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;       /* Restricts details preview cleanly on small viewports */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 
 .movie-description button {
-    width: auto; /* Change from 100% to auto so it doesn't stretch across the screen */
-    min-width: 200px;
-    padding: 12px 25px;
+    width: 100%;                 /* Full-width call-to-actions display cleaner within single cards */
+    padding: 10px 20px; 
     background: linear-gradient(135deg, #8e44ad, #5e2b6d);
     border: none;
     color: #fff;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 25px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
@@ -536,6 +542,51 @@ nav .profile-img h3 {
     color: #2a0e3c;
     box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
 }
+
+.movie-description a { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 5px; }
+
+/* ====================================================================
+   PC & SMART TV VIEWPORT OVERRIDES (CINEMATIC FULL VIEW LANDING PAGE)
+======================================================================= */
+@media (min-width: 1025px) {
+    .scroller {
+        gap: 0;                  /* Edge-to-edge seamless banner layout transition */
+        padding: 0;
+        margin: 0;
+        height: 100vh;           /* Enforces cinematic viewport synchronization heights */
+        scroll-snap-type: x mandatory;
+    }
+
+    .cart {
+        min-width: 100%;         /* Restores full-width container assignments */
+        height: 100%;
+        border-radius: 0;        /* Strips canvas breaks for widescreen viewing environments */
+    }
+
+    .movie-description {
+        padding: 60px 40px 40px; /* Elevated padding configurations */
+    }
+
+    .movie-description h2 { 
+        font-size: 2.5rem;       /* Premium layout text attributes */
+        margin: 0 0 10px 0; 
+    }
+
+    .movie-description h4 { 
+        font-size: 1.1rem; 
+        margin: 0 0 20px 0; 
+        max-width: 600px;
+        display: block;          /* Fully reveals strings across desktop configurations */
+    }
+
+    .movie-description button {
+        width: auto;             /* Adjusts dynamically without overflowing full width */
+        padding: 14px 35px;
+        font-size: 16px;
+        border-radius: 30px;
+    }
+}
+
 
 /* =============================
    MOVIE COLLECTIONS
@@ -796,17 +847,21 @@ nav .profile-img h3 {
    RESPONSIVE DESIGN (MEDIA QUERIES)
 ============================= */
 @media (max-width: 1200px) {
-    .cart { min-width: 280px; height: 420px; }
     .skeleton-cart { min-width: 280px; }
     .skeleton-thumb { height: 420px; }
 }
 
 @media (max-width: 900px) {
-    .cart { height: 50vh; }
-    .movie-description h2 { font-size: 2rem; }
     .skeleton-cart { min-width: 260px; }
     .skeleton-thumb { height: 380px; }
     .search-order input { width: 100%; }
+
+    /* Fine-tune baseline Tablet card layout values */
+    .cart {
+        min-width: 260px;
+        height: 380px;
+        border-radius: 16px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -837,35 +892,40 @@ nav .profile-img h3 {
     nav .profile-img img { width: 40px; height: 40px; }
     nav .profile-img h3 { font-size: 1rem; }
 
-    /* Search Box Container on Mobile */
-    .search-box {
-        display: flex;
-        justify-content: center;
-        padding: 10px 20px;
-    }
-    
+    .search-box { display: flex; justify-content: center; padding: 10px 20px; }
     .search-order { justify-content: center; max-width: 100%; }
     .search-order input { max-width: 100%; height: 40px; font-size: 14px; }
     .search-order button { width: 40px; height: 40px; }
     
-    /* Scroller & Carts */
-    /* Scroller & Carts Responsive Update */
+    /* REVERTED/RESTORED: Mobile Scroller uses classic standard card sliders */
     .scroller { 
-        padding: 15px 10px; 
         gap: 15px; 
-        margin: 10px 0; 
+        margin: 20px 0; 
+        padding: 0 10px; 
     }
-    .cart { 
-        width: 220px;
-        min-width: 220px; 
-        flex-shrink: 0; /* Keeps full width ratio on mobile */
-        height: 320px; 
-        border-radius: 12px; 
+    
+    .cart {
+        min-width: 220px;
+        height: 320px;
+        border-radius: 12px;
     }
-    .movie-description { padding: 40px 20px 20px; }
-    .movie-description h2 { font-size: 1.5rem; }
-    .movie-description h4 { font-size: 0.9rem; }
-    .movie-description button { padding: 8px; font-size: 13px; }
+    
+    /* Overlay Typography scaling for Mobile Cards */
+    .movie-description { 
+        padding: 20px 12px 15px; 
+    }
+    .movie-description h2 { 
+        font-size: 1.1rem; 
+    }
+    .movie-description h4 { 
+        font-size: 0.8rem; 
+        margin-bottom: 10px; 
+        max-width: 100%; 
+    }
+    .movie-description button { 
+        padding: 8px 15px; 
+        font-size: 12px; 
+    }
     
     /* Movie Collections */
     .movie-collection { margin: 15px 10px; }
