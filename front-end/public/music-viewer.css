@@ -215,3 +215,109 @@ body {
 }
 
 #music-alert.show { transform: translateX(0); }
+
+
+/* --- SPATIAL NAVIGATION (TV & KEYBOARD) FOCUS STYLES --- */
+.nav-item:focus {
+    outline: none;
+    box-shadow: 0 0 15px 3px var(--accent-light);
+    border: 2px solid var(--text-main);
+    transition: all 0.2s ease;
+}
+
+/* Custom focus rounding to match existing styles */
+.cart-item.nav-item:focus {
+    border-radius: 15px;
+    background: rgba(142, 68, 173, 0.3);
+}
+
+.custom-slider.nav-item:focus {
+    box-shadow: 0 0 10px 2px var(--accent-light);
+}
+
+#playPauseBtn.nav-item:focus {
+    border-radius: 50%;
+}
+
+i.nav-item:focus {
+    border-radius: 8px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* --- SMART TV DYNAMIC FOCUS STYLES --- */
+
+/* 1. Base state: smooth transition, transparent border to prevent layout jumping */
+.tv-focusable {
+    border: 2px solid transparent; 
+    transition: box-shadow 0.6s ease, border 0.6s ease, background 0.6s ease;
+}
+
+/* 2. Active state: Focus ring only visible when the UI is "awake" */
+body.show-tv-focus .tv-focusable:focus {
+    outline: none;
+    box-shadow: 0 0 15px 4px var(--accent-light);
+    border: 2px solid var(--text-main);
+}
+
+/* Specific styling for the Play/Pause button */
+body.show-tv-focus #playPauseBtn.tv-focusable:focus {
+    border-radius: 50%;
+}
+
+/* Specific styling for smaller icons */
+body.show-tv-focus i.tv-focusable:focus {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+
+
+
+/* --- FIRST-TIME USER TOUR STYLES (FLOATING TOOLTIP VERSION) --- */
+#tour-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    
+    /* REMOVED: backdrop-filter: blur(5px); to keep the real content crystal clear */
+    
+    z-index: 9000;
+    display: none;
+}
+
+#tour-overlay.active { display: block; }
+
+#tour-tooltip {
+    /* Changed to absolute positioning to float near elements */
+    position: fixed; 
+    background: var(--primary-bg);
+    color: var(--text-main);
+    padding: 20px;
+    border-radius: 15px;
+    z-index: 9999;
+    width: 280px; 
+    max-width: 90vw; /* <--- ADD THIS LINE FOR MOBILE SUPPORT */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    border: 1px solid var(--accent);
+    display: none;
+    font-family: 'Inter', sans-serif;
+    /* Adds a smooth glide effect when moving between controls */
+    transition: top 0.4s ease, left 0.4s ease; 
+}
+
+#tour-tooltip.active { display: block; }
+
+.tour-highlight {
+    position: relative !important;
+    z-index: 9001 !important;
+    outline: 4px solid var(--accent-light) !important;
+    outline-offset: 6px;
+    border-radius: 8px;
+    background-color: var(--primary-bg); 
+    pointer-events: none; 
+    transition: outline 0.3s ease;
+}
+
+#playPauseBtn.tour-highlight {
+    border-radius: 50%;
+}

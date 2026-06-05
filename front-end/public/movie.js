@@ -468,11 +468,25 @@ function populateSearchOptions() {
                 const options = dropdown.querySelectorAll('.custom-option');
                 if (!options || options.length === 0) return;
 
-                if (e.keyCode === 40) {
+                if (e.keyCode === 40) { // ArrowDown
+                    // FIX: If TV mode is active and we are at the LAST option...
+                    if (document.querySelector('.tv-focus') && currentFocus === options.length - 1) {
+                        dropdown.style.display = 'none'; // Close the dropdown
+                        currentFocus = -1;               // Reset the active highlight
+                        removeActive(options);
+                        input.blur();                    // Remove text box focus
+                        return; // Let the event reach the Smart TV script to jump to the scroller!
+                    }
                     e.preventDefault();
                     currentFocus++;
                     addActive(options);
-                } else if (e.keyCode === 38) {
+                } else if (e.keyCode === 38) { // ArrowUp
+                    // FIX: If TV mode is active and we push up from the FIRST option...
+                    if (document.querySelector('.tv-focus') && currentFocus <= 0) {
+                        currentFocus = -1;               // Reset highlight
+                        removeActive(options);           // Un-highlight option
+                        return; // Keep focus safely in the text box so they can keep typing
+                    }
                     e.preventDefault();
                     currentFocus--;
                     addActive(options);
@@ -612,9 +626,13 @@ function setupSmartTVNavigation() {
 
         const newContainer = newEl.closest('.cart, .movies');
 
-        // Stop Trailer ONLY if moving to a completely different movie card
-        if (oldContainer && oldContainer !== newContainer) {
-            oldContainer.dispatchEvent(new Event('mouseleave')); 
+        // Stop Trailer if moving to a different card, OR moving away from the "Watch Now" button
+        if (oldContainer) {
+            if (oldContainer !== newContainer) {
+                oldContainer.dispatchEvent(new Event('mouseleave')); 
+            } else if (oldContainer.classList.contains('cart') && currentInner !== 'btn') {
+                oldContainer.dispatchEvent(new Event('mouseleave')); 
+            }
         }
 
         newEl.classList.add('tv-focus');
@@ -625,10 +643,15 @@ function setupSmartTVNavigation() {
             const itemLeft = targetScrollEl.offsetLeft;
             const containerCenter = scrollContainer.clientWidth / 2;
             const itemCenter = targetScrollEl.clientWidth / 2;
+            
+            // Retains your exact horizontal scrolling logic
             scrollContainer.scrollTo({ left: itemLeft - containerCenter + itemCenter, behavior: 'smooth' });
-            scrollContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Changed from 'center' to 'nearest' so it doesn't force the page position
+            targetScrollEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         } else {
-            newEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Changed here as well for fallback elements
+            newEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         }
 
         if (newEl.tagName === 'INPUT') {
@@ -636,9 +659,19 @@ function setupSmartTVNavigation() {
         } else {
             if (document.activeElement && document.activeElement.tagName === 'INPUT') {
                 document.activeElement.blur(); 
+                // FIX: Automatically close the search dropdown when navigating down to the scroller
+                const openDropdowns = document.querySelectorAll('.custom-dropdown');
+                openDropdowns.forEach(dropdown => dropdown.style.display = 'none');
             }
-            if (newContainer && oldContainer !== newContainer) {
-                newContainer.dispatchEvent(new Event('mouseenter')); 
+            // Play Trailer ONLY on button focus for Hero .cart, otherwise keep default behavior
+            if (newContainer) {
+                if (newContainer.classList.contains('cart')) {
+                    if (currentInner === 'btn') {
+                        newContainer.dispatchEvent(new Event('mouseenter')); 
+                    }
+                } else if (oldContainer !== newContainer) {
+                    newContainer.dispatchEvent(new Event('mouseenter')); 
+                }
             }
         }
     }
@@ -647,7 +680,17 @@ function setupSmartTVNavigation() {
     document.addEventListener('keydown', (e) => {
         const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'];
         if (!keys.includes(e.key)) return;
-        if (document.activeElement && document.activeElement.id === 'movieSearchInput' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return; 
+
+        // FIX: Handle Smart TV logic when inside the Search Box
+        if (document.activeElement && document.activeElement.id === 'movieSearchInput') {
+            const dropdown = document.querySelector('.custom-dropdown');
+            // 1. If dropdown is open, let the user use Up/Down to select queries!
+            if (dropdown && dropdown.style.display === 'block' && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+                return; 
+            }
+            // 2. Otherwise, allow Left/Right for normal text editing
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') return;
+        }
 
         if (e.key === 'Enter') {
             e.preventDefault(); 
@@ -735,7 +778,13 @@ function setupSmartTVNavigation() {
                 const focusedEl = document.querySelector('.tv-focus');
                 if (focusedEl) {
                     if (focusedEl.tagName === 'INPUT') {
-                        focusedEl.focus(); 
+                        // FIX: If the search box has text, pressing Enter will now execute the search
+                        if (focusedEl.value.trim() !== '') {
+                            executeSearch();
+                            focusedEl.blur(); // Hides the TV keyboard after searching
+                        } else {
+                            focusedEl.focus(); // Opens the TV keyboard if the box is empty
+                        }
                     } else if (focusedEl.tagName === 'BUTTON' && focusedEl.closest('.search-order')) {
                         executeSearch();
                     } else if (focusedEl.tagName === 'I' || focusedEl.tagName === 'BUTTON') {
@@ -770,3 +819,148 @@ function setupSmartTVNavigation() {
     document.addEventListener('mousemove', disableTVMode);
     document.addEventListener('touchstart', disableTVMode, { passive: true });
 }
+
+
+
+
+
+
+// ==========================================
+//   FIRST-TIME USER ONBOARDING TOUR
+// ==========================================
+function startMovieOnboardingTour() {
+    // 1. Create Overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'tour-overlay';
+    document.body.appendChild(overlay);
+
+    // 2. Create Floating Tooltip
+    const tooltip = document.createElement('div');
+    tooltip.id = 'tour-tooltip';
+    tooltip.innerHTML = `
+        <h4 style="margin: 0 0 10px 0; color: #8e44ad; font-size: 1.1rem; font-weight: 600;">Welcome to Abin Movie Mirror</h4>
+        <p id="tour-text" style="margin: 0 0 15px 0; font-size: 0.95rem; line-height: 1.4; color: #ccc;"></p>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span id="tour-counter" style="font-size: 0.8rem; color: gray; font-weight: bold;"></span>
+            <button id="tour-next-btn" style="background: white; color: #2a0e3c; border: none; padding: 8px 16px; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 0.9rem;">Next</button>
+        </div>
+    `;
+    document.body.appendChild(tooltip);
+
+    // 3. Define the Steps based on movie.html elements
+    const steps = [
+        { 
+            selector: '.search-order', 
+            text: "Use the search bar to instantly find your favorite movies or songs. Type and press <b>Enter</b>." 
+        },
+        { 
+            id: 'first-cart', 
+            text: "Use your <b>Arrow keys</b> on your TV remote or keyboard to browse featured movies. Press <b>OK / Enter</b> to watch." 
+        },
+        { 
+            selector: '.movie-collection .movies #music', 
+            text: "Click the <b>Music icon</b> on any movie card to instantly listen to its album." 
+        },
+        { 
+            id: 'jarvis-btn', 
+            text: "Long-press <b>OK / Enter</b> on your remote, or click here to activate the AI Voice Assistant." 
+        }
+    ];
+
+    let currentStep = 0;
+
+    function showStep(index) {
+        document.querySelectorAll('.tour-highlight').forEach(el => {
+            el.classList.remove('tour-highlight');
+        });
+
+        if (index >= steps.length) {
+            overlay.remove();
+            tooltip.remove();
+            localStorage.setItem('hasSeenMovieTour', 'true');
+            // Give focus back to the page so the TV engine resumes immediately
+            const scrollerItem = document.getElementById('first-cart');
+            if (scrollerItem) scrollerItem.focus();
+            return;
+        }
+
+        const step = steps[index];
+        const target = step.id ? document.getElementById(step.id) : document.querySelector(step.selector);
+
+        if (target) {
+            target.classList.add('tour-highlight');
+            
+            // UPGRADE 1: Added `inline: 'center'` to guarantee horizontal scrolling lists are centered perfectly
+            target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+
+            document.getElementById('tour-text').innerHTML = step.text;
+            document.getElementById('tour-counter').innerText = `${index + 1} / ${steps.length}`;
+            document.getElementById('tour-next-btn').innerText = index === steps.length - 1 ? "Start Watching" : "Next";
+
+            tooltip.classList.add('active');
+            overlay.classList.add('active');
+
+            // UPGRADE 2: Increased timeout to 400ms to let the smooth scrolling fully finish before calculating
+            setTimeout(() => {
+                const targetRect = target.getBoundingClientRect();
+                const tooltipRect = tooltip.getBoundingClientRect();
+                const margin = 15; 
+
+                // Determine Vertical Position
+                let topPos = targetRect.bottom + margin; 
+
+                if (topPos + tooltipRect.height > window.innerHeight - margin) {
+                    topPos = targetRect.top - tooltipRect.height - margin;
+                    if (topPos < margin) {
+                        topPos = window.innerHeight - tooltipRect.height - margin; 
+                    }
+                }
+
+                // Determine Horizontal Position
+                let leftPos = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
+
+                if (leftPos < margin) {
+                    leftPos = margin; 
+                } else if (leftPos + tooltipRect.width > window.innerWidth - margin) {
+                    leftPos = window.innerWidth - tooltipRect.width - margin; 
+                }
+
+                // Apply coordinates
+                tooltip.style.top = `${topPos}px`;
+                tooltip.style.left = `${leftPos}px`;
+                
+            }, 400); // <- This 400ms delay is the secret to perfect positioning on moving containers
+
+        } else {
+            showStep(index + 1);
+        }
+    }
+
+    document.getElementById('tour-next-btn').addEventListener('click', () => {
+        showStep(++currentStep);
+    });
+
+    // Start tour after skeleton loaders vanish
+    setTimeout(() => showStep(0), 1000); 
+}
+
+// --- GLOBAL TOUR KEYBOARD INTERCEPTION ---
+// By using { capture: true }, this fires BEFORE your Smart TV engine can react, keeping them separated!
+document.addEventListener('keydown', (e) => {
+    const tooltip = document.getElementById('tour-tooltip');
+    if (tooltip && tooltip.classList.contains('active')) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation(); // Stops the TV engine from highlighting or scrolling the page
+            const nextBtn = document.getElementById('tour-next-btn');
+            if (nextBtn) nextBtn.click();
+        }
+    }
+}, true); 
+
+// === TRIGGER THE TOUR ===
+window.addEventListener('load', () => {
+    if (!localStorage.getItem('hasSeenMovieTour') && localStorage.getItem('isLoggedIn') === 'true') {
+        startMovieOnboardingTour();
+    }
+});
