@@ -36,6 +36,16 @@
         .download-card h4 {
             margin: 8px 0;
             font-size: 14px;
+            /* New lines for 2-line ellipsis truncation */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* Set a fixed line height so the cards stay the exact same size */
+            line-height: 1.4;
+            min-height: 2.8em; 
         }
 
         .download-card a {
@@ -61,6 +71,17 @@
 
         .remove:hover {
             text-decoration: underline;
+        }
+
+        /* ==========================================
+   TV INACTIVITY (IDLE) STYLES
+========================================== */
+        body.tv-idle .tv-focus {
+            outline-color: transparent !important;
+            box-shadow: none !important;
+            transform: scale(1) !important;
+            transition: all 0.5s ease !important;
+            /* Smooth fade out */
         }
     </style>
 </head>

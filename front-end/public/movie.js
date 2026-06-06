@@ -52,14 +52,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 800);
 });
 
+/* ==========================================
+   UPDATED: TRAINING LOGIC
+   ========================================== */
 function trainAssistantFromPage() {
-    window.MOVIE_TRAINING = window.MOVIE_TRAINING || [];
-    window.MUSIC_TRAINING = window.MUSIC_TRAINING || [];
+    // Standardize as Arrays to prevent Object/Array collisions
+    window.MOVIE_TRAINING = Array.isArray(window.MOVIE_TRAINING) ? window.MOVIE_TRAINING : [];
+    window.MUSIC_TRAINING = Array.isArray(window.MUSIC_TRAINING) ? window.MUSIC_TRAINING : [];
 
     // 1. EXTRACT MOVIES
-    const movieElements = document.querySelectorAll(".movie-card, .movie-item, [data-type='movie']");
+    const movieElements = document.querySelectorAll(".movie-card, .movie-item, [data-type='movie'], .movies");
     movieElements.forEach(element => {
-        const titleText = element.querySelector(".movie-title") ? element.querySelector(".movie-title").innerText : element.innerText;
+        const titleText = element.querySelector("h4") ? element.querySelector("h4").innerText : "";
         const dataTitle = element.getAttribute("data-title");
 
         processAndPushToken(titleText, window.MOVIE_TRAINING);
@@ -67,17 +71,20 @@ function trainAssistantFromPage() {
     });
 
     // 2. EXTRACT SONGS
-    const songElements = document.querySelectorAll(".song-item, .audio-track, [data-type='song']");
-    songElements.forEach(element => {
-        const songText = element.querySelector(".song-title") ? element.querySelector(".song-title").innerText : element.innerText;
-        const dataSong = element.getAttribute("data-song-name");
-        const artistText = element.querySelector(".artist-name") ? element.querySelector(".artist-name").innerText : "";
-
-        processAndPushToken(songText, window.MUSIC_TRAINING);
-        if (dataSong) processAndPushToken(dataSong, window.MUSIC_TRAINING);
-        if (artistText) processAndPushToken(artistText, window.MUSIC_TRAINING);
+    const musicButtons = document.querySelectorAll('i#music');
+    musicButtons.forEach(btn => {
+        for (let i = 1; i <= 20; i++) {
+            // Check both camelCase and lowercase dataset attributes
+            const songTitle = btn.dataset[`songtitle${i}`] || btn.dataset[`songTitle${i}`];
+            if (songTitle) {
+                // Clean up underscores from data attributes (e.g., "Oorum_Blood__Dude")
+                const cleanTitle = songTitle.replace(/_+/g, ' '); 
+                processAndPushToken(cleanTitle, window.MUSIC_TRAINING);
+            }
+        }
     });
 
+    // Remove duplicates
     window.MOVIE_TRAINING = [...new Set(window.MOVIE_TRAINING)];
     window.MUSIC_TRAINING = [...new Set(window.MUSIC_TRAINING)];
 }
@@ -87,82 +94,63 @@ function processAndPushToken(rawText, targetArray) {
     let cleanText = rawText.replace(/\s+/g, ' ').trim().toUpperCase();
     if (cleanText) {
         targetArray.push(cleanText);
-        if (/[\u0b80-\u0bff]/.test(cleanText) && /[A-Z]/.test(cleanText)) {
-            const fragments = cleanText.split(/[-()]/);
-            fragments.forEach(frag => {
-                const trimmedFrag = frag.trim();
-                if (trimmedFrag.length > 1) {
-                    targetArray.push(trimmedFrag);
-                }
-            });
-        }
     }
 }
 
 /* ==========================================
-   2. SEARCH LOGIC (MOVIES & MUSIC)
+   UPDATED: SEARCH LOGIC
    ========================================== */
-function executeSearch() {
-    const inputs = document.querySelectorAll('input[type="search"]');
+// Now accepts an optional parameter so your voice script can pass transcripts directly
+function executeSearch(voiceQuery = null) {
+    closeSearchFocus(); 
+    
     let rawQuery = "";
-    inputs.forEach(input => {
-        if (input.value.trim() !== "") rawQuery = input.value;
-    });
+
+    // 1. Determine Source (Voice vs. Typed)
+    if (voiceQuery && typeof voiceQuery === 'string') {
+        rawQuery = voiceQuery;
+    } else {
+        const inputs = document.querySelectorAll('input[type="search"]');
+        inputs.forEach(input => {
+            if (input.value.trim() !== "") rawQuery = input.value;
+        });
+    }
 
     let query = rawQuery.toUpperCase().trim();
     if (!query) return;
 
-    if (typeof MOVIE_TRAINING !== 'undefined' && !Array.isArray(MOVIE_TRAINING)) {
-        for (const [correctName, variants] of Object.entries(MOVIE_TRAINING)) {
-            if (variants.some(variant => variant.toUpperCase() === query)) {
-                query = correctName;
-                break;
-            }
-        }
-    }
-
+    // 2. Movie Search
     const allMovies = Array.from(document.querySelectorAll('.movies'));
-    const foundMovie = allMovies.find(movie => movie.dataset.title === query);
+    const foundMovie = allMovies.find(movie => {
+        const title = (movie.dataset.title || "").toUpperCase().trim();
+        return title === query || title.includes(query);
+    });
 
     if (foundMovie) {
         movieView(foundMovie);
         return;
     }
 
-    let foundMusic = false;
-    let musicQuery = query.replace(/\b(SONG|SONGS|MUSIC|AUDIO|PLAY)\b/g, '').replace(/\s+/g, ' ').trim();
-
-    if (typeof MUSIC_TRAINING !== 'undefined' && !Array.isArray(MUSIC_TRAINING)) {
-        for (const [correctName, variants] of Object.entries(MUSIC_TRAINING)) {
-            if (variants.some(variant => variant.toUpperCase() === musicQuery)) {
-                musicQuery = correctName;
-                break;
-            }
-        }
-    }
-
+    // 3. Aggressive Music Search cleanup
+    // Strips "PLAYING", "PLAY", "SONG" so "playing oorum blood song" becomes "OORUM BLOOD"
+    let musicQuery = query.replace(/\b(PLAYING|PLAY|SONG|SONGS|MUSIC|AUDIO)\b/g, '').replace(/\s+/g, ' ').trim();
     const cleanSearchStr = musicQuery.replace(/[^A-Z0-9]/g, "");
+
+    if (!cleanSearchStr) return; // Prevent empty searches
+
+    let foundMusic = false;
     const musicButtons = document.querySelectorAll('i#music');
 
     for (let btn of musicButtons) {
         const data = btn.dataset;
-        const movieContainer = btn.closest('.movies');
-
-        if (movieContainer) {
-            const movieTitle = (movieContainer.dataset.title || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
-            if (cleanSearchStr && (movieTitle === cleanSearchStr || movieTitle.includes(cleanSearchStr))) {
-                localStorage.setItem('targetSongIndex', 0);
-                btn.click();
-                foundMusic = true;
-                break;
-            }
-        }
-
+        
         for (let i = 1; i <= 20; i++) {
             const titleVal = data[`songtitle${i}`] || data[`songTitle${i}`];
             if (titleVal) {
+                // Remove underscores and special chars for a pure alphanumeric match
                 const cleanTitle = titleVal.toUpperCase().replace(/[^A-Z0-9]/g, "");
-                if (cleanSearchStr && (cleanTitle.includes(cleanSearchStr) || cleanSearchStr.includes(cleanTitle))) {
+                
+                if (cleanTitle.includes(cleanSearchStr) || cleanSearchStr.includes(cleanTitle)) {
                     localStorage.setItem('targetSongIndex', i - 1);
                     btn.click();
                     foundMusic = true;
@@ -233,7 +221,7 @@ function startAutoScroll() {
 
         const targetLeft = scroller.clientWidth * scrollIndex;
         scroller.scrollTo({ left: targetLeft, behavior: 'smooth' });
-    }, 5000); 
+    }, 5000);
 }
 
 /* ==========================================
@@ -253,8 +241,8 @@ function setupEventListeners() {
 
     document.querySelectorAll(".cart, .movies").forEach(card => {
         const video = card.querySelector("video");
-        const img = card.querySelector("img"); 
-        
+        const img = card.querySelector("img");
+
         if (!video) return;
 
         video.style.position = "absolute";
@@ -262,9 +250,9 @@ function setupEventListeners() {
         video.style.left = "0";
         video.style.width = "100%";
         video.style.height = "100%";
-        video.style.objectFit = "cover"; 
+        video.style.objectFit = "cover";
         video.style.opacity = "0";
-        video.style.pointerEvents = "none"; 
+        video.style.pointerEvents = "none";
 
         if (img) {
             img.style.position = "absolute";
@@ -280,12 +268,12 @@ function setupEventListeners() {
             isHoveringCart = true;
             const videoSrc = video.getAttribute("src");
             if (videoSrc && videoSrc.trim() !== "") {
-                if (img) img.style.opacity = "0"; 
-                video.style.opacity = "1";        
-                
+                if (img) img.style.opacity = "0";
+                video.style.opacity = "1";
+
                 video.currentTime = 0;
                 const playPromise = video.play();
-                
+
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
                         if (img) img.style.opacity = "1";
@@ -297,8 +285,8 @@ function setupEventListeners() {
 
         const stopPreview = () => {
             isHoveringCart = false;
-            if (img) img.style.opacity = "1"; 
-            video.style.opacity = "0";        
+            if (img) img.style.opacity = "1";
+            video.style.opacity = "0";
             video.pause();
             video.currentTime = 0;
         };
@@ -325,15 +313,15 @@ function movieView(element) {
     if (movie.classList.contains('cart')) {
         // Extract the title from the Hero cart's H2 tag safely
         const heroTitle = movie.querySelector('h2')?.innerText.trim().toUpperCase();
-        
+
         // Scan the entire database of lower cards for the exact matching title
-        const actualDataCard = Array.from(document.querySelectorAll('.movies')).find(card => 
+        const actualDataCard = Array.from(document.querySelectorAll('.movies')).find(card =>
             card.dataset.title && card.dataset.title.toUpperCase().trim() === heroTitle
         );
 
         if (actualDataCard) {
             // Swap the active element so the engine seamlessly pulls all 15+ episodes and links!
-            movie = actualDataCard; 
+            movie = actualDataCard;
         } else {
             // Failsafe in case the movie hasn't been mapped in the lower grid yet
             showStyledError("Full movie data not found for: " + (heroTitle || "Unknown"));
@@ -355,7 +343,7 @@ function movieView(element) {
             time: movie.dataset[`time${i === 0 ? '' : i + 1}`]
         }))
     };
-    
+
     localStorage.setItem('selectedMovie', JSON.stringify(movieData));
     window.location.href = 'movie-view.html';
 }
@@ -556,7 +544,7 @@ function setupSmartTVNavigation() {
     }
 
     const isSmartTV = /(tv|smarttv|tizen|webos|appletv|roku|bravia|netcast|viera)/i.test(navigator.userAgent.toLowerCase());
-    
+
     if (isSmartTV) {
         const tvTooltip = document.createElement('div');
         tvTooltip.innerHTML = `<i class="fas fa-microphone" style="margin-right:8px; color:#ffffff;"></i> Long Press 'OK' for Voice Assistant`;
@@ -612,7 +600,7 @@ function setupSmartTVNavigation() {
 
         currentRow = Math.max(0, Math.min(row, navGrid.length - 1));
         currentCol = Math.max(0, Math.min(col, navGrid[currentRow].length - 1));
-        
+
         const cell = navGrid[currentRow][currentCol];
         let newEl = cell;
 
@@ -620,18 +608,18 @@ function setupSmartTVNavigation() {
         if (currentInner === 'btn') newEl = cell.querySelector('button') || cell;
         else if (currentInner === 'icon-music') newEl = cell.querySelector('#music') || cell;
         else if (currentInner === 'icon-dl') newEl = cell.querySelector('#movie-dots') || cell;
-        
+
         // Self-heal logic if the card doesn't have the requested button/icon
-        if (newEl === cell) currentInner = 'main'; 
+        if (newEl === cell) currentInner = 'main';
 
         const newContainer = newEl.closest('.cart, .movies');
 
         // Stop Trailer if moving to a different card, OR moving away from the "Watch Now" button
         if (oldContainer) {
             if (oldContainer !== newContainer) {
-                oldContainer.dispatchEvent(new Event('mouseleave')); 
+                oldContainer.dispatchEvent(new Event('mouseleave'));
             } else if (oldContainer.classList.contains('cart') && currentInner !== 'btn') {
-                oldContainer.dispatchEvent(new Event('mouseleave')); 
+                oldContainer.dispatchEvent(new Event('mouseleave'));
             }
         }
 
@@ -643,10 +631,10 @@ function setupSmartTVNavigation() {
             const itemLeft = targetScrollEl.offsetLeft;
             const containerCenter = scrollContainer.clientWidth / 2;
             const itemCenter = targetScrollEl.clientWidth / 2;
-            
+
             // Retains your exact horizontal scrolling logic
             scrollContainer.scrollTo({ left: itemLeft - containerCenter + itemCenter, behavior: 'smooth' });
-            
+
             // Changed from 'center' to 'nearest' so it doesn't force the page position
             targetScrollEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         } else {
@@ -655,22 +643,25 @@ function setupSmartTVNavigation() {
         }
 
         if (newEl.tagName === 'INPUT') {
-            newEl.focus(); 
+            newEl.focus();
         } else {
             if (document.activeElement && document.activeElement.tagName === 'INPUT') {
-                document.activeElement.blur(); 
-                // FIX: Automatically close the search dropdown when navigating down to the scroller
+                document.activeElement.blur();
+
+                // --- YOUR EXISTING FIX ---
                 const openDropdowns = document.querySelectorAll('.custom-dropdown');
                 openDropdowns.forEach(dropdown => dropdown.style.display = 'none');
+
+                closeSearchFocus(); // <--- ADD THIS LINE HERE
             }
             // Play Trailer ONLY on button focus for Hero .cart, otherwise keep default behavior
             if (newContainer) {
                 if (newContainer.classList.contains('cart')) {
                     if (currentInner === 'btn') {
-                        newContainer.dispatchEvent(new Event('mouseenter')); 
+                        newContainer.dispatchEvent(new Event('mouseenter'));
                     }
                 } else if (oldContainer !== newContainer) {
-                    newContainer.dispatchEvent(new Event('mouseenter')); 
+                    newContainer.dispatchEvent(new Event('mouseenter'));
                 }
             }
         }
@@ -678,22 +669,23 @@ function setupSmartTVNavigation() {
 
     // 3. Remote Keydown Event & Internal Routing Math
     document.addEventListener('keydown', (e) => {
-        const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'];
+        // ADDED ' ' (Space) to the allowed keys array
+        const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '];
         if (!keys.includes(e.key)) return;
 
-        // FIX: Handle Smart TV logic when inside the Search Box
+        // Handle Smart TV logic when inside the Search Box
         if (document.activeElement && document.activeElement.id === 'movieSearchInput') {
             const dropdown = document.querySelector('.custom-dropdown');
-            // 1. If dropdown is open, let the user use Up/Down to select queries!
             if (dropdown && dropdown.style.display === 'block' && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
                 return; 
             }
-            // 2. Otherwise, allow Left/Right for normal text editing
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') return;
+            // CRITICAL: Allow Left/Right, and ALLOW SPACE so they can type multi-word searches!
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === ' ') return;
         }
 
-        if (e.key === 'Enter') {
-            e.preventDefault(); 
+        // TRIGGER FOR BOTH ENTER AND SPACE
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); // Stops the Spacebar from scrolling the page down
             if (!enterKeyDown) {
                 enterKeyDown = true;
                 isLongPress = false;
@@ -764,7 +756,8 @@ function setupSmartTVNavigation() {
 
     // 4. Remote Keyup Event (Executes specific Inner Item)
     document.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') {
+        // TRIGGER EXECUTION FOR BOTH ENTER AND SPACE
+        if (e.key === 'Enter' || e.key === ' ') {
             enterKeyDown = false;
             clearTimeout(enterPressTimer); 
 
@@ -778,20 +771,20 @@ function setupSmartTVNavigation() {
                 const focusedEl = document.querySelector('.tv-focus');
                 if (focusedEl) {
                     if (focusedEl.tagName === 'INPUT') {
-                        // FIX: If the search box has text, pressing Enter will now execute the search
-                        if (focusedEl.value.trim() !== '') {
-                            executeSearch();
-                            focusedEl.blur(); // Hides the TV keyboard after searching
-                        } else {
-                            focusedEl.focus(); // Opens the TV keyboard if the box is empty
+                        // ONLY Enter should trigger the search query (Space just typed a space)
+                        if (e.key === 'Enter') {
+                            if (focusedEl.value.trim() !== '') {
+                                executeSearch();
+                                focusedEl.blur(); 
+                            } else {
+                                focusedEl.focus(); 
+                            }
                         }
                     } else if (focusedEl.tagName === 'BUTTON' && focusedEl.closest('.search-order')) {
                         executeSearch();
                     } else if (focusedEl.tagName === 'I' || focusedEl.tagName === 'BUTTON') {
-                        // Natively triggers openMusicPlayer(this), addToDownloads(this), or button-click
                         focusedEl.click(); 
                     } else {
-                        // Executes the main movieView for the card body
                         movieView(focusedEl); 
                     }
                 }
@@ -858,6 +851,10 @@ function startMovieOnboardingTour() {
             text: "Use your <b>Arrow keys</b> on your TV remote or keyboard to browse featured movies. Press <b>OK / Enter</b> to watch." 
         },
         { 
+            selector: '.movie-collection .movies #movie-dots', // <--- NEW DOWNLOAD STEP
+            text: "Click the <b>Download icon</b> on any movie card to securely save the movie or its soundtrack directly to your device!" 
+        },
+        { 
             selector: '.movie-collection .movies #music', 
             text: "Click the <b>Music icon</b> on any movie card to instantly listen to its album." 
         },
@@ -889,7 +886,7 @@ function startMovieOnboardingTour() {
 
         if (target) {
             target.classList.add('tour-highlight');
-            
+
             // UPGRADE 1: Added `inline: 'center'` to guarantee horizontal scrolling lists are centered perfectly
             target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
 
@@ -904,15 +901,15 @@ function startMovieOnboardingTour() {
             setTimeout(() => {
                 const targetRect = target.getBoundingClientRect();
                 const tooltipRect = tooltip.getBoundingClientRect();
-                const margin = 15; 
+                const margin = 15;
 
                 // Determine Vertical Position
-                let topPos = targetRect.bottom + margin; 
+                let topPos = targetRect.bottom + margin;
 
                 if (topPos + tooltipRect.height > window.innerHeight - margin) {
                     topPos = targetRect.top - tooltipRect.height - margin;
                     if (topPos < margin) {
-                        topPos = window.innerHeight - tooltipRect.height - margin; 
+                        topPos = window.innerHeight - tooltipRect.height - margin;
                     }
                 }
 
@@ -920,15 +917,15 @@ function startMovieOnboardingTour() {
                 let leftPos = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
 
                 if (leftPos < margin) {
-                    leftPos = margin; 
+                    leftPos = margin;
                 } else if (leftPos + tooltipRect.width > window.innerWidth - margin) {
-                    leftPos = window.innerWidth - tooltipRect.width - margin; 
+                    leftPos = window.innerWidth - tooltipRect.width - margin;
                 }
 
                 // Apply coordinates
                 tooltip.style.top = `${topPos}px`;
                 tooltip.style.left = `${leftPos}px`;
-                
+
             }, 400); // <- This 400ms delay is the secret to perfect positioning on moving containers
 
         } else {
@@ -941,7 +938,7 @@ function startMovieOnboardingTour() {
     });
 
     // Start tour after skeleton loaders vanish
-    setTimeout(() => showStep(0), 1000); 
+    setTimeout(() => showStep(0), 1000);
 }
 
 // --- GLOBAL TOUR KEYBOARD INTERCEPTION ---
@@ -956,7 +953,7 @@ document.addEventListener('keydown', (e) => {
             if (nextBtn) nextBtn.click();
         }
     }
-}, true); 
+}, true);
 
 // === TRIGGER THE TOUR ===
 window.addEventListener('load', () => {
@@ -964,3 +961,303 @@ window.addEventListener('load', () => {
         startMovieOnboardingTour();
     }
 });
+
+
+
+
+
+/* ==========================================
+   10. SEARCH BOX FOCUS (CENTER & BLUR LOGIC)
+========================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    const blurOverlay = document.createElement('div');
+    blurOverlay.id = 'search-blur-overlay';
+    document.body.appendChild(blurOverlay);
+
+    const searchInput = document.getElementById('movieSearchInput');
+    const searchBox = document.querySelector('.search-box');
+    const navBar = document.querySelector('nav'); // <--- Select the Nav
+
+    if (searchInput && searchBox && navBar) {
+        searchInput.addEventListener('focus', () => {
+            blurOverlay.classList.add('active');
+            searchBox.classList.add('active-center');
+            navBar.classList.add('search-active'); // <--- Elevates the Nav
+        });
+
+        blurOverlay.addEventListener('click', closeSearchFocus);
+    }
+});
+
+function closeSearchFocus() {
+    const blurOverlay = document.getElementById('search-blur-overlay');
+    const searchBox = document.querySelector('.search-box');
+    const searchInput = document.getElementById('movieSearchInput');
+    const dropdown = document.querySelector('.custom-dropdown');
+    const navBar = document.querySelector('nav'); // <--- Select the Nav
+
+    if (blurOverlay) blurOverlay.classList.remove('active');
+    if (searchBox) searchBox.classList.remove('active-center');
+    if (navBar) navBar.classList.remove('search-active'); // <--- Restores the Nav
+    if (searchInput) searchInput.blur();
+    if (dropdown) dropdown.style.display = 'none';
+}
+
+
+
+/* ==========================================
+   ENHANCED DOWNLOAD MODAL LOGIC (MOVIE & SONG)
+========================================== */
+function addToDownloads(element) {
+    // Prevent the click from opening the movie viewing page
+    if (event) event.stopPropagation();
+
+    // Get the main card container
+    const movieCard = element.closest('.movies') || element.closest('.cart');
+    if (!movieCard) return;
+
+    // Extract necessary data dynamically
+    const title = movieCard.dataset.title || movieCard.querySelector('h2')?.innerText || "Unknown Movie";
+    const image = movieCard.dataset.img || movieCard.querySelector('img')?.src || "";
+    const musicIcon = movieCard.querySelector('#music'); // Used to grab song links
+
+    // Trigger the centered visual modal
+    showDownloadModal(movieCard, musicIcon, title, image);
+}
+
+function showDownloadModal(movieCard, musicIcon, title, image) {
+    // Clean up any existing modal to prevent duplicates
+    const existingModal = document.getElementById('download-choice-modal');
+    if (existingModal) existingModal.remove();
+
+    // Check if this specific movie actually has songs available
+    let hasSongs = false;
+    if (musicIcon) {
+        for (let i = 1; i <= 20; i++) {
+            if (musicIcon.dataset[`song${i}`]) hasSongs = true;
+        }
+    }
+
+    // 1. Create the blurred, centered overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'download-choice-modal';
+    overlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(11, 5, 16, 0.85); backdrop-filter: blur(10px);
+        z-index: 10050; display: flex; align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.3s ease;
+    `;
+
+    // 2. Create the Modal Box
+    const modalBox = document.createElement('div');
+    modalBox.style.cssText = `
+        background: linear-gradient(135deg, #2a0e3c, #111);
+        padding: 30px; border-radius: 20px; border: 1px solid #8e44ad;
+        text-align: center; color: white; width: 90%; max-width: 350px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: translateY(20px);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    `;
+
+    // 3. Populate Modal HTML
+    modalBox.innerHTML = `
+        <h3 style="margin-top: 0; color: #fff; font-family: 'Poppins', sans-serif;">Download Asset</h3>
+        <p style="color: #ccc; font-size: 14px; margin-bottom: 25px; font-family: 'Poppins', sans-serif;">What would you like to download for<br><b style="color:#00ff88;">${title}</b>?</p>
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            <button id="btn-dl-movie" style="background: #8e44ad; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-family: 'Poppins', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease;">
+                <i class="fas fa-film"></i> Movie Download
+            </button>
+            ${hasSongs ? `
+            <button id="btn-dl-song" style="background: #00ff88; color: #111; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-family: 'Poppins', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease;">
+                <i class="fas fa-music"></i> Song Download
+            </button>
+            ` : ''}
+            <button id="btn-dl-cancel" style="background: transparent; color: #aaa; border: 1px solid rgba(255,255,255,0.2); padding: 10px; border-radius: 10px; font-weight: bold; font-family: 'Poppins', sans-serif; cursor: pointer; transition: all 0.3s ease;">
+                Cancel
+            </button>
+        </div>
+    `;
+
+    overlay.appendChild(modalBox);
+    document.body.appendChild(overlay);
+
+    // Apply smooth hover styling dynamically
+    const applyHover = (btn, bgHover, colorHover) => {
+        if (!btn) return;
+        const originalBg = btn.style.background;
+        const originalColor = btn.style.color;
+        btn.onmouseenter = () => { btn.style.background = bgHover; btn.style.color = colorHover; };
+        btn.onmouseleave = () => { btn.style.background = originalBg; btn.style.color = originalColor; };
+    };
+    applyHover(document.getElementById('btn-dl-movie'), '#a24be3', 'white');
+    if (hasSongs) applyHover(document.getElementById('btn-dl-song'), '#33ff9f', 'black');
+    applyHover(document.getElementById('btn-dl-cancel'), 'rgba(255,255,255,0.1)', 'white');
+
+    // Reveal Animation
+    requestAnimationFrame(() => {
+        overlay.style.opacity = '1';
+        modalBox.style.transform = 'translateY(0)';
+    });
+
+    // Close Modal Logic
+    const close = () => {
+        overlay.style.opacity = '0';
+        modalBox.style.transform = 'translateY(20px)';
+        setTimeout(() => overlay.remove(), 300);
+    };
+
+    // Button Triggers
+    document.getElementById('btn-dl-cancel').onclick = close;
+    
+    document.getElementById('btn-dl-movie').onclick = () => {
+        processMovieDownload(movieCard, title, image);
+        close();
+    };
+
+    if (hasSongs) {
+        document.getElementById('btn-dl-song').onclick = () => {
+            processSongDownload(musicIcon, title, image);
+            close();
+        };
+    }
+}
+
+// 4. Extracts ALL Movie links and pushes them to download.html
+function processMovieDownload(movieCard, title, image) {
+    let downloads = JSON.parse(localStorage.getItem("downloads")) || [];
+    let addedAnyLink = false;
+    
+    // Process main telegram link if present
+    if (movieCard.dataset.link) {
+         const isDuplicate = downloads.some(d => d.link === movieCard.dataset.link);
+         if (!isDuplicate) {
+             downloads.push({ title: title + " (Main Link)", image, link: movieCard.dataset.link, downloaded: false });
+             addedAnyLink = true;
+         }
+    }
+
+    // Process all episodes dynamically (data-link1 through data-link20)
+    for (let i = 1; i <= 20; i++) {
+        const link = movieCard.dataset[`link${i}`];
+        const epTitle = movieCard.dataset[`episode${i}`] || `Episode ${i}`;
+        if (link) {
+            const isDuplicate = downloads.some(d => d.link === link);
+            if (!isDuplicate) {
+                downloads.push({ title: `${title} - ${epTitle}`, image, link, downloaded: false });
+                addedAnyLink = true;
+            }
+        }
+    }
+
+    if (!addedAnyLink) {
+        alert("No movie download links found for this item, or they are already in your downloads list!");
+        return;
+    }
+
+    // Save and Automatically transfer user to download.html
+    localStorage.setItem("downloads", JSON.stringify(downloads));
+    window.location.href = "download.html";
+}
+
+// 5. Extracts ALL Song links and pushes them to download.html
+function processSongDownload(musicIcon, title, image) {
+    let downloads = JSON.parse(localStorage.getItem("downloads")) || [];
+    let addedAnyLink = false;
+    
+    // Process all songs dynamically (data-song1 through data-song20)
+    for (let i = 1; i <= 20; i++) {
+        const songLink = musicIcon.dataset[`song${i}`];
+        const songTitle = musicIcon.dataset[`songTitle${i}`] || musicIcon.dataset[`songtitle${i}`] || `Song ${i}`;
+        if (songLink) {
+            const isDuplicate = downloads.some(d => d.link === songLink);
+            if (!isDuplicate) {
+                downloads.push({ title: `${title} - ${songTitle}`, image, link: songLink, downloaded: false });
+                addedAnyLink = true;
+            }
+        }
+    }
+
+    if (!addedAnyLink) {
+        alert("No song download links found, or they are already in your downloads list!");
+        return;
+    }
+
+    // Save and Automatically transfer user to download.html
+    localStorage.setItem("downloads", JSON.stringify(downloads));
+    window.location.href = "download.html";
+}
+
+
+
+/* ==========================================
+   DOWNLOAD MODAL - SMART TV & KEYBOARD CONTROL (FIXED)
+========================================== */
+// 1. Trap Arrow Keys & Escape on KEYDOWN for smooth UI movement
+document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('download-choice-modal');
+    if (!modal) return; 
+
+    const keys = ['ArrowUp', 'ArrowDown', 'Enter', ' ', 'Escape'];
+    if (!keys.includes(e.key)) return;
+
+    // Block the background movie grid from scrolling
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    // Quick Escape Support
+    if (e.key === 'Escape') {
+        const cancelBtn = document.getElementById('btn-dl-cancel');
+        if (cancelBtn) cancelBtn.click();
+        return;
+    }
+
+    const buttons = Array.from(modal.querySelectorAll('button'));
+    if (buttons.length === 0) return;
+
+    let currentIndex = buttons.findIndex(btn => btn.classList.contains('modal-tv-focus'));
+
+    // Handle Up / Down Arrows
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        if (currentIndex !== -1) {
+            buttons[currentIndex].classList.remove('modal-tv-focus');
+            buttons[currentIndex].style.outline = "none";
+            buttons[currentIndex].style.transform = "scale(1)";
+        }
+
+        if (e.key === 'ArrowDown') {
+            currentIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % buttons.length;
+        } else if (e.key === 'ArrowUp') {
+            currentIndex = currentIndex === -1 ? buttons.length - 1 : (currentIndex - 1 + buttons.length) % buttons.length;
+        }
+
+        const focusedBtn = buttons[currentIndex];
+        focusedBtn.classList.add('modal-tv-focus');
+        focusedBtn.style.outline = "3px solid #00ff88"; // Neon green highlight
+        focusedBtn.style.outlineOffset = "4px";
+        focusedBtn.style.transform = "scale(1.05)";     
+    }
+}, true); // 'true' forces this to run BEFORE your background movie grid
+
+// 2. Trap Enter and Space on KEYUP to execute clicks safely (Prevents Ghost Clicks)
+document.addEventListener('keyup', (e) => {
+    const modal = document.getElementById('download-choice-modal');
+    if (!modal) return;
+
+    const keys = ['Enter', ' '];
+    if (!keys.includes(e.key)) return;
+
+    // Swallow the event so the background movie card doesn't re-open the modal
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    const buttons = Array.from(modal.querySelectorAll('button'));
+    let currentIndex = buttons.findIndex(btn => btn.classList.contains('modal-tv-focus'));
+
+    // Click the highlighted button, or default to the top button if none are highlighted
+    if (currentIndex !== -1) {
+        buttons[currentIndex].click(); 
+    } else {
+        buttons[0].click(); 
+    }
+}, true);

@@ -230,7 +230,7 @@ function seekForward() {
     } else {
         video.currentTime = Math.min(video.duration, video.currentTime + 10);
     }
-    showAlert("⏩ +10s");
+    showAlert("+10s ⏩");
     showUI();
 }
 
