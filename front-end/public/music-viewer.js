@@ -58,8 +58,17 @@ function playSong(index) {
     titleDisplay.innerText = song.title;
     imgDisplay.src = song.image;
 
-    // Call the new background update function
     updateCardBackground(imgDisplay);
+
+    // ==========================================
+    // NEW: RECENTLY PLAYED SONGS LOGIC
+    // ==========================================
+    let recentSongs = JSON.parse(localStorage.getItem('recentSongs')) || [];
+    recentSongs = recentSongs.filter(s => s.url !== song.url); // Remove duplicate
+    recentSongs.unshift(song); // Add to top
+    if (recentSongs.length > 15) recentSongs.pop(); // Keep max 15
+    localStorage.setItem('recentSongs', JSON.stringify(recentSongs));
+    // ==========================================
 
     audioPlayer.play();
     updateActiveHighlight();

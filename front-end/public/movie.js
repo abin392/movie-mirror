@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     startAutoScroll();
     setupEventListeners();
     setupSmartTVNavigation(); // <--- TV Navigation Initialized
+    loadRecentContent(); // <--- ADD THIS LINE HERE
 
     // Safely trigger the Custom Search Dropdown
     if (typeof populateSearchOptions === "function") {
@@ -78,7 +79,7 @@ function trainAssistantFromPage() {
             const songTitle = btn.dataset[`songtitle${i}`] || btn.dataset[`songTitle${i}`];
             if (songTitle) {
                 // Clean up underscores from data attributes (e.g., "Oorum_Blood__Dude")
-                const cleanTitle = songTitle.replace(/_+/g, ' '); 
+                const cleanTitle = songTitle.replace(/_+/g, ' ');
                 processAndPushToken(cleanTitle, window.MUSIC_TRAINING);
             }
         }
@@ -102,8 +103,8 @@ function processAndPushToken(rawText, targetArray) {
    ========================================== */
 // Now accepts an optional parameter so your voice script can pass transcripts directly
 function executeSearch(voiceQuery = null) {
-    closeSearchFocus(); 
-    
+    closeSearchFocus();
+
     let rawQuery = "";
 
     // 1. Determine Source (Voice vs. Typed)
@@ -143,13 +144,13 @@ function executeSearch(voiceQuery = null) {
 
     for (let btn of musicButtons) {
         const data = btn.dataset;
-        
+
         for (let i = 1; i <= 20; i++) {
             const titleVal = data[`songtitle${i}`] || data[`songTitle${i}`];
             if (titleVal) {
                 // Remove underscores and special chars for a pure alphanumeric match
                 const cleanTitle = titleVal.toUpperCase().replace(/[^A-Z0-9]/g, "");
-                
+
                 if (cleanTitle.includes(cleanSearchStr) || cleanSearchStr.includes(cleanTitle)) {
                     localStorage.setItem('targetSongIndex', i - 1);
                     btn.click();
@@ -308,30 +309,28 @@ function movieView(element) {
     let movie = element.closest('.movies') || element.closest('.cart');
     if (!movie) return;
 
-    // --- NEW: SMART MATCHING LOGIC FOR HERO SCROLLER CARTS ---
-    // If the clicked element is from the top scroller, it lacks the raw data attributes.
+    // Smart matching for Hero Scroller Carts
     if (movie.classList.contains('cart')) {
-        // Extract the title from the Hero cart's H2 tag safely
         const heroTitle = movie.querySelector('h2')?.innerText.trim().toUpperCase();
-
-        // Scan the entire database of lower cards for the exact matching title
         const actualDataCard = Array.from(document.querySelectorAll('.movies')).find(card =>
             card.dataset.title && card.dataset.title.toUpperCase().trim() === heroTitle
         );
-
         if (actualDataCard) {
-            // Swap the active element so the engine seamlessly pulls all 15+ episodes and links!
             movie = actualDataCard;
         } else {
-            // Failsafe in case the movie hasn't been mapped in the lower grid yet
             showStyledError("Full movie data not found for: " + (heroTitle || "Unknown"));
             return;
         }
     }
-    // ---------------------------------------------------------
+
+    const title = movie.dataset.title || movie.querySelector('h2')?.innerText || "Unknown";
+
+    // --- NEW: Check if this movie is already in recents to resume progress ---
+    let recentMovies = JSON.parse(localStorage.getItem('recentMovies')) || [];
+    let existingRecent = recentMovies.find(m => m.title === title);
 
     const movieData = {
-        title: movie.dataset.title || movie.querySelector('h2')?.innerText || "Unknown",
+        title: title,
         video: movie.dataset.link1 || "",
         hero: movie.dataset.name || "",
         year: movie.dataset.year || "",
@@ -341,10 +340,20 @@ function movieView(element) {
             link: movie.dataset[`link${i + 2}`],
             title: movie.dataset[`episode${i + 1}`],
             time: movie.dataset[`time${i === 0 ? '' : i + 1}`]
-        }))
+        })),
+        // --- NEW: Carry over the exact episode they were on, or default to the main video ---
+        lastPlayedLink: existingRecent?.lastPlayedLink || movie.dataset.link1 || "",
+        lastPlayedTitle: existingRecent?.lastPlayedTitle || title
     };
 
     localStorage.setItem('selectedMovie', JSON.stringify(movieData));
+
+    // Update Recent Movies Array
+    recentMovies = recentMovies.filter(m => m.title !== movieData.title);
+    recentMovies.unshift(movieData);
+    if (recentMovies.length > 15) recentMovies.pop();
+    localStorage.setItem('recentMovies', JSON.stringify(recentMovies));
+
     window.location.href = 'movie-view.html';
 }
 
@@ -677,7 +686,7 @@ function setupSmartTVNavigation() {
         if (document.activeElement && document.activeElement.id === 'movieSearchInput') {
             const dropdown = document.querySelector('.custom-dropdown');
             if (dropdown && dropdown.style.display === 'block' && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
-                return; 
+                return;
             }
             // CRITICAL: Allow Left/Right, and ALLOW SPACE so they can type multi-word searches!
             if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === ' ') return;
@@ -692,12 +701,12 @@ function setupSmartTVNavigation() {
                 enterPressTimer = setTimeout(() => {
                     isLongPress = true;
                     if (typeof toggleJarvis === 'function') toggleJarvis();
-                }, 800); 
+                }, 800);
             }
-            return; 
+            return;
         }
 
-        e.preventDefault(); 
+        e.preventDefault();
         refreshGrid();
         if (navGrid.length === 0) return;
 
@@ -759,7 +768,7 @@ function setupSmartTVNavigation() {
         // TRIGGER EXECUTION FOR BOTH ENTER AND SPACE
         if (e.key === 'Enter' || e.key === ' ') {
             enterKeyDown = false;
-            clearTimeout(enterPressTimer); 
+            clearTimeout(enterPressTimer);
 
             if (!isLongPress) {
                 refreshGrid();
@@ -775,17 +784,17 @@ function setupSmartTVNavigation() {
                         if (e.key === 'Enter') {
                             if (focusedEl.value.trim() !== '') {
                                 executeSearch();
-                                focusedEl.blur(); 
+                                focusedEl.blur();
                             } else {
-                                focusedEl.focus(); 
+                                focusedEl.focus();
                             }
                         }
                     } else if (focusedEl.tagName === 'BUTTON' && focusedEl.closest('.search-order')) {
                         executeSearch();
                     } else if (focusedEl.tagName === 'I' || focusedEl.tagName === 'BUTTON') {
-                        focusedEl.click(); 
+                        focusedEl.click();
                     } else {
-                        movieView(focusedEl); 
+                        movieView(focusedEl);
                     }
                 }
             }
@@ -842,25 +851,25 @@ function startMovieOnboardingTour() {
 
     // 3. Define the Steps based on movie.html elements
     const steps = [
-        { 
-            selector: '.search-order', 
-            text: "Use the search bar to instantly find your favorite movies or songs. Type and press <b>Enter</b>." 
+        {
+            selector: '.search-order',
+            text: "Use the search bar to instantly find your favorite movies or songs. Type and press <b>Enter</b>."
         },
-        { 
-            id: 'first-cart', 
-            text: "Use your <b>Arrow keys</b> on your TV remote or keyboard to browse featured movies. Press <b>OK / Enter</b> to watch." 
+        {
+            id: 'first-cart',
+            text: "Use your <b>Arrow keys</b> on your TV remote or keyboard to browse featured movies. Press <b>OK / Enter</b> to watch."
         },
-        { 
+        {
             selector: '.movie-collection .movies #movie-dots', // <--- NEW DOWNLOAD STEP
-            text: "Click the <b>Download icon</b> on any movie card to securely save the movie or its soundtrack directly to your device!" 
+            text: "Click the <b>Download icon</b> on any movie card to securely save the movie or its soundtrack directly to your device!"
         },
-        { 
-            selector: '.movie-collection .movies #music', 
-            text: "Click the <b>Music icon</b> on any movie card to instantly listen to its album." 
+        {
+            selector: '.movie-collection .movies #music',
+            text: "Click the <b>Music icon</b> on any movie card to instantly listen to its album."
         },
-        { 
-            id: 'jarvis-btn', 
-            text: "Long-press <b>OK / Enter</b> on your remote, or click here to activate the AI Voice Assistant." 
+        {
+            id: 'jarvis-btn',
+            text: "Long-press <b>OK / Enter</b> on your remote, or click here to activate the AI Voice Assistant."
         }
     ];
 
@@ -1107,7 +1116,7 @@ function showDownloadModal(movieCard, musicIcon, title, image) {
 
     // Button Triggers
     document.getElementById('btn-dl-cancel').onclick = close;
-    
+
     document.getElementById('btn-dl-movie').onclick = () => {
         processMovieDownload(movieCard, title, image);
         close();
@@ -1125,14 +1134,14 @@ function showDownloadModal(movieCard, musicIcon, title, image) {
 function processMovieDownload(movieCard, title, image) {
     let downloads = JSON.parse(localStorage.getItem("downloads")) || [];
     let addedAnyLink = false;
-    
+
     // Process main telegram link if present
     if (movieCard.dataset.link) {
-         const isDuplicate = downloads.some(d => d.link === movieCard.dataset.link);
-         if (!isDuplicate) {
-             downloads.push({ title: title + " (Main Link)", image, link: movieCard.dataset.link, downloaded: false });
-             addedAnyLink = true;
-         }
+        const isDuplicate = downloads.some(d => d.link === movieCard.dataset.link);
+        if (!isDuplicate) {
+            downloads.push({ title: title + " (Main Link)", image, link: movieCard.dataset.link, downloaded: false });
+            addedAnyLink = true;
+        }
     }
 
     // Process all episodes dynamically (data-link1 through data-link20)
@@ -1162,7 +1171,7 @@ function processMovieDownload(movieCard, title, image) {
 function processSongDownload(musicIcon, title, image) {
     let downloads = JSON.parse(localStorage.getItem("downloads")) || [];
     let addedAnyLink = false;
-    
+
     // Process all songs dynamically (data-song1 through data-song20)
     for (let i = 1; i <= 20; i++) {
         const songLink = musicIcon.dataset[`song${i}`];
@@ -1194,7 +1203,7 @@ function processSongDownload(musicIcon, title, image) {
 // 1. Trap Arrow Keys & Escape on KEYDOWN for smooth UI movement
 document.addEventListener('keydown', (e) => {
     const modal = document.getElementById('download-choice-modal');
-    if (!modal) return; 
+    if (!modal) return;
 
     const keys = ['ArrowUp', 'ArrowDown', 'Enter', ' ', 'Escape'];
     if (!keys.includes(e.key)) return;
@@ -1234,7 +1243,7 @@ document.addEventListener('keydown', (e) => {
         focusedBtn.classList.add('modal-tv-focus');
         focusedBtn.style.outline = "3px solid #00ff88"; // Neon green highlight
         focusedBtn.style.outlineOffset = "4px";
-        focusedBtn.style.transform = "scale(1.05)";     
+        focusedBtn.style.transform = "scale(1.05)";
     }
 }, true); // 'true' forces this to run BEFORE your background movie grid
 
@@ -1256,8 +1265,85 @@ document.addEventListener('keyup', (e) => {
 
     // Click the highlighted button, or default to the top button if none are highlighted
     if (currentIndex !== -1) {
-        buttons[currentIndex].click(); 
+        buttons[currentIndex].click();
     } else {
-        buttons[0].click(); 
+        buttons[0].click();
     }
 }, true);
+
+
+/* ==========================================
+   DYNAMIC RECENTLY WATCHED / PLAYED LOADER
+========================================== */
+function loadRecentContent() {
+    // --- LOAD RECENT MOVIES ---
+    const recentMovies = JSON.parse(localStorage.getItem('recentMovies')) || [];
+    const moviesSection = document.getElementById('recent-movies-section');
+    const moviesContainer = document.getElementById('recent-movies-container');
+
+    if (recentMovies.length > 0 && moviesSection && moviesContainer) {
+        moviesContainer.innerHTML = '';
+        /* Inside loadRecentContent() in movie.js */
+
+        recentMovies.forEach(movie => {
+            const div = document.createElement('div');
+            div.className = 'movies';
+
+            // Show a neon green subtitle if they are on a specific episode
+            const subTitle = (movie.lastPlayedTitle && movie.lastPlayedTitle !== movie.title)
+                ? `<p style="color:#00ff88; font-size:0.75rem; margin:-5px 0 10px 0; width:100%; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${movie.lastPlayedTitle}</p>`
+                : ``;
+
+            div.innerHTML = `
+        <img src="${movie.image}" alt="${movie.title}" loading="lazy" style="pointer-events: none;">
+        <h4>${movie.title}</h4>
+        ${subTitle}
+        <button style="pointer-events: none;">Resume</button>
+    `;
+
+            div.onclick = function () {
+                let currentRecents = JSON.parse(localStorage.getItem('recentMovies')) || [];
+                currentRecents = currentRecents.filter(m => m.title !== movie.title);
+                currentRecents.unshift(movie);
+                localStorage.setItem('recentMovies', JSON.stringify(currentRecents));
+
+                localStorage.setItem('selectedMovie', JSON.stringify(movie));
+                window.location.href = 'movie-view.html';
+            };
+            moviesContainer.appendChild(div);
+        });
+        moviesSection.style.display = 'block'; // Reveal the container
+    }
+
+    // --- LOAD RECENT SONGS ---
+    const recentSongs = JSON.parse(localStorage.getItem('recentSongs')) || [];
+    const songsSection = document.getElementById('recent-songs-section');
+    const songsContainer = document.getElementById('recent-songs-container');
+
+    if (recentSongs.length > 0 && songsSection && songsContainer) {
+        songsContainer.innerHTML = '';
+        recentSongs.forEach(song => {
+            const div = document.createElement('div');
+            div.className = 'movies'; // Reusing your movie card styling
+            div.innerHTML = `
+                <img src="${song.image}" alt="${song.title}" loading="lazy" style="pointer-events: none;">
+                <h4>${song.title}</h4>
+                <button style="pointer-events: none;">Play</button>
+            `;
+            // Play song immediately
+            div.onclick = function () {
+                let currentRecents = JSON.parse(localStorage.getItem('recentSongs')) || [];
+                currentRecents = currentRecents.filter(s => s.url !== song.url);
+                currentRecents.unshift(song);
+                localStorage.setItem('recentSongs', JSON.stringify(currentRecents));
+
+                const playlist = [{ title: song.title, url: song.url, image: song.image }];
+                localStorage.setItem('currentPlaylist', JSON.stringify(playlist));
+                localStorage.setItem('targetSongIndex', 0);
+                window.location.href = 'music-viewer.html';
+            };
+            songsContainer.appendChild(div);
+        });
+        songsSection.style.display = 'block'; // Reveal the container
+    }
+}

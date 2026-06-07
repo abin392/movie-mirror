@@ -104,7 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const movieData = JSON.parse(savedMovie);
     renderMovieDetails(movieData);
     renderEpisodes(movieData);
-    setupInitialVideo(movieData.video);
+    // --- UPDATED: Start from the specific episode they left off on ---
+    setupInitialVideo(movieData.lastPlayedLink || movieData.video);
+    document.getElementById('movieTitle').textContent = movieData.lastPlayedTitle || movieData.title;
     makeElementsFocusable();
 
     // TV Auto-focus
@@ -112,6 +114,48 @@ document.addEventListener("DOMContentLoaded", () => {
         const playBtn = document.querySelector('.main-controls button');
         if (playBtn) playBtn.focus();
     }, 500);
+
+    // ==========================================
+    // NEW: FIRST-TIME BUTTON-TARGETED TOOLTIP
+    // ==========================================
+    if (!localStorage.getItem('hasSeenFullscreenAlert')) {
+        setTimeout(() => {
+            const fsBtn = document.querySelector('.fullscreen-btn');
+            if (fsBtn) {
+                // Wake up the UI so the button is actually visible on screen
+                showUI();
+
+                // Create a temporary clone of your TV tooltip
+                const introTip = document.createElement('div');
+                introTip.className = 'tv-remote-tooltip';
+                introTip.innerHTML = "Tip: Double-Tap 'OK' or press 'A' to Fullscreen";
+                document.body.appendChild(introTip);
+
+                // Calculate position dynamically so it's always attached to the button
+                const rect = fsBtn.getBoundingClientRect();
+                introTip.style.left = `${rect.left + (rect.width / 2)}px`;
+
+                // Smart positioning: if button is top-right (normal view), show BELOW it.
+                // If button is bottom-right (fullscreen mode), show ABOVE it.
+                if (rect.top < 60) {
+                    introTip.style.top = `${rect.bottom + 15}px`;
+                } else {
+                    introTip.style.top = `${rect.top - 45}px`;
+                }
+                
+                introTip.style.opacity = '1';
+
+                // Fade out and safely remove after 5 seconds
+                setTimeout(() => {
+                    introTip.style.opacity = '0';
+                    setTimeout(() => introTip.remove(), 300); // Clean up DOM
+                }, 5000);
+
+                // Save to localStorage so it only shows on the very first visit
+                localStorage.setItem('hasSeenFullscreenAlert', 'true');
+            }
+        }, 1500); 
+    }
 });
 
 function renderMovieDetails(data) {
@@ -210,6 +254,24 @@ function changeEpisode(url, title) {
 
     document.getElementById('movieTitle').textContent = title;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // --- NEW: SAVE EPISODE PROGRESS STATE GLOBALLY ---
+    const savedMovieStr = localStorage.getItem('selectedMovie');
+    if (savedMovieStr) {
+        let movieData = JSON.parse(savedMovieStr);
+        movieData.lastPlayedLink = url;
+        movieData.lastPlayedTitle = title;
+        localStorage.setItem('selectedMovie', JSON.stringify(movieData));
+
+        // Sync with Recently Watched so movie.html knows immediately
+        let recentMovies = JSON.parse(localStorage.getItem('recentMovies')) || [];
+        let index = recentMovies.findIndex(m => m.title === movieData.title);
+        if (index !== -1) {
+            recentMovies[index].lastPlayedLink = url;
+            recentMovies[index].lastPlayedTitle = title;
+            localStorage.setItem('recentMovies', JSON.stringify(recentMovies));
+        }
+    }
 }
 
 // --- 3. Playback & Navigation Logic ---
@@ -244,19 +306,7 @@ function seekBackward() {
     showUI();
 }
 
-// Click and Drag Progress Bar Logic
-function scrub(e) {
-    const rect = progressContainer.getBoundingClientRect();
-    let pos = (e.clientX - rect.left) / rect.width;
-    pos = Math.max(0, Math.min(1, pos));
 
-    if (currentPlaybackMode === 'YOUTUBE' && ytPlayer) {
-        ytPlayer.seekTo(pos * ytPlayer.getDuration(), true);
-    } else if (video.duration) {
-        video.currentTime = pos * video.duration;
-    }
-    progressBar.style.width = `${pos * 100}%`;
-}
 
 // Ensure clicking the background pauses/plays the video properly
 container.addEventListener('click', (e) => {
@@ -599,23 +649,26 @@ function updateFocusUI() {
     }, 2000);
 }
 
+// Add this variable right above your keydown listener
+let lastEnterTime = 0;
+
 // --- The Keydown Listener ---
 document.addEventListener('keydown', (e) => {
-    
+
     // 1. STRICT DEVICE DETECTION (Allows ONLY PCs & Laptops. Blocks Mobile, Tablets, & TVs)
     const ua = navigator.userAgent;
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobi|Tablet/i.test(ua);
-    const isMacTablet = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1; 
+    const isMacTablet = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
     const isSmartTV = /TV|SmartTV|Web0S|Tizen|Roku|Android TV|BRAVIA|Viera/i.test(ua);
-    
+
     // If it is a phone, tablet, OR Smart TV, block this keyboard logic completely.
     if (isMobile || isMacTablet || isSmartTV) {
-        return; 
+        return;
     }
 
     // 2. PAGE BODY PROTECTION LOGIC (Allows normal webpage scrolling on PC)
     const isFullscreen = container.classList.contains('custom-fullscreen');
-    
+
     if (!isFullscreen) {
         const isHovering = container.matches(':hover');
         const isFocused = container.contains(document.activeElement);
@@ -625,18 +678,36 @@ document.addEventListener('keydown', (e) => {
     }
 
     const code = e.keyCode;
-    const isInput = ['BUTTON', 'INPUT'].includes(document.activeElement.tagName) && e.target.id !== 'volumeSlider';
+    const isInput = ['BUTTON', 'INPUT', 'TEXTAREA'].includes(document.activeElement.tagName) && e.target.id !== 'volumeSlider';
+
+    // --- ADD THIS LINE ---
+    // If the user is typing in a text box (like a search bar), ignore video hotkeys
+    if (isInput) return;
+
+    // ==========================================
+    // NEW: DOUBLE-TAP (ENTER) FOR TV REMOTE 
+    // ==========================================
+    if (code === TV_KEYS.ENTER) {
+        const now = Date.now();
+        if (now - lastEnterTime < 400) { // If pressed twice within 400ms
+            e.preventDefault();
+            toggleCustomFullscreen();
+            lastEnterTime = 0; // Reset the timer
+            return; 
+        }
+        lastEnterTime = now;
+    }
 
     // 3. GLOBAL HOTKEYS 
     if (code === 32 || code === TV_KEYS.PLAY_PAUSE) {
-        e.preventDefault(); 
+        e.preventDefault();
         togglePlay();
-        updateFocusUI(); 
+        updateFocusUI();
         return;
     }
 
     // --- RESTORED: "A" Key for Fullscreen ---
-    if (code === TV_KEYS.A_KEY || code === 65) { 
+    if (code === TV_KEYS.A_KEY || code === 65) {
         e.preventDefault();
         toggleCustomFullscreen();
         return;
@@ -661,16 +732,16 @@ document.addEventListener('keydown', (e) => {
         else if (code === TV_KEYS.RIGHT) seekForward();
 
         // --- UPDATED: Smart Wake-up targeting ---
-        if (code === TV_KEYS.UP) { 
+        if (code === TV_KEYS.UP) {
             currentRow = 0; currentCol = 1; // Wakes up on Play
-        } 
-        else if (code === TV_KEYS.DOWN) { 
+        }
+        else if (code === TV_KEYS.DOWN) {
             currentRow = 1; currentCol = 0; // Wakes up on Timeline
-        } 
-        else if (code === TV_KEYS.LEFT || code === TV_KEYS.RIGHT) { 
+        }
+        else if (code === TV_KEYS.LEFT || code === TV_KEYS.RIGHT) {
             currentRow = 1; currentCol = 0; // Wakes up directly on Timeline for seamless scrubbing!
-        } 
-        else { 
+        }
+        else {
             currentRow = 0; currentCol = 1; // Default to Play for ENTER
         }
 
@@ -905,57 +976,26 @@ function scrub(e) {
 
 // --- Event Listeners for the Timeline ---
 
-// 1. Simple Click or Tap
-progressContainer.addEventListener('click', (e) => scrub(e));
-
-// 2. Mouse Dragging (PC/Laptop)
-progressContainer.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    scrub(e);
-});
-window.addEventListener('mousemove', (e) => {
-    if (isDragging) scrub(e);
-});
-window.addEventListener('mouseup', () => {
-    isDragging = false;
-});
-
-// 3. Touch Dragging (Mobile/Tablet)
-progressContainer.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    scrub(e);
-}, { passive: true });
-window.addEventListener('touchmove', (e) => {
-    if (isDragging) scrub(e);
-}, { passive: true });
-window.addEventListener('touchend', () => {
-    isDragging = false;
-});
-
-// Mouse Events
+// Mouse Events (PC/Laptop)
 progressContainer.addEventListener('mousedown', (e) => {
     isDragging = true;
     scrub(e); // Seek immediately on click
 });
-
 window.addEventListener('mousemove', (e) => {
-    if (isDragging) scrub(e); // Seek while moving if mouse is down
+    if (isDragging) scrub(e); // Seek while moving
 });
-
 window.addEventListener('mouseup', () => {
     isDragging = false;
 });
 
-// Touch Events (For Mobile/Tablets)
+// Touch Events (Mobile/Tablet)
 progressContainer.addEventListener('touchstart', (e) => {
     isDragging = true;
-    scrub(e.touches[0]);
+    scrub(e);
 }, { passive: true });
-
 window.addEventListener('touchmove', (e) => {
-    if (isDragging) scrub(e.touches[0]);
+    if (isDragging) scrub(e);
 }, { passive: true });
-
 window.addEventListener('touchend', () => {
     isDragging = false;
 });
