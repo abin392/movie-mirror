@@ -22,6 +22,7 @@ const TV_KEYS = {
     PLAY_PAUSE: 179, REWIND: 412, FORWARD: 417, A_KEY: 65
 };
 
+let globalResumeTime = 0;
 let audioCtx, gainNode, track, uiTimeout;
 
 // --- NEW: YouTube Integration Variables ---
@@ -59,7 +60,13 @@ function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.PLAYING) {
         document.getElementById('playIcon').classList.replace('fa-play', 'fa-pause');
         startYTProgress();
-        showUI(); // <-- NEW: Restart the auto-hide timer now that the video is playing again
+        showUI(); 
+        
+        // --- NEW: RESUME YOUTUBE LOGIC ---
+        if (globalResumeTime > 0 && globalResumeTime < ytPlayer.getDuration() - 5) {
+            ytPlayer.seekTo(globalResumeTime, true);
+            globalResumeTime = 0; // Clear it
+        }
     } else if (event.data === YT.PlayerState.PAUSED) {
         document.getElementById('playIcon').classList.replace('fa-pause', 'fa-play');
         clearInterval(ytProgressTimer);
@@ -102,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const movieData = JSON.parse(savedMovie);
+    globalResumeTime = movieData.currentTime || 0; // <--- ADD THIS LINE
     renderMovieDetails(movieData);
     renderEpisodes(movieData);
     // --- UPDATED: Start from the specific episode they left off on ---
@@ -249,6 +257,7 @@ function setupInitialVideo(url) {
 function changeEpisode(url, title) {
     progressBar.style.width = '0%';
     bufferBar.style.width = '0%'; // Reset buffer view
+    globalResumeTime = 0; // <--- ADD THIS: Prevent resuming on a fresh episode
 
     playMedia(url); // Uses the new smart function
 
@@ -405,6 +414,12 @@ video.addEventListener('timeupdate', () => {
 
 video.addEventListener('loadedmetadata', () => {
     durationTimeDisplay.textContent = formatTime(video.duration);
+    
+    // --- NEW: RESUME MP4 LOGIC ---
+    if (globalResumeTime > 0 && globalResumeTime < video.duration - 5) {
+        video.currentTime = globalResumeTime;
+        globalResumeTime = 0; // Clear it so it only fires once
+    }
 });
 
 video.addEventListener('ended', () => {
@@ -1059,3 +1074,44 @@ progressContainer.addEventListener('mouseenter', () => {
     let hasDuration = (currentPlaybackMode === 'YOUTUBE' && ytPlayer) || video.duration;
     if (hasDuration) hoverTimer.style.display = 'block';
 });
+
+/* ==========================================
+   SAVE PLAYBACK PROGRESS AUTOMATICALLY
+========================================== */
+function savePlaybackProgress() {
+    let current = 0;
+    let duration = 0;
+
+    if (currentPlaybackMode === 'YOUTUBE' && ytPlayer && typeof ytPlayer.getCurrentTime === 'function') {
+        current = ytPlayer.getCurrentTime();
+        duration = ytPlayer.getDuration();
+    } else if (video && video.duration) {
+        current = video.currentTime;
+        duration = video.duration;
+    }
+
+    // Only save if we have valid playback
+    if (current > 0 && duration > 0) {
+        const savedMovieStr = localStorage.getItem('selectedMovie');
+        if (savedMovieStr) {
+            let movieData = JSON.parse(savedMovieStr);
+            movieData.currentTime = current;
+            movieData.duration = duration;
+            localStorage.setItem('selectedMovie', JSON.stringify(movieData));
+
+            // Sync the progress back to the Recent Movies list
+            let recentMovies = JSON.parse(localStorage.getItem('recentMovies')) || [];
+            let index = recentMovies.findIndex(m => m.title === movieData.title);
+            if (index !== -1) {
+                recentMovies[index].currentTime = current;
+                recentMovies[index].duration = duration;
+                localStorage.setItem('recentMovies', JSON.stringify(recentMovies));
+            }
+        }
+    }
+}
+
+// Save silently in the background every 5 seconds, and right before page close
+setInterval(savePlaybackProgress, 5000);
+window.addEventListener('beforeunload', savePlaybackProgress);
+window.addEventListener('pagehide', savePlaybackProgress);

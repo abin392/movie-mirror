@@ -343,7 +343,9 @@ function movieView(element) {
         })),
         // --- NEW: Carry over the exact episode they were on, or default to the main video ---
         lastPlayedLink: existingRecent?.lastPlayedLink || movie.dataset.link1 || "",
-        lastPlayedTitle: existingRecent?.lastPlayedTitle || title
+        lastPlayedTitle: existingRecent?.lastPlayedTitle || title,
+        currentTime: existingRecent?.currentTime || 0, // <--- ADDED
+        duration: existingRecent?.duration || 0        // <--- ADDED
     };
 
     localStorage.setItem('selectedMovie', JSON.stringify(movieData));
@@ -591,10 +593,24 @@ function setupSmartTVNavigation() {
         const heroCarts = Array.from(document.querySelectorAll('.scroller .cart'));
         if (heroCarts.length > 0) navGrid.push(heroCarts);
 
-        const collections = document.querySelectorAll('.movie-collection .movie-container');
-        collections.forEach(container => {
-            const movies = Array.from(container.querySelectorAll('.movies'));
-            if (movies.length > 0) navGrid.push(movies);
+        const collections = document.querySelectorAll('.movie-collection');
+        collections.forEach(collection => {
+            // Only map items if the collection section is actually visible
+            if (collection.style.display !== 'none') {
+
+                // 1. Map the new "Play All" button as its own row above the cards
+                const playAllBtn = collection.querySelector('#play-all-recent-songs');
+                if (playAllBtn) {
+                    navGrid.push([playAllBtn]);
+                }
+
+                // 2. Map the movie/song cards
+                const container = collection.querySelector('.movie-container');
+                if (container) {
+                    const movies = Array.from(container.querySelectorAll('.movies'));
+                    if (movies.length > 0) navGrid.push(movies);
+                }
+            }
         });
     }
 
@@ -617,6 +633,7 @@ function setupSmartTVNavigation() {
         if (currentInner === 'btn') newEl = cell.querySelector('button') || cell;
         else if (currentInner === 'icon-music') newEl = cell.querySelector('#music') || cell;
         else if (currentInner === 'icon-dl') newEl = cell.querySelector('#movie-dots') || cell;
+        else if (currentInner === 'icon-remove') newEl = cell.querySelector('.remove-recent-icon') || cell; // <--- ADD THIS LINE
 
         // Self-heal logic if the card doesn't have the requested button/icon
         if (newEl === cell) currentInner = 'main';
@@ -646,6 +663,14 @@ function setupSmartTVNavigation() {
 
             // Changed from 'center' to 'nearest' so it doesn't force the page position
             targetScrollEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+        } else if (newEl.id === 'play-all-recent-songs') {
+            // NEW: Center the container perfectly when the Play All button is focused
+            const parentSection = newEl.closest('.movie-collection');
+            if (parentSection) {
+                parentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                newEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         } else {
             // Changed here as well for fallback elements
             newEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
@@ -722,8 +747,10 @@ function setupSmartTVNavigation() {
         const cell = navGrid[currentRow][currentCol];
 
         // MAGIC D-PAD LOGIC
+        // D-PAD LOGIC
         if (e.key === 'ArrowDown') {
-            if (currentInner === 'icon-music' || currentInner === 'icon-dl') {
+            // ADDED icon-remove to this check
+            if (currentInner === 'icon-music' || currentInner === 'icon-dl' || currentInner === 'icon-remove') {
                 currentInner = 'main';
             } else if (currentInner === 'main' && cell.querySelector('button')) {
                 currentInner = 'btn';
@@ -737,8 +764,15 @@ function setupSmartTVNavigation() {
         } else if (e.key === 'ArrowUp') {
             if (currentInner === 'btn') {
                 currentInner = 'main';
-            } else if (currentInner === 'main' && (cell.querySelector('#music') || cell.querySelector('#movie-dots'))) {
-                currentInner = cell.querySelector('#movie-dots') ? 'icon-dl' : 'icon-music';
+                // ADDED .remove-recent-icon to the detection condition
+            } else if (currentInner === 'main' && (cell.querySelector('#music') || cell.querySelector('#movie-dots') || cell.querySelector('.remove-recent-icon'))) {
+
+                // ADDED routing logic to focus the specific icon
+                if (cell.querySelector('.remove-recent-icon')) {
+                    currentInner = 'icon-remove';
+                } else {
+                    currentInner = cell.querySelector('#movie-dots') ? 'icon-dl' : 'icon-music';
+                }
             } else {
                 if (currentRow > 0) {
                     nextRow--; currentInner = 'main';
@@ -792,6 +826,9 @@ function setupSmartTVNavigation() {
                     } else if (focusedEl.tagName === 'BUTTON' && focusedEl.closest('.search-order')) {
                         executeSearch();
                     } else if (focusedEl.tagName === 'I' || focusedEl.tagName === 'BUTTON') {
+                        focusedEl.click();
+                    } else if (focusedEl.closest('#recent-movies-section') || focusedEl.closest('#recent-songs-section')) {
+                        // NEW FIX: Safely trigger the inline click event for recent dynamically generated cards
                         focusedEl.click();
                     } else {
                         movieView(focusedEl);
@@ -1294,12 +1331,22 @@ function loadRecentContent() {
                 ? `<p style="color:#00ff88; font-size:0.75rem; margin:-5px 0 10px 0; width:100%; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${movie.lastPlayedTitle}</p>`
                 : ``;
 
+            // --- NEW: Calculate and inject progress bar ---
+            const percentage = (movie.currentTime && movie.duration) ? Math.min((movie.currentTime / movie.duration) * 100, 100) : 0;
+            const progressHTML = (percentage > 0) ? `
+                <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-top: -5px; margin-bottom: 10px; overflow: hidden; pointer-events: none;">
+                    <div style="width: ${percentage}%; height: 100%; background: #00ff88; box-shadow: 0 0 5px rgba(0, 255, 136, 0.5);"></div>
+                </div>
+            ` : '';
+
             div.innerHTML = `
-        <img src="${movie.image}" alt="${movie.title}" loading="lazy" style="pointer-events: none;">
-        <h4>${movie.title}</h4>
-        ${subTitle}
-        <button style="pointer-events: none;">Resume</button>
-    `;
+    <i class="fas fa-times remove-recent-icon" onclick="removeRecentItem(event, 'movie', '${movie.title.replace(/'/g, "\\'")}')"></i>
+    <img src="${movie.image}" alt="${movie.title}" loading="lazy" style="pointer-events: none;">
+    <h4>${movie.title}</h4>
+    ${subTitle}
+    ${progressHTML}
+    <button style="pointer-events: none;">Resume</button>
+`;
 
             div.onclick = function () {
                 let currentRecents = JSON.parse(localStorage.getItem('recentMovies')) || [];
@@ -1319,17 +1366,37 @@ function loadRecentContent() {
     const recentSongs = JSON.parse(localStorage.getItem('recentSongs')) || [];
     const songsSection = document.getElementById('recent-songs-section');
     const songsContainer = document.getElementById('recent-songs-container');
+    const playAllRecentBtn = document.getElementById('play-all-recent-songs'); // <--- Added button reference
 
     if (recentSongs.length > 0 && songsSection && songsContainer) {
+        // --- NEW: Play All Button Logic ---
+        if (playAllRecentBtn) {
+            playAllRecentBtn.onclick = function (e) {
+                e.stopPropagation(); // Prevents accidental clicks bubbling down
+
+                // Convert the whole recent history into a valid playlist format
+                const completePlaylist = recentSongs.map(s => ({
+                    title: s.title,
+                    url: s.url,
+                    image: s.image
+                }));
+
+                localStorage.setItem('currentPlaylist', JSON.stringify(completePlaylist));
+                localStorage.setItem('targetSongIndex', 0); // Start at the first song
+                window.location.href = 'music-viewer.html';
+            };
+        }
+        // ----------------------------------
         songsContainer.innerHTML = '';
         recentSongs.forEach(song => {
             const div = document.createElement('div');
             div.className = 'movies'; // Reusing your movie card styling
             div.innerHTML = `
-                <img src="${song.image}" alt="${song.title}" loading="lazy" style="pointer-events: none;">
-                <h4>${song.title}</h4>
-                <button style="pointer-events: none;">Play</button>
-            `;
+    <i class="fas fa-times remove-recent-icon" onclick="removeRecentItem(event, 'song', '${song.url}')"></i>
+    <img src="${song.image}" alt="${song.title}" loading="lazy" style="pointer-events: none;">
+    <h4>${song.title}</h4>
+    <button style="pointer-events: none;">Play</button>
+`;
             // Play song immediately
             div.onclick = function () {
                 let currentRecents = JSON.parse(localStorage.getItem('recentSongs')) || [];
@@ -1347,3 +1414,24 @@ function loadRecentContent() {
         songsSection.style.display = 'block'; // Reveal the container
     }
 }
+
+
+/* ==========================================
+   REMOVE RECENT ITEMS LOGIC
+========================================== */
+window.removeRecentItem = function (e, type, key) {
+    e.stopPropagation(); // Stops the movie/song from playing when you click delete
+
+    if (type === 'movie') {
+        let currentRecents = JSON.parse(localStorage.getItem('recentMovies')) || [];
+        currentRecents = currentRecents.filter(m => m.title !== key);
+        localStorage.setItem('recentMovies', JSON.stringify(currentRecents));
+    } else if (type === 'song') {
+        let currentRecents = JSON.parse(localStorage.getItem('recentSongs')) || [];
+        currentRecents = currentRecents.filter(s => s.url !== key);
+        localStorage.setItem('recentSongs', JSON.stringify(currentRecents));
+    }
+
+    // Instantly refresh the UI
+    loadRecentContent();
+};

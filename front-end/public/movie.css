@@ -601,6 +601,92 @@ nav .profile-img h3 {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+/* =============================
+   PLAY ALL RECENT SONGS BUTTON
+============================= */
+#play-all-recent-songs {
+    position: absolute;
+    top: 5%;
+    right: 10%;
+    width: 45px;
+    height: 45px;
+    background: #8e44ad;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ==========================================
+   PLAY ALL BUTTON TOOLTIP (PC & TV SUPPORT)
+========================================== */
+#play-all-recent-songs::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%; /* Positions the tooltip right above the button */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px) scale(0.9);
+    background: rgba(31, 11, 46, 0.98);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    border: 1px solid #00ff88; /* Matches your neon green TV focus theme */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+    z-index: 10060; /* Ensures it stays above the expanded modal view */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Add a small arrow pointing down to the button */
+#play-all-recent-songs::before {
+    content: '';
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #00ff88 transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 10061;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Trigger for PC (Hover) and Smart TV (.tv-focus) */
+#play-all-recent-songs:hover::after,
+#play-all-recent-songs.tv-focus::after,
+#play-all-recent-songs:hover::before,
+#play-all-recent-songs.tv-focus::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0) scale(1);
+}
+
+#play-all-recent-songs:hover {
+    transform: scale(1.15);
+    background: #a24be3;
+    box-shadow: 0 6px 20px rgba(142, 68, 173, 0.6);
+}
+
+/* Ensure it works beautifully with your existing Smart TV focus styling */
+#play-all-recent-songs.tv-focus {
+    outline: 3px solid #00ff88 !important;
+    outline-offset: 4px;
+}
+
 .movie-collection .various-title { padding: 15px 25px; color: white; }
 
 .movie-collection .various-title h1 {
@@ -699,6 +785,35 @@ nav .profile-img h3 {
     background: #8e44ad;
     border-color: #8e44ad;
     box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
+}
+
+/* ==========================================
+   RECENT ITEMS REMOVE ICON
+========================================== */
+.movie-collection .movie-container .movies .remove-recent-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: white;
+    background: rgba(255, 51, 102, 0.6);
+    backdrop-filter: blur(4px);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.movie-collection .movie-container .movies .remove-recent-icon:hover,
+.movie-collection .movie-container .movies .remove-recent-icon.tv-focus {
+    background: #ff3366;
+    transform: scale(1.15);
+    box-shadow: 0 4px 15px rgba(255, 51, 102, 0.6);
 }
 
 /* Icons on Movie Cards */
@@ -971,7 +1086,125 @@ nav.search-active .nav-right {
     max-width: 100% !important;
 }
 
+/* =============================
+   PROFESSIONAL "VIEW ALL" & OVERLAY
+============================= */
+.more-circle-btn {
+    min-width: 180px; /* Matches your movie card widths perfectly */
+    height: 250px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(142, 68, 173, 0.1), rgba(42, 14, 60, 0.6));
+    border: 1px solid rgba(142, 68, 173, 0.3);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #ccc;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 
+.more-circle-btn:hover, .more-circle-btn.tv-focus {
+    background: linear-gradient(135deg, rgba(142, 68, 173, 0.5), rgba(94, 43, 109, 0.8));
+    border-color: #00ff88;
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 255, 136, 0.2);
+    color: #fff;
+}
+
+.more-circle-btn i {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #8e44ad;
+    transition: color 0.3s ease;
+}
+
+.more-circle-btn:hover i, .more-circle-btn.tv-focus i {
+    color: #00ff88;
+}
+
+/* Premium Glass Modal Overlay */
+.movie-collection.expanded-z-view {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 95vw;
+    height: 95vh;
+    z-index: 10050;
+    background: rgba(15, 5, 22, 0.95); /* Deep dark background */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 0 100vw rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(142, 68, 173, 0.3);
+    border-radius: 24px;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow-x: scroll;
+}
+
+/* The Animation Trigger Class */
+.movie-collection.expanded-z-view.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.movie-collection.expanded-z-view .movie-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    padding: 60px 20px 40px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Professional Circular Close Button */
+.close-overlay-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #aaa;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10055;
+    transition: all 0.3s ease;
+}
+
+.close-overlay-btn:hover, .close-overlay-btn.tv-focus {
+    background: #ff3366;
+    border-color: #ff3366;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+}
+
+.movie-collection.expanded-z-view .close-overlay-btn {
+    display: flex;
+}
+
+/* =============================
+   EXPANDED VIEW BUTTON SPACING FIX
+============================= */
+/* When the modal opens, slide the Play All button to the left so it sits nicely beside the Close button */
+.movie-collection.expanded-z-view #play-all-recent-songs {
+    right: 90px; /* 25px (close button right) + 45px (close button width) + 20px (gap) = 90px */
+    z-index: 10055; /* Ensure it stays clickable above the modal background */
+}
 
 /* =============================
    RESPONSIVE DESIGN (MEDIA QUERIES)
