@@ -1,0 +1,86 @@
+[
+    {
+        "movieAttributes": {
+            "data-title": "MAIDAAN",
+            "data-img": "img/Hindi movie imgs/maidaan.jpeg",
+            "data-link": "https://aabin-movies.netlify.app/squad.html",
+            "data-link1": "https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4",
+            "data-name": "Rajini",
+            "data-year": "2020",
+            "data-language": "Tamil",
+            "data-link2": "https://res.cloudinary.com/draqsnyyu/video/upload/v1769606951/Dude_uf8am9.mp4",
+            "data-episode1": "Episode 1: The Beginning",
+            "data-time": "30m",
+            "data-link3": "https://res.cloudinary.com/draqsnyyu/video/upload/v1769607810/aquaman_nb0zlz.mp4",
+            "data-episode2": "Episode 2: The Setup",
+            "data-time2": "42m",
+            "data-link4": "https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4",
+            "data-episode3": "Episode 3: The Climax",
+            "data-time3": "2m",
+            "data-link5": "https://res.cloudinary.com/draqsnyyu/video/upload/v1769607858/Darbar_uiy5ja.mp4",
+            "data-episode4": "Episode 4: The End",
+            "data-time4": "4m"
+        },
+        "songAttributes": {
+            "data-img": "img/Hindi movie imgs/maidaan.jpeg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "LIGER",
+            "data-img": "img/Hindi movie imgs/liger.jpeg",
+            "data-link": "https://aabin-movies.netlify.app/squad.html"
+        },
+        "songAttributes": {
+            "data-img": "img/Hindi movie imgs/liger.jpeg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "MY NAME IS KHAN",
+            "data-img": "img/Hindi movie imgs/my name.jpeg",
+            "data-link": "https://aabin-movies.netlify.app/squad.html"
+        },
+        "songAttributes": {
+            "data-img": "img/Hindi movie imgs/my name.jpeg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "ADIPURUSH",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1773575391/adipurush_dpbpmw.jpg",
+            "data-link": "https://aabin-movies.netlify.app/squad.html"
+        },
+        "songAttributes": {
+            "data-img": "img/Hindi movie imgs/adipurush.jpeg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "ARJUN",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1773575368/arjun_kzpvik.jpg",
+            "data-link": "https://aabin-movies.netlify.app/squad.html"
+        },
+        "songAttributes": {
+            "data-img": "img/Hindi movie imgs/arjun.jpeg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "COCKTAIL",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1773575367/cocktail_cdw2mb.jpg"
+        },
+        "songAttributes": {
+            "data-img": "img/Hindi movie imgs/cocktail.jpeg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-episode1": "DEVA",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1773575368/deva_g5bdgv.jpg"
+        },
+        "songAttributes": {
+            "data-img": "img/Hindi movie imgs/deva.jpeg"
+        }
+    }
+]

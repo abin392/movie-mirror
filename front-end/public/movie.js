@@ -1318,100 +1318,112 @@ function loadRecentContent() {
     const moviesSection = document.getElementById('recent-movies-section');
     const moviesContainer = document.getElementById('recent-movies-container');
 
-    if (recentMovies.length > 0 && moviesSection && moviesContainer) {
-        moviesContainer.innerHTML = '';
-        /* Inside loadRecentContent() in movie.js */
+    if (moviesSection && moviesContainer) {
+        if (recentMovies.length > 0) {
+            moviesContainer.innerHTML = '';
+            
+            recentMovies.forEach(movie => {
+                const div = document.createElement('div');
+                div.className = 'movies';
 
-        recentMovies.forEach(movie => {
-            const div = document.createElement('div');
-            div.className = 'movies';
+                // Show a neon green subtitle if they are on a specific episode
+                const subTitle = (movie.lastPlayedTitle && movie.lastPlayedTitle !== movie.title)
+                    ? `<p style="color:#00ff88; font-size:0.75rem; margin:-5px 0 10px 0; width:100%; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${movie.lastPlayedTitle}</p>`
+                    : ``;
 
-            // Show a neon green subtitle if they are on a specific episode
-            const subTitle = (movie.lastPlayedTitle && movie.lastPlayedTitle !== movie.title)
-                ? `<p style="color:#00ff88; font-size:0.75rem; margin:-5px 0 10px 0; width:100%; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${movie.lastPlayedTitle}</p>`
-                : ``;
+                // Calculate and inject progress bar
+                const percentage = (movie.currentTime && movie.duration) ? Math.min((movie.currentTime / movie.duration) * 100, 100) : 0;
+                const progressHTML = (percentage > 0) ? `
+                    <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-top: -5px; margin-bottom: 10px; overflow: hidden; pointer-events: none;">
+                        <div style="width: ${percentage}%; height: 100%; background: #00ff88; box-shadow: 0 0 5px rgba(0, 255, 136, 0.5);"></div>
+                    </div>
+                ` : '';
 
-            // --- NEW: Calculate and inject progress bar ---
-            const percentage = (movie.currentTime && movie.duration) ? Math.min((movie.currentTime / movie.duration) * 100, 100) : 0;
-            const progressHTML = (percentage > 0) ? `
-                <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-top: -5px; margin-bottom: 10px; overflow: hidden; pointer-events: none;">
-                    <div style="width: ${percentage}%; height: 100%; background: #00ff88; box-shadow: 0 0 5px rgba(0, 255, 136, 0.5);"></div>
-                </div>
-            ` : '';
+                div.innerHTML = `
+                    <i class="fas fa-times remove-recent-icon" onclick="removeRecentItem(event, 'movie', '${movie.title.replace(/'/g, "\\'")}')"></i>
+                    <img src="${movie.image}" alt="${movie.title}" loading="lazy" style="pointer-events: none;">
+                    <h4>${movie.title}</h4>
+                    ${subTitle}
+                    ${progressHTML}
+                    <button style="pointer-events: none;">Resume</button>
+                `;
 
-            div.innerHTML = `
-    <i class="fas fa-times remove-recent-icon" onclick="removeRecentItem(event, 'movie', '${movie.title.replace(/'/g, "\\'")}')"></i>
-    <img src="${movie.image}" alt="${movie.title}" loading="lazy" style="pointer-events: none;">
-    <h4>${movie.title}</h4>
-    ${subTitle}
-    ${progressHTML}
-    <button style="pointer-events: none;">Resume</button>
-`;
+                div.onclick = function () {
+                    let currentRecents = JSON.parse(localStorage.getItem('recentMovies')) || [];
+                    currentRecents = currentRecents.filter(m => m.title !== movie.title);
+                    currentRecents.unshift(movie);
+                    localStorage.setItem('recentMovies', JSON.stringify(currentRecents));
 
-            div.onclick = function () {
-                let currentRecents = JSON.parse(localStorage.getItem('recentMovies')) || [];
-                currentRecents = currentRecents.filter(m => m.title !== movie.title);
-                currentRecents.unshift(movie);
-                localStorage.setItem('recentMovies', JSON.stringify(currentRecents));
-
-                localStorage.setItem('selectedMovie', JSON.stringify(movie));
-                window.location.href = 'movie-view.html';
-            };
-            moviesContainer.appendChild(div);
-        });
-        moviesSection.style.display = 'block'; // Reveal the container
+                    localStorage.setItem('selectedMovie', JSON.stringify(movie));
+                    window.location.href = 'movie-view.html';
+                };
+                moviesContainer.appendChild(div);
+            });
+            moviesSection.style.display = 'block'; // Reveal the container
+        } else {
+            // NEW: Instantly hide the container if the list is empty
+            moviesContainer.innerHTML = '';
+            moviesSection.style.display = 'none'; 
+        }
     }
 
     // --- LOAD RECENT SONGS ---
     const recentSongs = JSON.parse(localStorage.getItem('recentSongs')) || [];
     const songsSection = document.getElementById('recent-songs-section');
     const songsContainer = document.getElementById('recent-songs-container');
-    const playAllRecentBtn = document.getElementById('play-all-recent-songs'); // <--- Added button reference
+    const playAllRecentBtn = document.getElementById('play-all-recent-songs');
 
-    if (recentSongs.length > 0 && songsSection && songsContainer) {
-        // --- NEW: Play All Button Logic ---
-        if (playAllRecentBtn) {
-            playAllRecentBtn.onclick = function (e) {
-                e.stopPropagation(); // Prevents accidental clicks bubbling down
+    if (songsSection && songsContainer) {
+        if (recentSongs.length > 0) {
+            // Play All Button Logic
+            if (playAllRecentBtn) {
+                playAllRecentBtn.onclick = function (e) {
+                    e.stopPropagation(); 
+                    const completePlaylist = recentSongs.map(s => ({
+                        title: s.title,
+                        url: s.url,
+                        image: s.image
+                    }));
+                    localStorage.setItem('currentPlaylist', JSON.stringify(completePlaylist));
+                    localStorage.setItem('targetSongIndex', 0); 
+                    window.location.href = 'music-viewer.html';
+                };
+            }
+            
+            songsContainer.innerHTML = '';
+            recentSongs.forEach(song => {
+                const div = document.createElement('div');
+                div.className = 'movies'; 
+                div.innerHTML = `
+                    <i class="fas fa-times remove-recent-icon" onclick="removeRecentItem(event, 'song', '${song.url}')"></i>
+                    <img src="${song.image}" alt="${song.title}" loading="lazy" style="pointer-events: none;">
+                    <h4>${song.title}</h4>
+                    <button style="pointer-events: none;">Play</button>
+                `;
+                
+                div.onclick = function () {
+                    let currentRecents = JSON.parse(localStorage.getItem('recentSongs')) || [];
+                    currentRecents = currentRecents.filter(s => s.url !== song.url);
+                    currentRecents.unshift(song);
+                    localStorage.setItem('recentSongs', JSON.stringify(currentRecents));
 
-                // Convert the whole recent history into a valid playlist format
-                const completePlaylist = recentSongs.map(s => ({
-                    title: s.title,
-                    url: s.url,
-                    image: s.image
-                }));
-
-                localStorage.setItem('currentPlaylist', JSON.stringify(completePlaylist));
-                localStorage.setItem('targetSongIndex', 0); // Start at the first song
-                window.location.href = 'music-viewer.html';
-            };
+                    const playlist = [{ title: song.title, url: song.url, image: song.image }];
+                    localStorage.setItem('currentPlaylist', JSON.stringify(playlist));
+                    localStorage.setItem('targetSongIndex', 0);
+                    window.location.href = 'music-viewer.html';
+                };
+                songsContainer.appendChild(div);
+            });
+            songsSection.style.display = 'block'; // Reveal the container
+            
+            // Re-show the Play All button if it was previously hidden
+            if (playAllRecentBtn) playAllRecentBtn.style.display = 'flex';
+        } else {
+            // NEW: Instantly hide the container and Play All button if the list is empty
+            songsContainer.innerHTML = '';
+            songsSection.style.display = 'none'; 
+            if (playAllRecentBtn) playAllRecentBtn.style.display = 'none';
         }
-        // ----------------------------------
-        songsContainer.innerHTML = '';
-        recentSongs.forEach(song => {
-            const div = document.createElement('div');
-            div.className = 'movies'; // Reusing your movie card styling
-            div.innerHTML = `
-    <i class="fas fa-times remove-recent-icon" onclick="removeRecentItem(event, 'song', '${song.url}')"></i>
-    <img src="${song.image}" alt="${song.title}" loading="lazy" style="pointer-events: none;">
-    <h4>${song.title}</h4>
-    <button style="pointer-events: none;">Play</button>
-`;
-            // Play song immediately
-            div.onclick = function () {
-                let currentRecents = JSON.parse(localStorage.getItem('recentSongs')) || [];
-                currentRecents = currentRecents.filter(s => s.url !== song.url);
-                currentRecents.unshift(song);
-                localStorage.setItem('recentSongs', JSON.stringify(currentRecents));
-
-                const playlist = [{ title: song.title, url: song.url, image: song.image }];
-                localStorage.setItem('currentPlaylist', JSON.stringify(playlist));
-                localStorage.setItem('targetSongIndex', 0);
-                window.location.href = 'music-viewer.html';
-            };
-            songsContainer.appendChild(div);
-        });
-        songsSection.style.display = 'block'; // Reveal the container
     }
 }
 
@@ -1435,3 +1447,103 @@ window.removeRecentItem = function (e, type, key) {
     // Instantly refresh the UI
     loadRecentContent();
 };
+
+
+
+
+
+/* ==========================================
+   UNIVERSAL JSON LOADER FOR ALL CATEGORIES
+========================================== */
+async function loadMovieCategory(jsonFileName, containerId) {
+    try {
+        const response = await fetch(jsonFileName);
+        const moviesData = await response.json();
+        const container = document.getElementById(containerId);
+        
+        if (!container) return;
+        
+        container.innerHTML = ''; // Clear loading state
+
+        moviesData.forEach(data => {
+            const movieDiv = document.createElement('div');
+            movieDiv.className = 'movies';
+
+            // 1. Inject Movie Attributes
+            for (const [key, value] of Object.entries(data.movieAttributes)) {
+                movieDiv.setAttribute(key, value);
+            }
+
+            // 2. Build Download Icon
+            const downloadIcon = document.createElement('i');
+            downloadIcon.className = 'fas fa-download';
+            downloadIcon.id = 'movie-dots';
+            downloadIcon.setAttribute('onclick', 'addToDownloads(this)');
+            movieDiv.appendChild(downloadIcon);
+
+            // 3. Build Music Icon
+            if (data.songAttributes && Object.keys(data.songAttributes).length > 0) {
+                const musicIcon = document.createElement('i');
+                musicIcon.className = 'fas fas fa-music';
+                musicIcon.id = 'music';
+                musicIcon.setAttribute('onclick', 'openMusicPlayer(this)');
+                
+                for (const [key, value] of Object.entries(data.songAttributes)) {
+                    musicIcon.setAttribute(key, value);
+                }
+                movieDiv.appendChild(musicIcon);
+            }
+
+            // 4. Build Image
+            const img = document.createElement('img');
+            img.src = data.movieAttributes['data-img'];
+            img.setAttribute('onclick', 'movieView(this)');
+            img.setAttribute('alt', data.movieAttributes['data-title'] || 'Movie Poster');
+            img.setAttribute('loading', 'lazy');
+            movieDiv.appendChild(img);
+
+            // 5. Build Title
+            const h4 = document.createElement('h4');
+            h4.textContent = data.movieAttributes['data-title'] || 'Unknown Title';
+            movieDiv.appendChild(h4);
+
+            // 6. Build Watch Button
+            const btn = document.createElement('button');
+            btn.setAttribute('onclick', 'movieView(this)');
+            btn.textContent = 'Watch';
+            movieDiv.appendChild(btn);
+
+            container.appendChild(movieDiv);
+        });
+        
+        return true; // Signal completion
+    } catch (error) {
+        console.error(`JSON Engine Error: Failed to load ${jsonFileName}`, error);
+        return false;
+    }
+}
+
+/* ==========================================
+   INITIALIZE ALL COLLECTIONS ON LOAD
+========================================== */
+document.addEventListener("DOMContentLoaded", async () => {
+    // Run all fetches in parallel for maximum loading speed
+    await Promise.all([
+        loadMovieCategory('Top tamil movies.json', 'top-tamil-movies-container'),
+        loadMovieCategory('Top hindi movies.json', 'top-hindi-movies-container'),
+    //=====>>>>//loadMovieCategory('Top tamil horror movies.json', 'top-tamil-horror-movies-container'),
+        // Add your other JSON files here as you create them:
+        // loadMovieCategory('Top malaiyalam movies.json', 'top-malaiyalam-movies-container'),
+        // loadMovieCategory('Top english movies.json', 'top-english-movies-container')
+    ]);
+
+    // ==========================================
+    // CRITICAL SYNC: Re-train Global Systems
+    // ==========================================
+    // Fire this only AFTER all JSON data is completely painted on the screen
+    setTimeout(() => {
+        if (typeof trainAssistantFromPage === 'function') trainAssistantFromPage();
+        if (typeof populateSearchOptions === 'function') populateSearchOptions();
+        if (typeof refreshGrid === 'function') refreshGrid(); // Re-index TV Grid
+    }, 800);
+});
