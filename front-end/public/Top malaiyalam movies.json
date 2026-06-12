@@ -1,0 +1,33 @@
+[
+    {
+        "movieAttributes": {
+            "data-title": "MANJUMMEL BOYS (2024)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1780593607/manjumal_boys_ialq4s.jpg",
+            "data-name": "Soubin Shahir, Sreenath Bhasi"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "DRISHYAM 1 (2013)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1780593806/Drishyam_Dubbed_nrwwe9.jpg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "PREMAM (2015)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1780594021/Premam_sluwgb.jpg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "AAVESHAM (2024)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781274656/14119730_dvgctx.jpg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "KUMBALANGI NIGHTS (2019)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781274931/386b5c86a2a594f0b6b659d039a21b19_yfz1bz.jpg"
+        }
+    }
+]

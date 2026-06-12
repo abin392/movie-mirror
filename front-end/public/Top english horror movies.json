@@ -1,0 +1,26 @@
+[
+    {
+        "movieAttributes": {
+            "data-title": "CONJURING (2013)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781278138/images_c3phm8.jpg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "SCREAM (1996)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781278379/122280-1_cb2szs.webp"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "BADADOOK (2014)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781278694/dcz16q2-5419d46a-bd3f-4e86-a675-281386754fed_j6dunq.jpg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "PSYCHO (1960)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781278883/HD-wallpaper-movie-psycho-1960_d4ep9r.jpg"
+        }
+    }
+]

@@ -1453,7 +1453,7 @@ window.removeRecentItem = function (e, type, key) {
 
 
 /* ==========================================
-   UNIVERSAL JSON LOADER FOR ALL CATEGORIES
+   UNIVERSAL JSON LOADER FOR ALL CATEGORIES (UPGRADED)
 ========================================== */
 async function loadMovieCategory(jsonFileName, containerId) {
     try {
@@ -1469,8 +1469,9 @@ async function loadMovieCategory(jsonFileName, containerId) {
             const movieDiv = document.createElement('div');
             movieDiv.className = 'movies';
 
-            // 1. Inject Movie Attributes
-            for (const [key, value] of Object.entries(data.movieAttributes)) {
+            // 1. Inject Movie Attributes (Resilient to singular/plural JSON typos)
+            const movieAttrs = data.movieAttributes || data.movieAttribute || {};
+            for (const [key, value] of Object.entries(movieAttrs)) {
                 movieDiv.setAttribute(key, value);
             }
 
@@ -1481,14 +1482,15 @@ async function loadMovieCategory(jsonFileName, containerId) {
             downloadIcon.setAttribute('onclick', 'addToDownloads(this)');
             movieDiv.appendChild(downloadIcon);
 
-            // 3. Build Music Icon
-            if (data.songAttributes && Object.keys(data.songAttributes).length > 0) {
+            // 3. Build Music Icon (Safely checks if songs exist)
+            const songAttrs = data.songAttributes || data.songAttribute || {};
+            if (Object.keys(songAttrs).length > 0) {
                 const musicIcon = document.createElement('i');
                 musicIcon.className = 'fas fas fa-music';
                 musicIcon.id = 'music';
                 musicIcon.setAttribute('onclick', 'openMusicPlayer(this)');
                 
-                for (const [key, value] of Object.entries(data.songAttributes)) {
+                for (const [key, value] of Object.entries(songAttrs)) {
                     musicIcon.setAttribute(key, value);
                 }
                 movieDiv.appendChild(musicIcon);
@@ -1496,15 +1498,15 @@ async function loadMovieCategory(jsonFileName, containerId) {
 
             // 4. Build Image
             const img = document.createElement('img');
-            img.src = data.movieAttributes['data-img'];
+            img.src = movieAttrs['data-img'] || '';
             img.setAttribute('onclick', 'movieView(this)');
-            img.setAttribute('alt', data.movieAttributes['data-title'] || 'Movie Poster');
+            img.setAttribute('alt', movieAttrs['data-title'] || 'Movie Poster');
             img.setAttribute('loading', 'lazy');
             movieDiv.appendChild(img);
 
             // 5. Build Title
             const h4 = document.createElement('h4');
-            h4.textContent = data.movieAttributes['data-title'] || 'Unknown Title';
+            h4.textContent = movieAttrs['data-title'] || 'Unknown Title';
             movieDiv.appendChild(h4);
 
             // 6. Build Watch Button
@@ -1531,10 +1533,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     await Promise.all([
         loadMovieCategory('Top tamil movies.json', 'top-tamil-movies-container'),
         loadMovieCategory('Top hindi movies.json', 'top-hindi-movies-container'),
-    //=====>>>>//loadMovieCategory('Top tamil horror movies.json', 'top-tamil-horror-movies-container'),
-        // Add your other JSON files here as you create them:
-        // loadMovieCategory('Top malaiyalam movies.json', 'top-malaiyalam-movies-container'),
-        // loadMovieCategory('Top english movies.json', 'top-english-movies-container')
+        loadMovieCategory('Top malaiyalam movies.json', 'top-malaiyalam-movies-container'),
+        loadMovieCategory('Top tamil horror movies.json', 'top-tamil-horror-movies-container'),
+        loadMovieCategory('Top english horror movies.json', 'top-english-horror-movies-container'),
+        loadMovieCategory('Top english movies.json', 'top-english-movies-container')
     ]);
 
     // ==========================================

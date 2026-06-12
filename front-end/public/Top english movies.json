@@ -1,0 +1,40 @@
+[
+    {
+        "movieAttributes": {
+            "data-title": "INTERSTELLAR: OCEAN OF STARS (2014)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781279232/thumb-1920-546680_fa8bwj.jpg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "THE DARK KNIGHT (2008)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781279632/MV5BNTQwODYzMDg0NV5BMl5BanBnXkFtZTcwMzcxMTk2Mw._V1__zmghw6.jpg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "NO COUNTRY FOR OLD MEN (2007)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781279936/MV5BMTk3OTEyNjk1M15BMl5BanBnXkFtZTcwNTgwMTI2MQ._V1__ecqxxo.jpg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "INCEPTION (2010)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781280092/leonardo_dicaprio_in_inception-hd_lw6xkf.webp"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "DEPARTED (2006)",
+            "data-img": "https://res.cloudinary.com/draqsnyyu/image/upload/v1781280309/1125351_zlrqxw.jpg"
+        }
+    },
+    {
+        "movieAttributes": {
+            "data-title": "CAPTAIN AMERICA: THE WINTER SOLDIER (2014)",
+            "data-img": "img/captan america.jpeg",
+            "data-name": "CHRIS EVANS",
+            "data-year": "2014"
+        }
+    }
+]
