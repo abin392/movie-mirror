@@ -595,6 +595,126 @@ body:has(#fullscreenContainer:not(.custom-fullscreen)) .tv-remote-tooltip {
     display: none;
 }
 
+/* =============================
+   FULLSCREEN TOP CONTROLS (BACK ARROW & TITLE)
+============================= */
+.top-controls {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 100;
+    pointer-events: auto; /* Allow clicking */
+}
+
+/* Hide the top controls completely when NOT in fullscreen */
+#fullscreenContainer:not(.custom-fullscreen) .top-controls {
+    display: none !important;
+    pointer-events: none !important;
+}
+
+#fsTitle {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 15px rgba(0,0,0,1); /* Deep shadow for readability over video */
+    background: linear-gradient(to right, #ffffff, #dcdde1);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Custom dimensions for the Back Button to balance the top left corner */
+#fsBackBtn {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#fsBackBtn:hover, #fsBackBtn.tv-focused {
+    background: var(--primary-purple);
+    border-color: #ffffff;
+    transform: scale(1.1);
+}
+
+
+/* =============================
+   CINEMATIC SKIP RIPPLE (LEFT/RIGHT)
+============================= */
+.skip-ripple {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0px; /* Starts collapsed */
+    height: 300px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.4rem;
+    opacity: 0;
+    pointer-events: none; /* Prevents blocking video clicks */
+    z-index: 1000; /* Always sits on top */
+    transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
+    overflow: hidden;
+}
+
+/* Left Curve (Reverse) */
+.skip-ripple.left {
+    left: 0;
+    border-top-right-radius: 200px;
+    border-bottom-right-radius: 200px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    background: linear-gradient(90deg, rgba(142, 68, 173, 0.6) 0%, rgba(0,0,0,0) 100%);
+}
+
+/* Right Curve (Forward) */
+.skip-ripple.right {
+    right: 0;
+    border-top-left-radius: 200px;
+    border-bottom-left-radius: 200px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    background: linear-gradient(-90deg, rgba(142, 68, 173, 0.6) 0%, rgba(0,0,0,0) 100%);
+}
+
+/* The Expansion Animation */
+.skip-ripple.show {
+    opacity: 1;
+    width: 160px; /* Pops out to this width */
+}
+
+/* Inner Text & Icon Animation */
+.skip-ripple-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 0.3s ease;
+    transition-delay: 0.1s;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.skip-ripple.show .skip-ripple-content {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.skip-ripple i {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+
 /* --- Responsive Timer/Layout --- */
 @media (max-width: 768px) {
     #movieTitle {

@@ -58,10 +58,24 @@ function playSong(index) {
     titleDisplay.innerText = song.title;
     imgDisplay.src = song.image;
 
+    // ==========================================
+    // NEW: UPDATE HEAD TITLE AND FAVICON
+    // ==========================================
+    document.title = song.title; // Updates the browser tab text
+    
+    const favicon = document.querySelector('link[rel="icon"]');
+    if (favicon && song.image) {
+        favicon.href = song.image; // Updates the browser tab image
+    }
+    // ==========================================
+
+    // ---> ADD THIS LINE HERE <---
+    updateMusicMediaSession(song); 
+
     updateCardBackground(imgDisplay);
 
     // ==========================================
-    // NEW: RECENTLY PLAYED SONGS LOGIC
+    // RECENTLY PLAYED SONGS LOGIC
     // ==========================================
     let recentSongs = JSON.parse(localStorage.getItem('recentSongs')) || [];
     recentSongs = recentSongs.filter(s => s.url !== song.url); // Remove duplicate
@@ -515,5 +529,48 @@ function startOnboardingTour() {
 if (!localStorage.getItem('hasSeenMusicTour')) {
     if (playlist && playlist.length > 0) {
         startOnboardingTour();
+    }
+}
+
+
+
+/* ==========================================
+   OS MEDIA CONTROLS (LOCK SCREEN & NOTIFICATIONS)
+========================================== */
+function updateMusicMediaSession(song) {
+    if ('mediaSession' in navigator) {
+        // 1. Send Title and Image to the OS Lock Screen
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: song.title,
+            artist: 'Abin Movie Mirror',
+            album: 'Music Player',
+            artwork: [
+                // Providing a high-res image triggers the OS's native lock-screen ambilight
+                { src: song.image || 'img/cropped_circle_image (8).png', sizes: '512x512', type: 'image/jpeg' }
+            ]
+        });
+
+        // 2. Link Lock Screen buttons to your existing HTML buttons
+        navigator.mediaSession.setActionHandler('play', () => {
+            audioPlayer.play();
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+            audioPlayer.pause();
+        });
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+            document.getElementById('prevBtn').click();
+        });
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+            document.getElementById('nextBtn').click();
+        });
+        
+        // 3. Allow users to scrub through the timeline from their lock screen
+        navigator.mediaSession.setActionHandler('seekto', (details) => {
+            if (details.fastSeek && ('fastSeek' in audioPlayer)) {
+                audioPlayer.fastSeek(details.seekTime);
+            } else {
+                audioPlayer.currentTime = details.seekTime;
+            }
+        });
     }
 }

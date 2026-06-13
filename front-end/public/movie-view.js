@@ -60,8 +60,8 @@ function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.PLAYING) {
         document.getElementById('playIcon').classList.replace('fa-play', 'fa-pause');
         startYTProgress();
-        showUI(); 
-        
+        showUI();
+
         // --- NEW: RESUME YOUTUBE LOGIC ---
         if (globalResumeTime > 0 && globalResumeTime < ytPlayer.getDuration() - 5) {
             ytPlayer.seekTo(globalResumeTime, true);
@@ -109,12 +109,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const movieData = JSON.parse(savedMovie);
-    globalResumeTime = movieData.currentTime || 0; // <--- ADD THIS LINE
+    globalResumeTime = movieData.currentTime || 0;
     renderMovieDetails(movieData);
     renderEpisodes(movieData);
-    // --- UPDATED: Start from the specific episode they left off on ---
+
     setupInitialVideo(movieData.lastPlayedLink || movieData.video);
-    document.getElementById('movieTitle').textContent = movieData.lastPlayedTitle || movieData.title;
+
+    // Determine the active title
+    const activeTitle = movieData.lastPlayedTitle || movieData.title;
+    document.getElementById('movieTitle').textContent = activeTitle;
+
+    // ---> ADD THIS LINE <---
+    const fsTitleEl = document.getElementById('fsTitle');
+    if (fsTitleEl) fsTitleEl.textContent = activeTitle;
+
+    // ==========================================
+    // NEW: UPDATE HEAD TITLE AND FAVICON
+    // ==========================================
+    document.title = activeTitle; // Updates the browser tab text
+
+    const favicon = document.querySelector('link[rel="icon"]');
+    if (favicon && movieData.image) {
+        favicon.href = movieData.image; // Updates the browser tab image
+    }
+    // ==========================================
+
+    // ---> ADD THIS LINE HERE <---
+    updateOSMediaSession(activeTitle, movieData.image);
+
     makeElementsFocusable();
 
     // TV Auto-focus
@@ -150,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     introTip.style.top = `${rect.top - 45}px`;
                 }
-                
+
                 introTip.style.opacity = '1';
 
                 // Fade out and safely remove after 5 seconds
@@ -162,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Save to localStorage so it only shows on the very first visit
                 localStorage.setItem('hasSeenFullscreenAlert', 'true');
             }
-        }, 1500); 
+        }, 1500);
     }
 });
 
@@ -256,12 +278,20 @@ function setupInitialVideo(url) {
 
 function changeEpisode(url, title) {
     progressBar.style.width = '0%';
-    bufferBar.style.width = '0%'; // Reset buffer view
-    globalResumeTime = 0; // <--- ADD THIS: Prevent resuming on a fresh episode
+    bufferBar.style.width = '0%';
+    globalResumeTime = 0;
 
-    playMedia(url); // Uses the new smart function
+    playMedia(url);
 
     document.getElementById('movieTitle').textContent = title;
+
+    // ---> ADD THIS LINE <---
+    const fsTitleEl = document.getElementById('fsTitle');
+    if (fsTitleEl) fsTitleEl.textContent = title;
+
+    // --- NEW: UPDATE BROWSER TAB TITLE FOR EPISODES ---
+    document.title = title;
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // --- NEW: SAVE EPISODE PROGRESS STATE GLOBALLY ---
@@ -271,6 +301,9 @@ function changeEpisode(url, title) {
         movieData.lastPlayedLink = url;
         movieData.lastPlayedTitle = title;
         localStorage.setItem('selectedMovie', JSON.stringify(movieData));
+
+        // ---> ADD THIS LINE HERE <---
+        updateOSMediaSession(title, movieData.image);
 
         // Sync with Recently Watched so movie.html knows immediately
         let recentMovies = JSON.parse(localStorage.getItem('recentMovies')) || [];
@@ -295,26 +328,114 @@ function togglePlay() {
     showUI();
 }
 
-function seekForward() {
-    if (currentPlaybackMode === 'YOUTUBE' && ytPlayer) {
-        ytPlayer.seekTo(ytPlayer.getCurrentTime() + 10, true);
-    } else {
-        video.currentTime = Math.min(video.duration, video.currentTime + 10);
+// --- Accumulator variables for rapid skipping ---
+let skipAccumulator = 0;
+let skipResetTimer = null;
+let skipRippleTimeout = null;
+
+// NEW: Dynamically render and trigger the side-curve animation
+function showSkipRipple(direction, time) {
+    let rippleLeft = document.getElementById('skip-ripple-left');
+    let rippleRight = document.getElementById('skip-ripple-right');
+    const container = document.getElementById('fullscreenContainer');
+
+    // 1. Create the ripples instantly if they don't exist yet
+    if (!rippleLeft) {
+        rippleLeft = document.createElement('div');
+        rippleLeft.id = 'skip-ripple-left';
+        rippleLeft.className = 'skip-ripple left';
+        rippleLeft.innerHTML = `<div class="skip-ripple-content"><i class="fas fa-backward"></i> <span class="skip-text"></span></div>`;
+        container.appendChild(rippleLeft);
+        
+        rippleRight = document.createElement('div');
+        rippleRight.id = 'skip-ripple-right';
+        rippleRight.className = 'skip-ripple right';
+        rippleRight.innerHTML = `<div class="skip-ripple-content"><i class="fas fa-forward"></i> <span class="skip-text"></span></div>`;
+        container.appendChild(rippleRight);
     }
-    showAlert("+10s ⏩");
-    showUI();
+
+    // 2. Reset animations immediately for rapid clicking
+    rippleLeft.classList.remove('show');
+    rippleRight.classList.remove('show');
+    clearTimeout(skipRippleTimeout);
+
+    // Force CSS reflow so the animation restarts smoothly from 0
+    void rippleLeft.offsetWidth; 
+    void rippleRight.offsetWidth;
+
+    // 3. Inject the text and pop open the correct side
+    if (direction === 'forward') {
+        rippleRight.querySelector('.skip-text').innerText = `+${time}s`;
+        rippleRight.classList.add('show');
+    } else {
+        rippleLeft.querySelector('.skip-text').innerText = `${time}s`; // Accumulator is already negative (e.g., -10s)
+        rippleLeft.classList.add('show');
+    }
+
+    // 4. Auto-collapse the curve after 800ms (like the YouTube app)
+    skipRippleTimeout = setTimeout(() => {
+        rippleLeft.classList.remove('show');
+        rippleRight.classList.remove('show');
+    }, 800);
+}
+
+function seekForward() {
+    if (currentPlaybackMode === 'YOUTUBE' && ytPlayer && typeof ytPlayer.getDuration === 'function') {
+        const total = ytPlayer.getDuration();
+        const newTime = Math.min(total, ytPlayer.getCurrentTime() + 10);
+        ytPlayer.seekTo(newTime, true);
+        
+        if (total > 0) {
+            progressBar.style.width = `${(newTime / total) * 100}%`;
+            currentTimeDisplay.textContent = formatTime(newTime);
+        }
+    } else if (video && video.duration) {
+        video.currentTime = Math.min(video.duration, video.currentTime + 10);
+        
+        progressBar.style.width = `${(video.currentTime / video.duration) * 100}%`;
+        currentTimeDisplay.textContent = formatTime(video.currentTime);
+    }
+
+    // Skip Math & Visual Trigger
+    clearTimeout(skipResetTimer);
+    if (skipAccumulator < 0) skipAccumulator = 0; 
+    skipAccumulator += 10;
+    
+    showSkipRipple('forward', skipAccumulator); // <-- Triggers the new right curve
+    
+    skipResetTimer = setTimeout(() => { skipAccumulator = 0; }, 1500);
+    // Change this last line:
+    hideUI();
 }
 
 function seekBackward() {
-    if (currentPlaybackMode === 'YOUTUBE' && ytPlayer) {
-        ytPlayer.seekTo(Math.max(0, ytPlayer.getCurrentTime() - 10), true);
-    } else {
+    if (currentPlaybackMode === 'YOUTUBE' && ytPlayer && typeof ytPlayer.getDuration === 'function') {
+        const total = ytPlayer.getDuration();
+        const newTime = Math.max(0, ytPlayer.getCurrentTime() - 10);
+        ytPlayer.seekTo(newTime, true);
+        
+        if (total > 0) {
+            progressBar.style.width = `${(newTime / total) * 100}%`;
+            currentTimeDisplay.textContent = formatTime(newTime);
+        }
+    } else if (video && video.duration) {
         video.currentTime = Math.max(0, video.currentTime - 10);
+        
+        progressBar.style.width = `${(video.currentTime / video.duration) * 100}%`;
+        currentTimeDisplay.textContent = formatTime(video.currentTime);
     }
-    showAlert("⏪ -10s");
-    showUI();
-}
 
+    // Skip Math & Visual Trigger
+    clearTimeout(skipResetTimer);
+    if (skipAccumulator > 0) skipAccumulator = 0;
+    skipAccumulator -= 10; 
+    
+    showSkipRipple('backward', skipAccumulator); // <-- Triggers the new left curve
+    
+    skipResetTimer = setTimeout(() => { skipAccumulator = 0; }, 1500);
+    // Change this last line:
+    hideUI();
+}
 
 
 // Ensure clicking the background pauses/plays the video properly
@@ -414,7 +535,7 @@ video.addEventListener('timeupdate', () => {
 
 video.addEventListener('loadedmetadata', () => {
     durationTimeDisplay.textContent = formatTime(video.duration);
-    
+
     // --- NEW: RESUME MP4 LOGIC ---
     if (globalResumeTime > 0 && globalResumeTime < video.duration - 5) {
         video.currentTime = globalResumeTime;
@@ -517,6 +638,23 @@ function showUI() {
     }, 2500);
 }
 
+function hideUI() {
+    clearTimeout(uiTimeout); // Stop the UI from auto-showing
+    
+    if (overlay) {
+        overlay.style.opacity = "0";
+        overlay.style.pointerEvents = "none";
+    }
+    if (container) {
+        container.style.cursor = "none";
+    }
+    
+    // Clear TV focus and tooltips so no random glowing rings remain on screen
+    document.querySelectorAll('.tv-focused').forEach(el => el.classList.remove('tv-focused'));
+    const tt = document.querySelector('.tv-remote-tooltip');
+    if (tt) tt.style.opacity = '0';
+}
+
 // This function remains in your movie-view.js
 // This function remains in your movie-view.js
 function toggleCustomFullscreen() {
@@ -542,13 +680,30 @@ function toggleCustomFullscreen() {
     if (currentPlaybackMode === 'YOUTUBE') {
         if (typeof updateAmbilightUI === 'function') updateAmbilightUI();
     }
+    // --- NEW: Refresh TV navigation array to include/hide the Top-Left Back Button ---
+    if (typeof initTVNavigation === 'function') {
+        initTVNavigation();
+        // Clear focus safely to prevent the remote from getting "lost"
+        document.querySelectorAll('.tv-focused').forEach(el => el.classList.remove('tv-focused'));
+        currentRow = -1; 
+    }
 }
+
+let alertTimeout; // Stores the active timer so we can clear it
 
 function showAlert(message) {
     const alertBox = document.getElementById("custom-alert");
     document.getElementById("alert-text").innerText = message;
+    
     alertBox.classList.add("show");
-    setTimeout(() => alertBox.classList.remove("show"), 3000);
+    
+    // Clear the previous hide timer every time a new alert comes in
+    clearTimeout(alertTimeout);
+    
+    // Start a fresh 3-second timer
+    alertTimeout = setTimeout(() => {
+        alertBox.classList.remove("show");
+    }, 3000);
 }
 
 function formatTime(seconds) {
@@ -604,12 +759,13 @@ let focusTimeout = null;
 let tvTooltip = null; // The floating name label
 
 function initTVNavigation() {
-    // 1. Create the Tooltip Element dynamically
-    tvTooltip = document.createElement('div');
-    tvTooltip.className = 'tv-remote-tooltip';
-    document.body.appendChild(tvTooltip);
+    if (!tvTooltip) {
+        tvTooltip = document.createElement('div');
+        tvTooltip.className = 'tv-remote-tooltip';
+        document.body.appendChild(tvTooltip);
+    }
 
-    // 2. Map the buttons
+    const fsBackBtn = document.getElementById('fsBackBtn');
     const prevBtn = document.querySelector('.main-controls .nav-btn:nth-child(1)');
     const playBtn = document.querySelector('.play-btn');
     const nextBtn = document.querySelector('.main-controls .nav-btn:nth-child(3)');
@@ -617,7 +773,7 @@ function initTVNavigation() {
     const volume = document.getElementById('volumeSlider');
     const fullscreen = document.querySelector('.fullscreen-btn');
 
-    // 3. Set custom names for the TV Tooltip
+    if (fsBackBtn) fsBackBtn.dataset.tvName = "Exit Full Screen";
     if (prevBtn) prevBtn.dataset.tvName = "Previous Episode";
     if (playBtn) playBtn.dataset.tvName = "Play / Pause";
     if (nextBtn) nextBtn.dataset.tvName = "Next Episode";
@@ -625,13 +781,19 @@ function initTVNavigation() {
     if (volume) volume.dataset.tvName = "Volume Control";
     if (fullscreen) fullscreen.dataset.tvName = "Full Screen Option";
 
-    // 4. Organize into strict vertical Rows for Up/Down navigation
-    tvRows = [
-        [prevBtn, playBtn, nextBtn].filter(Boolean), // Row 0: Main Controls
-        [timeline].filter(Boolean),                  // Row 1: Timeline
-        [volume].filter(Boolean),                    // Row 2: Volume
-        [fullscreen].filter(Boolean)                 // Row 3: Fullscreen
-    ];
+    tvRows = [];
+    
+    // Check if we are currently in fullscreen
+    const isFull = document.getElementById('fullscreenContainer').classList.contains('custom-fullscreen');
+    
+    // If in fullscreen, add the Top Back Button as the very first row
+    if (isFull && fsBackBtn) tvRows.push([fsBackBtn]); 
+    
+    // Add the rest of the rows
+    tvRows.push([prevBtn, playBtn, nextBtn].filter(Boolean));
+    tvRows.push([timeline].filter(Boolean));                  
+    tvRows.push([volume].filter(Boolean));                    
+    tvRows.push([fullscreen].filter(Boolean));                
 }
 
 document.addEventListener("DOMContentLoaded", initTVNavigation);
@@ -669,51 +831,41 @@ let lastEnterTime = 0;
 
 // --- The Keydown Listener ---
 document.addEventListener('keydown', (e) => {
-
-    // 1. STRICT DEVICE DETECTION (Allows ONLY PCs & Laptops. Blocks Mobile, Tablets, & TVs)
+    // 1. STRICT DEVICE DETECTION
     const ua = navigator.userAgent;
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobi|Tablet/i.test(ua);
     const isMacTablet = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
     const isSmartTV = /TV|SmartTV|Web0S|Tizen|Roku|Android TV|BRAVIA|Viera/i.test(ua);
 
-    // If it is a phone, tablet, OR Smart TV, block this keyboard logic completely.
-    if (isMobile || isMacTablet || isSmartTV) {
-        return;
-    }
+    if (isMobile || isMacTablet || isSmartTV) return;
 
-    // 2. PAGE BODY PROTECTION LOGIC (Allows normal webpage scrolling on PC)
+    // 2. PAGE BODY PROTECTION LOGIC
     const isFullscreen = container.classList.contains('custom-fullscreen');
 
     if (!isFullscreen) {
         const isHovering = container.matches(':hover');
         const isFocused = container.contains(document.activeElement);
-        if (!isHovering && !isFocused) {
-            return; // Allow the spacebar and arrows to scroll the page normally
-        }
+        if (!isHovering && !isFocused) return; 
     }
 
     const code = e.keyCode;
     const isInput = ['BUTTON', 'INPUT', 'TEXTAREA'].includes(document.activeElement.tagName) && e.target.id !== 'volumeSlider';
 
-    // --- ADD THIS LINE ---
-    // If the user is typing in a text box (like a search bar), ignore video hotkeys
     if (isInput) return;
 
-    // ==========================================
-    // NEW: DOUBLE-TAP (ENTER) FOR TV REMOTE 
-    // ==========================================
+    // DOUBLE-TAP (ENTER) FOR TV REMOTE 
     if (code === TV_KEYS.ENTER) {
         const now = Date.now();
-        if (now - lastEnterTime < 400) { // If pressed twice within 400ms
+        if (now - lastEnterTime < 400) { 
             e.preventDefault();
             toggleCustomFullscreen();
-            lastEnterTime = 0; // Reset the timer
-            return; 
+            lastEnterTime = 0; 
+            return;
         }
         lastEnterTime = now;
     }
 
-    // 3. GLOBAL HOTKEYS 
+    // GLOBAL HOTKEYS 
     if (code === 32 || code === TV_KEYS.PLAY_PAUSE) {
         e.preventDefault();
         togglePlay();
@@ -721,13 +873,11 @@ document.addEventListener('keydown', (e) => {
         return;
     }
 
-    // --- RESTORED: "A" Key for Fullscreen ---
     if (code === TV_KEYS.A_KEY || code === 65) {
         e.preventDefault();
         toggleCustomFullscreen();
         return;
     }
-    // ----------------------------------------
 
     if ([TV_KEYS.BACK, TV_KEYS.BACK_ALT, TV_KEYS.BACK_TIZEN].includes(code)) {
         if (isFullscreen) {
@@ -737,35 +887,33 @@ document.addEventListener('keydown', (e) => {
         return;
     }
 
-
     // 3. Cinematic / Wake-up Logic
     const isFocusVisible = document.querySelector('.tv-focused');
 
     if (overlay.style.opacity === "0" || overlay.style.opacity === "" || !isFocusVisible) {
-        if (code === TV_KEYS.ENTER) togglePlay();
-        else if (code === TV_KEYS.LEFT) seekBackward();
-        else if (code === TV_KEYS.RIGHT) seekForward();
+        if (code === TV_KEYS.ENTER) {
+            togglePlay();
+            updateFocusUI();
+        } else if (code === TV_KEYS.LEFT) {
+            seekBackward(); // <-- Skips & stays hidden
+        } else if (code === TV_KEYS.RIGHT) {
+            seekForward(); // <-- Skips & stays hidden
+        } else {
+            let playRow = tvRows.findIndex(row => row.some(el => el.classList && el.classList.contains('play-btn')));
+            if (playRow === -1) playRow = 0; 
+            let timelineRow = playRow + 1;
 
-        // --- UPDATED: Smart Wake-up targeting ---
-        if (code === TV_KEYS.UP) {
-            currentRow = 0; currentCol = 1; // Wakes up on Play
-        }
-        else if (code === TV_KEYS.DOWN) {
-            currentRow = 1; currentCol = 0; // Wakes up on Timeline
-        }
-        else if (code === TV_KEYS.LEFT || code === TV_KEYS.RIGHT) {
-            currentRow = 1; currentCol = 0; // Wakes up directly on Timeline for seamless scrubbing!
-        }
-        else {
-            currentRow = 0; currentCol = 1; // Default to Play for ENTER
-        }
+            if (code === TV_KEYS.UP) { currentRow = playRow; currentCol = 1; }
+            else if (code === TV_KEYS.DOWN) { currentRow = timelineRow; currentCol = 0; }
+            else { currentRow = playRow; currentCol = 1; }
 
-        updateFocusUI();
+            updateFocusUI(); // Wake up for Up/Down
+        }
         e.preventDefault();
         return;
     }
 
-    // 4. VERTICAL NAVIGATION (UP/DOWN)
+    // 4. VERTICAL NAVIGATION
     if (code === TV_KEYS.UP) {
         e.preventDefault();
         if (currentRow > 0) {
@@ -782,37 +930,33 @@ document.addEventListener('keydown', (e) => {
             updateFocusUI();
         }
     }
-    // 5. HORIZONTAL ACTION LOGIC (LEFT/RIGHT)
+    // 5. HORIZONTAL ACTION LOGIC
     else if (code === TV_KEYS.LEFT) {
         e.preventDefault();
-        const target = tvRows[currentRow][currentCol];
+        const target = tvRows[currentRow] ? tvRows[currentRow][currentCol] : null;
 
         if (currentRow === 0) {
-            // Only navigate between Prev -> Play if on Row 0
             if (currentCol > 0) { currentCol--; updateFocusUI(); }
         } else if (target && target.id === 'volumeSlider') {
             volumeSlider.value = Math.max(0, parseFloat(volumeSlider.value) - 0.1);
             volumeSlider.dispatchEvent(new Event('input'));
             updateFocusUI();
         } else {
-            seekBackward();
-            updateFocusUI();
+            seekBackward(); // <-- Skips & hides UI cleanly
         }
     }
     else if (code === TV_KEYS.RIGHT) {
         e.preventDefault();
-        const target = tvRows[currentRow][currentCol];
+        const target = tvRows[currentRow] ? tvRows[currentRow][currentCol] : null;
 
         if (currentRow === 0) {
-            // Only navigate between Play -> Next if on Row 0
             if (currentCol < tvRows[currentRow].length - 1) { currentCol++; updateFocusUI(); }
         } else if (target && target.id === 'volumeSlider') {
             volumeSlider.value = Math.min(3, parseFloat(volumeSlider.value) + 0.1);
             volumeSlider.dispatchEvent(new Event('input'));
             updateFocusUI();
         } else {
-            seekForward();
-            updateFocusUI();
+            seekForward(); // <-- Skips & hides UI cleanly
         }
     }
     // 6. ENTER KEY LOGIC
@@ -1115,3 +1259,30 @@ function savePlaybackProgress() {
 setInterval(savePlaybackProgress, 5000);
 window.addEventListener('beforeunload', savePlaybackProgress);
 window.addEventListener('pagehide', savePlaybackProgress);
+
+
+
+/* ==========================================
+   OS MEDIA CONTROLS (LOCK SCREEN & NOTIFICATIONS)
+========================================== */
+function updateOSMediaSession(title, image) {
+    if ('mediaSession' in navigator) {
+        // 1. Send Title and Image to OS
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: title,
+            artist: 'Abin Movie Mirror',
+            album: 'Video Player',
+            artwork: [
+                { src: image || 'img/cropped_circle_image (8).png', sizes: '512x512', type: 'image/jpeg' }
+            ]
+        });
+
+        // 2. Link OS Lock Screen buttons to your existing Video functions
+        navigator.mediaSession.setActionHandler('play', togglePlay);
+        navigator.mediaSession.setActionHandler('pause', togglePlay);
+        navigator.mediaSession.setActionHandler('seekbackward', seekBackward);
+        navigator.mediaSession.setActionHandler('seekforward', seekForward);
+        navigator.mediaSession.setActionHandler('previoustrack', playPrevious);
+        navigator.mediaSession.setActionHandler('nexttrack', playNext);
+    }
+}
