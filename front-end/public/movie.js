@@ -391,6 +391,7 @@ window.addEventListener('pageshow', (event) => {
    7. DYNAMIC SEARCH AUTOCOMPLETE
 ========================================== */
 let availableSearchTerms = [];
+let searchImageMap = new Map(); // Stores the image mapping for titles
 
 function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -399,19 +400,32 @@ function escapeRegExp(string) {
 function populateSearchOptions() {
     try {
         const uniqueTitles = new Set();
+        searchImageMap.clear();
+
+        // 1. Gather Movie Images
         const movieCards = document.querySelectorAll('.movies');
         movieCards.forEach(card => {
             const title = card.dataset.title;
-            if (title && title.trim() !== "") uniqueTitles.add(title.toUpperCase().trim());
+            const img = card.dataset.img || card.querySelector('img')?.src || '';
+
+            if (title && title.trim() !== "") {
+                const cleanTitle = title.toUpperCase().trim();
+                uniqueTitles.add(cleanTitle);
+                searchImageMap.set(cleanTitle, img);
+            }
         });
 
+        // 2. Gather Song Images 
         const musicButtons = document.querySelectorAll('i#music');
         musicButtons.forEach(btn => {
+            const containerImg = btn.closest('.movies')?.dataset.img || btn.closest('.movies')?.querySelector('img')?.src || '';
+
             for (let i = 1; i <= 20; i++) {
                 const songTitle = btn.dataset[`songtitle${i}`] || btn.dataset[`songTitle${i}`];
                 if (songTitle) {
                     const cleanTitle = songTitle.replace(/_+/g, ' ').toUpperCase().trim();
                     uniqueTitles.add(cleanTitle);
+                    searchImageMap.set(cleanTitle, containerImg);
                 }
             }
         });
@@ -422,6 +436,9 @@ function populateSearchOptions() {
         searchInputs.forEach(input => {
             input.removeAttribute('list');
             input.setAttribute('autocomplete', 'off');
+
+            const existingDropdown = input.parentElement.querySelector('.custom-dropdown');
+            if (existingDropdown) existingDropdown.remove();
 
             const dropdown = document.createElement('div');
             dropdown.className = 'custom-dropdown';
@@ -449,7 +466,29 @@ function populateSearchOptions() {
                         const regex = new RegExp(`(${safeVal})`, "gi");
                         const highlightedMatch = match.replace(regex, "<span style='color: #00ff88; font-weight: bold;'>$1</span>");
 
-                        option.innerHTML = `<i class="fas fa-search"></i> ${highlightedMatch}`;
+                        // 3. Visual Element on the Left (Thumbnail or Fallback Icon)
+                        const matchImg = searchImageMap.get(match);
+                        const visualElement = matchImg
+                            ? `<img src="${matchImg}" alt="" style="width: 35px; height: 35px; border-radius: 6px; object-fit: cover; margin-right: 12px; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">`
+                            : `<div style="width: 35px; height: 35px; border-radius: 6px; background: rgba(142, 68, 173, 0.2); display: flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0;"><i class="fas fa-film" style="color: #8e44ad; font-size: 14px;"></i></div>`;
+
+                        // 4. Flexbox Layout with Responsive Professional Typography
+                        option.innerHTML = `
+                            ${visualElement} 
+                            <span style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: clamp(13px, 3.5vw, 15px); letter-spacing: 0.3px;">${highlightedMatch}</span>
+                            <i class="fas fa-search" style="flex-shrink: 0; opacity: 0.5; margin-left: 10px; transition: opacity 0.3s ease;"></i>
+                     `;
+
+                        // Add a smooth hover effect specifically to the search icon via JS
+                        option.addEventListener('mouseenter', () => {
+                            const icon = option.querySelector('.fa-search');
+                            if (icon) icon.style.opacity = '1';
+                        });
+                        option.addEventListener('mouseleave', () => {
+                            const icon = option.querySelector('.fa-search');
+                            if (icon) icon.style.opacity = '0.5';
+                        });
+
                         option.addEventListener('click', () => {
                             input.value = match;
                             dropdown.style.display = 'none';
@@ -463,28 +502,27 @@ function populateSearchOptions() {
                 }
             });
 
+            // 5. Restore Keyboard & Smart TV Navigation
             input.addEventListener('keydown', function (e) {
                 const options = dropdown.querySelectorAll('.custom-option');
                 if (!options || options.length === 0) return;
 
-                if (e.keyCode === 40) { // ArrowDown
-                    // FIX: If TV mode is active and we are at the LAST option...
+                if (e.keyCode === 40) {
                     if (document.querySelector('.tv-focus') && currentFocus === options.length - 1) {
-                        dropdown.style.display = 'none'; // Close the dropdown
-                        currentFocus = -1;               // Reset the active highlight
+                        dropdown.style.display = 'none';
+                        currentFocus = -1;
                         removeActive(options);
-                        input.blur();                    // Remove text box focus
-                        return; // Let the event reach the Smart TV script to jump to the scroller!
+                        input.blur();
+                        return;
                     }
                     e.preventDefault();
                     currentFocus++;
                     addActive(options);
-                } else if (e.keyCode === 38) { // ArrowUp
-                    // FIX: If TV mode is active and we push up from the FIRST option...
+                } else if (e.keyCode === 38) {
                     if (document.querySelector('.tv-focus') && currentFocus <= 0) {
-                        currentFocus = -1;               // Reset highlight
-                        removeActive(options);           // Un-highlight option
-                        return; // Keep focus safely in the text box so they can keep typing
+                        currentFocus = -1;
+                        removeActive(options);
+                        return;
                     }
                     e.preventDefault();
                     currentFocus--;
@@ -520,6 +558,7 @@ function populateSearchOptions() {
         console.error("Autocomplete init bypassed.", error);
     }
 }
+
 
 /* ==========================================
    8. AUTOMATED VOICE ENGINE SYNCHRONIZATION
@@ -1321,7 +1360,7 @@ function loadRecentContent() {
     if (moviesSection && moviesContainer) {
         if (recentMovies.length > 0) {
             moviesContainer.innerHTML = '';
-            
+
             recentMovies.forEach(movie => {
                 const div = document.createElement('div');
                 div.className = 'movies';
@@ -1363,7 +1402,7 @@ function loadRecentContent() {
         } else {
             // NEW: Instantly hide the container if the list is empty
             moviesContainer.innerHTML = '';
-            moviesSection.style.display = 'none'; 
+            moviesSection.style.display = 'none';
         }
     }
 
@@ -1378,29 +1417,29 @@ function loadRecentContent() {
             // Play All Button Logic
             if (playAllRecentBtn) {
                 playAllRecentBtn.onclick = function (e) {
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                     const completePlaylist = recentSongs.map(s => ({
                         title: s.title,
                         url: s.url,
                         image: s.image
                     }));
                     localStorage.setItem('currentPlaylist', JSON.stringify(completePlaylist));
-                    localStorage.setItem('targetSongIndex', 0); 
+                    localStorage.setItem('targetSongIndex', 0);
                     window.location.href = 'music-viewer.html';
                 };
             }
-            
+
             songsContainer.innerHTML = '';
             recentSongs.forEach(song => {
                 const div = document.createElement('div');
-                div.className = 'movies'; 
+                div.className = 'movies';
                 div.innerHTML = `
                     <i class="fas fa-times remove-recent-icon" onclick="removeRecentItem(event, 'song', '${song.url}')"></i>
                     <img src="${song.image}" alt="${song.title}" loading="lazy" style="pointer-events: none;">
                     <h4>${song.title}</h4>
                     <button style="pointer-events: none;">Play</button>
                 `;
-                
+
                 div.onclick = function () {
                     let currentRecents = JSON.parse(localStorage.getItem('recentSongs')) || [];
                     currentRecents = currentRecents.filter(s => s.url !== song.url);
@@ -1415,13 +1454,13 @@ function loadRecentContent() {
                 songsContainer.appendChild(div);
             });
             songsSection.style.display = 'block'; // Reveal the container
-            
+
             // Re-show the Play All button if it was previously hidden
             if (playAllRecentBtn) playAllRecentBtn.style.display = 'flex';
         } else {
             // NEW: Instantly hide the container and Play All button if the list is empty
             songsContainer.innerHTML = '';
-            songsSection.style.display = 'none'; 
+            songsSection.style.display = 'none';
             if (playAllRecentBtn) playAllRecentBtn.style.display = 'none';
         }
     }
@@ -1460,9 +1499,9 @@ async function loadMovieCategory(jsonFileName, containerId) {
         const response = await fetch(jsonFileName);
         const moviesData = await response.json();
         const container = document.getElementById(containerId);
-        
+
         if (!container) return;
-        
+
         container.innerHTML = ''; // Clear loading state
 
         moviesData.forEach(data => {
@@ -1489,7 +1528,7 @@ async function loadMovieCategory(jsonFileName, containerId) {
                 musicIcon.className = 'fas fas fa-music';
                 musicIcon.id = 'music';
                 musicIcon.setAttribute('onclick', 'openMusicPlayer(this)');
-                
+
                 for (const [key, value] of Object.entries(songAttrs)) {
                     musicIcon.setAttribute(key, value);
                 }
@@ -1517,7 +1556,7 @@ async function loadMovieCategory(jsonFileName, containerId) {
 
             container.appendChild(movieDiv);
         });
-        
+
         return true; // Signal completion
     } catch (error) {
         console.error(`JSON Engine Error: Failed to load ${jsonFileName}`, error);
