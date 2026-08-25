@@ -74,6 +74,17 @@
         }
     },
     {
+        "movieAttributes":{
+            "data-title":"DEADLY 1 (2026)",
+            "data-img":"img/deadly.jpeg",
+            "data-link":"https://www.youtube.com/watch?v=XjVnlNkmfCc&t=397s",
+            "data-name":"ARJUN",
+            "data-year":"2026",
+            "data-language":"Tamil",
+            "data-link1":"https://www.youtube.com/watch?v=XjVnlNkmfCc&t=397s"
+        }
+    },
+    {
         "movieAttributes": {
             "data-title": "IDLI KADAI (2025)",
             "data-img": "img/idli kadai.jpeg",

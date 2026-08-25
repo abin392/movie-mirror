@@ -148,7 +148,7 @@ video {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(0, 0, 0, 0.6);
+    background: transparent;
     padding: 12px 20px;
     border-radius: 12px;
     backdrop-filter: blur(10px);
